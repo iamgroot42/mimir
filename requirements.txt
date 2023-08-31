@@ -1,0 +1,13 @@
+torch
+numpy
+transformers
+datasets
+matplotlib
+tqdm
+scikit-learn
+openai
+packaging
+ninja
+pytorch-lightning
+zstandard
+simple-parsing

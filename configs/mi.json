@@ -1,0 +1,28 @@
+{
+    "base_model": "EleutherAI/gpt-neo-125m",
+    "dataset_member": "the_pile",
+    "dataset_nonmember": "the_pile",
+    "min_words": 100,
+    "max_words": 200,
+    "max_tokens": 512,
+    "max_data": 100000,
+    "output_name": "unified_mia",
+    "specific_sources": ["Pile-CC"],
+    "n_samples": 1000,
+    "ref_config": {
+        "model": "gpt2-xl"
+    },
+    "neighborhood_config": {
+        "model": "bert",
+        "n_perturbation_list": [
+            20
+        ],
+        "pct_words_masked": 0.3,
+        "span_length": 2
+    },
+    "env_config": {
+        "results": "results_new"
+    },
+    "dump_cache": false,
+    "load_from_cache": true
+}

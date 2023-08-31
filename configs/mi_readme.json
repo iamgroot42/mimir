@@ -1,0 +1,22 @@
+{
+    "base_model": "EleutherAI/gpt-neo-2.7B",
+    "dataset_member": "the_pile",
+    "dataset_nonmember": "xsum",
+    "dataset_nonmember_key": "document",
+    "max_words": 2000,
+    "max_tokens": 512,
+    "output_name": "unified_mia",
+    "ref_config": {
+        "model": "gpt2-xl"
+    },
+    "neighborhood_config": {
+        "model": "t5-3b",
+        "n_perturbation_list": [
+            25
+        ],
+        "pct_words_masked": 0.3
+    },
+    "env_config": {
+        "cache_dir": "cache"
+    }
+}

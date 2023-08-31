@@ -1,0 +1,26 @@
+# Ignore all caching folders
+*cache/
+*/__pycache__/
+
+# Ignore results
+tmp_results/
+tmp_results_cross/
+data/*
+results/*
+results_cross/*
+results/
+results_new/*
+results_cross/
+models*
+
+# Logs (from cluster runs)
+logs/*
+
+# Vscode
+.vscode/*
+
+# SLURM files
+*.slurm
+
+# Package files
+*.egg-info/
