@@ -5,6 +5,7 @@ import random
 import datetime
 import os
 import json
+from typing import List
 
 from simple_parsing import ArgumentParser
 from pathlib import Path
@@ -29,7 +30,7 @@ np.random.seed(0)
 random.seed(0)
 
 
-def get_perturbation_results(span_length: int=10, n_perturbations: int=1, n_samples: int=500):
+def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     print('MOVING MASK MODEL TO GPU...', end='', flush=True)
     mask_model.load()
 
@@ -50,8 +51,14 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1, n_samp
             'ceil_pct': ceil_pct,
         }
 
-    p_sampled_text = mask_model.generate_neighbors([x for x in sampled_text for _ in range(n_perturbations)], **kwargs)
-    p_original_text = mask_model.generate_neighbors([x for x in original_text for _ in range(n_perturbations)], **kwargs)
+    # Repeat text if T-5 model
+    if 't5' in neigh_config.model:
+        p_sampled_text = mask_model.generate_neighbors([x for x in sampled_text for _ in range(n_perturbations)], **kwargs)
+        p_original_text = mask_model.generate_neighbors([x for x in original_text for _ in range(n_perturbations)], **kwargs)
+    else:
+        p_sampled_text = mask_model.generate_neighbors(sampled_text, **kwargs)
+        p_original_text = mask_model.generate_neighbors(original_text, **kwargs)
+
     for _ in range(n_perturbation_rounds - 1):
         try:
             p_sampled_text, p_original_text = mask_model.generate_neighbors(p_sampled_text, **kwargs), mask_model.generate_neighbors(p_original_text, **kwargs)
@@ -93,7 +100,7 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1, n_samp
     return results
 
 
-def run_perturbation_experiment(results, criterion, span_length: int=10, n_perturbations: int=1, n_samples: int=500):
+def run_perturbation_experiment(results, criterion, n_samples: int, span_length: int=10, n_perturbations: int=1):
     # compute diffs with perturbed
     predictions = {'real': [], 'samples': []}
     for res in results:
@@ -142,7 +149,7 @@ def run_perturbation_experiment(results, criterion, span_length: int=10, n_pertu
     }
 
 
-def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int=500):
+def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
     torch.manual_seed(0)
     np.random.seed(0)
     batch_size = config.batch_size
@@ -190,7 +197,7 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int=500):
     }
 
 
-def generate_data_processed(raw_data_member, batch_size, raw_data_non_member = None ):
+def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: List[str] = None):
     torch.manual_seed(42)
     np.random.seed(42)
     data = {
@@ -528,10 +535,11 @@ if __name__ == '__main__':
     if not config.baselines_only:
         # run perturbation experiments
         for n_perturbations in n_perturbation_list:
-            perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations, n_samples)
+            perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
             for perturbation_mode in ['d', 'z']:
                 output = run_perturbation_experiment(
-                    perturbation_results, perturbation_mode, span_length=neigh_config.span_length, n_perturbations=n_perturbations, n_samples=n_samples)
+                    perturbation_results, perturbation_mode, n_samples=n_samples,
+                    span_length=neigh_config.span_length, n_perturbations=n_perturbations)
                 outputs.append(output)
                 with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
                     json.dump(output, f)
