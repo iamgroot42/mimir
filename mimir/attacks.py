@@ -258,7 +258,7 @@ class BertModel(MaskFillingModel):
             alt = text_tokenized
             target_token_index, cand = single
             alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
-            alt_text = self.model.batch_decode(alt)[0]
+            alt_text = self.tokenizer.batch_decode(alt)[0]
             texts.append((alt_text, replacements[single]))
             neighbors.append(alt_text)
 

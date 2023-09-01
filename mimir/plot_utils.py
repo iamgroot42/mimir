@@ -2,6 +2,8 @@
     Utilities related to plotting
 """
 import matplotlib.pyplot as plt
+# Set high DPI
+plt.rcParams['figure.dpi'] = 300
 
 
 # 15 colorblind-friendly colors

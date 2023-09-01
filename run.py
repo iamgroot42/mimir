@@ -72,8 +72,6 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
         results.append({
             "nonmember": original_text[idx],
             "member": sampled_text[idx],
-            "nonmember": original_text[idx],
-            "member": sampled_text[idx],
             "perturbed_sampled": p_sampled_text[idx * n_perturbations: (idx + 1) * n_perturbations],
             "perturbed_original": p_original_text[idx * n_perturbations: (idx + 1) * n_perturbations]
         })
@@ -86,8 +84,6 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     for res in tqdm(results, desc="Computing log likelihoods"):
         p_sampled_ll = base_model.get_lls(res["perturbed_sampled"])
         p_original_ll = base_model.get_lls(res["perturbed_original"])
-        res["original_ll"] = base_model.get_ll(res["nonmember"])
-        res["sampled_ll"] = base_model.get_ll(res["member"])
         res["original_ll"] = base_model.get_ll(res["nonmember"])
         res["sampled_ll"] = base_model.get_ll(res["member"])
         res["all_perturbed_sampled_ll"] = p_sampled_ll
