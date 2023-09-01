@@ -243,9 +243,15 @@ class BertModel(MaskFillingModel):
                     else:
                         replacements[(target_token_index, cand)] = prob.item()/(1-original_prob.item())
 
-        # highest_scored_texts = max(candidate_scores.iteritems(), key=operator.itemgetter(1))[:100]
-        # TODO: Swap out '50' with n_perturbation_list
-        highest_scored = nlargest(20, candidate_scores, key=candidate_scores.get)
+        # TODO: Swap out '20' with n_perturbation_list
+        replacement_keys = nlargest(20, replacements, key=replacements.get)
+        replacements_new = dict()
+        for rk in replacement_keys:
+            replacements_new[rk] = replacements[rk]
+    
+        replacements = replacements_new
+
+        highest_scored = nlargest(100, replacements, key=replacements.get)
 
         neighbors, texts = [], []
         for single in highest_scored:
