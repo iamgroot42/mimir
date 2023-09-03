@@ -6,6 +6,7 @@ import torch
 from collections import Counter
 import math
 from sklearn.metrics import roc_curve, auc, precision_recall_curve
+from scipy.stats import bootstrap
 
 
 def count_masks(texts):
@@ -54,12 +55,24 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(real_preds, sample_preds):
+def get_roc_metrics(real_preds, sample_preds, perform_bootstrap=False):
     real_preds =  [element for element in real_preds if not math.isnan(element)]
     sample_preds = [element for element in sample_preds if not math.isnan(element)]
 
     fpr, tpr, _ = roc_curve([0] * len(real_preds) + [1] * len(sample_preds), real_preds + sample_preds)
     roc_auc = auc(fpr, tpr)
+
+    if perform_bootstrap:
+        def roc_auc_statistic(preds):
+            in_preds = [pred[0] for pred in preds if pred[1] == 0]
+            out_preds = [pred[0] for pred in preds if pred[1] == 1]
+            _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
+            return roc_auc
+        
+        data = [(pred, 0) for pred in real_preds] + [(pred, 1) for pred in sample_preds]
+        res = bootstrap(data, roc_auc_statistic, n_resamples=1000)
+        return fpr.tolist(), tpr.tolist(), float(roc_auc), res
+    
     return fpr.tolist(), tpr.tolist(), float(roc_auc)
 
 
