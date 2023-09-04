@@ -143,6 +143,8 @@ class ExperimentConfig(Serializable):
     pre_perturb_span_length: Optional[int] = 5
     """Span length for pre-perturbation"""
     tok_by_tok: Optional[bool] = False
+    """FPRs at which to compute TPR"""
+    fpr_list: Optional[List[float]] = [0.001, 0.01]
     """Process data token-wise?"""
     ref_config: Optional[ReferenceConfig] = None
     """Reference model config"""
