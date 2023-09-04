@@ -7,7 +7,7 @@
     "max_tokens": 512,
     "max_data": 100000,
     "output_name": "unified_mia",
-    "specific_sources": ["Pile-CC"],
+    "specific_source": "Github",
     "n_samples": 1000,
     "ref_config": {
         "model": "gpt2-xl"
@@ -23,6 +23,6 @@
     "env_config": {
         "results": "results_new"
     },
-    "dump_cache": false,
-    "load_from_cache": true
+    "dump_cache": true,
+    "load_from_cache": false
 }

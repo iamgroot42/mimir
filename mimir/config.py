@@ -104,8 +104,8 @@ class ExperimentConfig(Serializable):
     """Dataset source for nonmembers"""
     output_name: Optional[str] = None
     """Output name for sub-directory. Defaults to nothing"""
-    specific_sources: Optional[List[str]] = None
-    """List of specific sub-sources to focus on. Only valid for the_pile"""
+    specific_source: Optional[str] = None
+    """Specific sub-source to focus on. Only valid for the_pile"""
     dump_cache: Optional[bool] = False
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
@@ -122,8 +122,10 @@ class ExperimentConfig(Serializable):
     """Maximum samples to load from data before processing. Helps with efficiency"""
     min_words: Optional[int] = 100
     """Consider documents with at least these many words"""
-    max_words: Optional[int] = 150
+    max_words: Optional[int] = 200
     """Consider documents with at most these many words"""
+    max_words_cutoff: Optional[bool] = True
+    """Is max_words a selection criteria (False), or a cutoff added on text (True)?"""
     batch_size: Optional[int] = 50
     """Batch size"""
     chunk_size: Optional[int] = 20
@@ -144,7 +146,7 @@ class ExperimentConfig(Serializable):
     """Span length for pre-perturbation"""
     tok_by_tok: Optional[bool] = False
     """FPRs at which to compute TPR"""
-    fpr_list: Optional[List[float]] = [0.001, 0.01]
+    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
     """Process data token-wise?"""
     ref_config: Optional[ReferenceConfig] = None
     """Reference model config"""

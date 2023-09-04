@@ -11,3 +11,4 @@ ninja
 pytorch-lightning
 zstandard
 simple-parsing
+nltk

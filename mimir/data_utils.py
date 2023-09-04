@@ -8,6 +8,7 @@ from typing import List
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
+from nltk.tokenize import WhitespaceTokenizer
 
 
 NAME_KEY_MAPPING = {
@@ -31,9 +32,9 @@ class Data:
 
         # Load from cache, if requested
         if self.config.load_from_cache:
-            if self.config.specific_sources and self.name == 'the_pile':
-                sorted_sources = "_".join(sorted(self.config.specific_sources))
-                filename = f'{self.name}_{sorted_sources}'
+            if self.config.specific_source and self.name == 'the_pile':
+                processed_source = sourcename_process(self.config.specific_source)
+                filename = f'{self.name}_{processed_source}'
             else:
                 filename = self.name
             data = custom_datasets.load_cached(self.cache_dir, data_split, filename,
@@ -45,7 +46,7 @@ class Data:
             elif self.name == 'the_pile':
                 min_load = max(10000, self.config.max_data)
                 data = datasets.load_dataset("json", data_files=os.path.join(self.config.env_config.data_source, "pile/00.jsonl.zst" if train else "pile/test.jsonl.zst"), cache_dir=self.cache_dir, split=f"train[:{min_load}]")
-                data = pile_selection_utility(data, self.key, wanted_sources=self.config.specific_sources)
+                data = pile_selection_utility(data, self.key, wanted_source=self.config.specific_source)
             elif 'human' in self.name :
                 data = datasets.load_dataset(self.name, split=f'train[:100]', cache_dir=self.cache_dir)[self.key]
             elif 'nthngdy' in self.name:
@@ -58,6 +59,8 @@ class Data:
         # then take just the examples that are <= 512 tokens (for the mask model)
         # then generate n_samples samples
 
+        wsp_tokenizer = WhitespaceTokenizer()
+
         # remove duplicates from the data
         data = list(dict.fromkeys(data))  # deterministic, as opposed to set()
     
@@ -67,13 +70,20 @@ class Data:
         # remove newlines from each example
         data = [strip_newlines(x) for x in data]
 
-        long_data = [x for x in data if len(x.split()) > self.config.min_words]
-        if len(long_data) > 0:
-            data = long_data
+        whitespace_tokenized_spans = [(x, list(wsp_tokenizer.span_tokenize(x))) for x in data]
 
-        not_too_long_data = [x for x in data if len(x.split()) < self.config.max_words]
-        if len(not_too_long_data) > 0:
-            data = not_too_long_data
+        # Pick samples with at least self.config.min_words words
+        whitespace_tokenized_spans = [x for x in whitespace_tokenized_spans if len(x[1]) >= self.config.min_words]
+        if len(whitespace_tokenized_spans) == 0:
+            raise ValueError("No examples with length >= min_words")
+
+        if self.config.max_words_cutoff:
+            last_spans = [x[1][min(self.config.max_words, len(x[1])) - 1][1] for x in whitespace_tokenized_spans]
+            data = [x[0][:y] for x, y in zip(whitespace_tokenized_spans, last_spans)]
+        else:
+            data = [x[0] for x in whitespace_tokenized_spans if len(x[1]) < self.config.max_words]
+            if len(data) == 0:
+                raise ValueError("No examples with length < max_words")
 
         random.seed(0)
         random.shuffle(data)
@@ -102,9 +112,9 @@ class Data:
         return data
 
     def dump_to_cache(self, data, data_split):
-        sorted_sources = "_".join(sorted(self.config.specific_sources))
-        if self.config.specific_sources and self.name == 'the_pile':
-            filename = f'{self.name}_{sorted_sources}'
+        if self.config.specific_source and self.name == 'the_pile':
+            processed_source = sourcename_process(self.config.specific_source)
+            filename = f'{self.name}_{processed_source}'
         else:
             filename = self.name
         custom_datasets.dump_to_cache(data, self.cache_dir, data_split, filename,
@@ -143,19 +153,22 @@ def truncate_to_substring(text: str, substring: str, idx_occurrence: int):
     return text[:idx]
 
 
-def pile_selection_utility(data, key: str, wanted_sources: List[str] = None):
+def pile_selection_utility(data, key: str, wanted_source: str = None):
     """
         Filter and select data corresponding to source, if requested.
     """
-    if wanted_sources is None or len(wanted_sources) == 0:
+    if wanted_source is None:
         return data[key]
     wanted_data = []
     # Pick sources that match requested source
     for datum in data:
-        # print(datum['meta']['pile_set_name'], wanted_sources)
-        if datum['meta']['pile_set_name'] in wanted_sources:
+        if datum['meta']['pile_set_name'] == wanted_source:
             wanted_data.append(datum[key])
     return wanted_data
+
+
+def sourcename_process(x: str):
+    return x.replace(" ", "_").replace("-", "_").lower()
 
 
 def drop_last_word(text):

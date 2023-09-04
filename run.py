@@ -377,9 +377,9 @@ if __name__ == '__main__':
     default_prompt_len = extraction_config.prompt_len if extraction_config else 30 # hack: will fix later
     suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{ref_model_string}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
     # Add pile source to suffix, if provided
-    if config.specific_sources is not None and len(config.specific_sources) > 0:
-        sorted_sources = "_".join(sorted(config.specific_sources))
-        suffix += f"-{sorted_sources}"
+    if config.specific_source is not None:
+        processed_source = data_utils.sourcename_process(config.specific_source)
+        suffix += f"-{processed_source}"
     SAVE_FOLDER = os.path.join(env_config.tmp_results, suffix)
 
     new_folder = os.path.join(env_config.results, suffix)
