@@ -11,7 +11,7 @@ results_cross/*
 results/
 results_new/*
 results_cross/
-models*
+models/*
 
 # Logs (from cluster runs)
 logs/*
