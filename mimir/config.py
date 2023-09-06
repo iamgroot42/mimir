@@ -12,8 +12,8 @@ class ReferenceConfig(Serializable):
     """
         Config for attacks that use reference models.
     """
-    model: str
-    """Reference model name"""
+    models: List[str]
+    """Reference model names"""
 
 
 @dataclass
@@ -102,6 +102,12 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
+    presampled_dataset_member: str = None
+    """Path to presampled dataset source for members"""
+    presampled_dataset_nonmember: str = None
+    """Path to presampled dataset source for mpmmembers"""
+    dataset_key: str = None
+    """Dataset key"""
     output_name: Optional[str] = None
     """Output name for sub-directory. Defaults to nothing"""
     specific_source: Optional[str] = None

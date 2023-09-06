@@ -46,6 +46,17 @@ class Model(nn.Module):
             torch.compile(self.model)
         print(f'DONE ({time.time() - start:.2f}s)')
     
+    def unload(self):
+        """
+            Unload model from GPU
+        """
+        start = time.time()
+        try:
+            self.model.cpu()
+        except NameError:
+            pass
+        print(f'DONE ({time.time() - start:.2f}s)')
+    
     @torch.no_grad()
     def get_ll(self, text: str):
         """
@@ -57,7 +68,7 @@ class Model(nn.Module):
         tokenized = self.tokenizer(
             text, return_tensors="pt").to(self.device)
         labels = tokenized.input_ids
-        return -self.model(**tokenized, labels=labels).loss.item()
+        return self.model(**tokenized, labels=labels).loss.item()
     
     def load_base_model_and_tokenizer(self, model_kwargs):
         if self.device is None or self.name is None:
@@ -87,10 +98,10 @@ class ReferenceModel(Model):
     """
         Wrapper for reference model
     """
-    def __init__(self, config: ExperimentConfig):
+    def __init__(self, config: ExperimentConfig, name: str):
         super().__init__(config)
         self.device = self.config.env_config.device_aux
-        self.name = self.config.ref_config.model
+        self.name = name
         base_model_kwargs = {'revision': 'main'}
         if 'gpt-j' in self.name or 'neox' in self.name:
             base_model_kwargs.update(dict(torch_dtype=torch.float16))
@@ -151,6 +162,16 @@ class LanguageModel(Model):
         lls_ref = ref_model.get_ll(text)
 
         return lls - lls_ref
+    
+    @torch.no_grad()
+    def get_contrastive(self, text: str, ref_model: ReferenceModel):
+        """
+            Get the contrastrive ratio of each text under the base_model -- MIA baseline
+        """
+        lls = self.get_ll(text)
+        lls_ref = ref_model.get_ll(text)
+
+        return lls / lls_ref
 
     @torch.no_grad()
     def get_rank(self, text: str, log: bool=False):

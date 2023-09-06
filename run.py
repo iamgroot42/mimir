@@ -5,6 +5,7 @@ import random
 import datetime
 import os
 import json
+from collections import defaultdict
 from typing import List
 
 from simple_parsing import ArgumentParser
@@ -118,7 +119,7 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
             predictions['samples'].append((res['sampled_ll'] - res['perturbed_sampled_ll']) / res['perturbed_sampled_ll_std'])
 
     fpr, tpr, roc_auc, res = get_roc_metrics(predictions['real'], predictions['samples'], True)
-    tpr_at_low_fpr = {upper_bound: tpr[np.where(fpr < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
+    tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
     name = f'perturbation_{n_perturbations}_{criterion}'
     print(f"{name} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
@@ -155,7 +156,7 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
     batch_size = config.batch_size
 
     results = []
-    for batch in tqdm(range(n_samples // batch_size), desc=f"Computing {name} criterion"):
+    for batch in tqdm(range((n_samples // batch_size) + 1), desc=f"Computing {name} criterion"):
         original_text = data["nonmember"][batch * batch_size:(batch + 1) * batch_size]
         sampled_text = data["member"][batch * batch_size:(batch + 1) * batch_size]
 
@@ -174,7 +175,7 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
     }
 
     fpr, tpr, roc_auc, res = get_roc_metrics(predictions['real'], predictions['samples'], True)
-    tpr_at_low_fpr = {upper_bound: tpr[np.where(fpr < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
+    tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
     print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
     return {
@@ -210,7 +211,7 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
     }
 
     seq_lens = []
-    num_batches = len(raw_data_member) // batch_size
+    num_batches = (len(raw_data_member) // batch_size) + 1
     iterator = tqdm(range(num_batches), desc='Generating samples')
     for batch in iterator:
         member_text = raw_data_member[batch * batch_size:(batch + 1) * batch_size]
@@ -254,9 +255,9 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
     return data, seq_lens, n_samples
 
 
-def generate_data(dataset: str, train: bool=True):
-    data_obj = data_utils.Data(dataset, config=config)
-    data = data_obj.load(base_model.tokenizer, train=train)
+def generate_data(dataset: str, train: bool=True, presampled: str=None):
+    data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
+    data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
     return data
     #return generate_samples(data[:n_samples], batch_size=batch_size)
 
@@ -278,7 +279,7 @@ def eval_supervised(data, model):
     }
 
     fpr, tpr, roc_auc, res = get_roc_metrics(real_preds, fake_preds, True)
-    tpr_at_low_fpr = {upper_bound: tpr[np.where(fpr < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
+    tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(real_preds, fake_preds)
     print(f"{model} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
 
@@ -351,11 +352,11 @@ if __name__ == '__main__':
         base_model_name = "openai-" + openai_config.model.replace('/', '_')
     scoring_model_string = (f"-{config.scoring_model_name}" if config.scoring_model_name else "").replace('/', '_')
 #    SAVE_FOLDER = f"tmp_results/{output_subfolder}{base_model_name}{scoring_model_string}-{neigh_config.model}-{sampling_string}/{START_DATE}-{START_TIME}-{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{config.dataset_member}-{config.n_samples}"
-    if ref_config is not None:
-        ref_s=ref_config.model.replace('/', '_')
-        ref_model_string = f'--ref_{ref_s}'
-    else:
-        ref_model_string = ""
+    # if ref_config is not None:
+    #     ref_s=ref_config.model.replace('/', '_')
+    #     ref_model_string = f'--ref_{ref_s}'
+    # else:
+    #     ref_model_string = ""
 
     if config.tok_by_tok:
         tok_by_tok_string = '--tok_true'
@@ -375,7 +376,7 @@ if __name__ == '__main__':
         sf_ext = 'mia_'
 
     default_prompt_len = extraction_config.prompt_len if extraction_config else 30 # hack: will fix later
-    suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{ref_model_string}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
+    suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
     # Add pile source to suffix, if provided
     if config.specific_source is not None:
         processed_source = data_utils.sourcename_process(config.specific_source)
@@ -394,8 +395,8 @@ if __name__ == '__main__':
     print(f"Saving results to absolute path: {os.path.abspath(SAVE_FOLDER)}")
 
     # write args to file
-    if not config.dump_cache:
-        config.save(os.path.join(SAVE_FOLDER, 'args.json'), indent=4)
+    # if not config.dump_cache:
+    #     config.save(os.path.join(SAVE_FOLDER, 'args.json'), indent=4)
     
     n_perturbation_list = neigh_config.n_perturbation_list # [int(x) for x in args.n_perturbation_list.split(",")]
     n_perturbation_rounds = neigh_config.n_perturbation_rounds
@@ -413,9 +414,9 @@ if __name__ == '__main__':
 
     #reference model if we are doing the lr baseline
     if ref_config is not None :
-        ref_model = ReferenceModel(config)
-        print('MOVING ref MODEL TO GPU...', end='', flush=True)
-        ref_model.load()
+        ref_models = [ReferenceModel(config, model) for model in ref_config.models]
+        # print('MOVING ref MODEL TO GPU...', end='', flush=True)
+
 
     # mask filling t5 model
     model_kwargs = dict()
@@ -450,7 +451,7 @@ if __name__ == '__main__':
 
     if extraction_config is not None:
         print(f'Loading dataset {config.dataset_member}...')
-        data = generate_data(config.dataset_member)
+        data = generate_data(config.dataset_member, presampled=config.presampled_dataset_member)
 
         data, seq_lens, n_samples = generate_data_processed(data[:config.n_samples], batch_size=config.batch_size)
 
@@ -458,9 +459,9 @@ if __name__ == '__main__':
         print(f'Loading dataset {config.dataset_member} and {config.dataset_nonmember}...')
         # data, seq_lens, n_samples = generate_data(config.dataset_member)
         
-        data_nonmember = generate_data(config.dataset_nonmember, train=False)
-        data_member = generate_data(config.dataset_member)
-        if config.dump_cache:
+        data_nonmember = generate_data(config.dataset_nonmember, train=False, presampled=config.presampled_dataset_member)
+        data_member = generate_data(config.dataset_member, presampled=config.presampled_dataset_nonmember)
+        if config.dump_cache and not config.load_from_cache:
             print("Data dumped! Please re-run with load_from_cache set to True")
             exit(0)
 
@@ -520,23 +521,30 @@ if __name__ == '__main__':
         json.dump(seq_lens, f)
 
     if not config.skip_baselines:
-        baseline_outputs = [run_baseline_threshold_experiment(base_model.get_ll, "likelihood", n_samples=n_samples)]
+        baseline_outputs = defaultdict(dict)
+        baseline_outputs["ll"] = run_baseline_threshold_experiment(base_model.get_ll, "likelihood", n_samples=n_samples)
 
         if openai_config is None:
             rank_criterion = lambda text: -base_model.get_rank(text, log=False)
-            baseline_outputs.append(run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples))
+            baseline_outputs["rank"] = run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples)
             logrank_criterion = lambda text: -base_model.get_rank(text, log=True)
-            baseline_outputs.append(run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples))
+            baseline_outputs["logrank"] = run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples)
             entropy_criterion = lambda text: base_model.get_entropy(text)
-            baseline_outputs.append(run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples))
+            baseline_outputs["entropy"] = run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples)
             if ref_config is not None:
-                get_lira = lambda text: base_model.get_lira(text, ref_model)
-                baseline_outputs.append(run_baseline_threshold_experiment(get_lira, "lr_ratio", n_samples=n_samples))
+                for ref_model in ref_models:
+                    ref_model.load()
+                    get_lira = lambda text: base_model.get_lira(text, ref_model)
+                    baseline_outputs["lira"][ref_model.name] = run_baseline_threshold_experiment(get_lira, f"{ref_model.name}_lr_ratio", n_samples=n_samples)
+                    get_contrastive = lambda text: base_model.get_contrastive(text, ref_model)
+                    baseline_outputs["contrastive"][ref_model.name] = run_baseline_threshold_experiment(get_contrastive, f"{ref_model.name}_contrastive_ratio", n_samples=n_samples)
+                    ref_model.unload()
 
         # Skipping openai-detector (for now)
-        if config.max_tokens < 512:
-            baseline_outputs.append(eval_supervised(data, model='roberta-base-openai-detector'))
-            baseline_outputs.append(eval_supervised(data, model='roberta-large-openai-detector'))
+        # TODO: update to baseline results dict
+        # if config.max_tokens < 512:
+        #     baseline_outputs.append(eval_supervised(data, model='roberta-base-openai-detector'))
+        #     baseline_outputs.append(eval_supervised(data, model='roberta-large-openai-detector'))
 
     outputs = []
 
@@ -555,35 +563,43 @@ if __name__ == '__main__':
     if not config.skip_baselines:
         # write likelihood threshold results to a file
         with open(os.path.join(SAVE_FOLDER, f"likelihood_threshold_results.json"), "w") as f:
-            json.dump(baseline_outputs[0], f)
+            outputs.append(baseline_outputs["ll"])
+            json.dump(baseline_outputs["ll"], f)
 
         if openai_config is None:
             # write rank threshold results to a file
             with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
-                json.dump(baseline_outputs[1], f)
+                outputs.append(baseline_outputs["rank"])
+                json.dump(baseline_outputs["rank"], f)
 
             # write log rank threshold results to a file
             with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
-                json.dump(baseline_outputs[2], f)
+                outputs.append(baseline_outputs["logrank"])
+                json.dump(baseline_outputs["logrank"], f)
 
             # write entropy threshold results to a file
             with open(os.path.join(SAVE_FOLDER, f"entropy_threshold_results.json"), "w") as f:
-                json.dump(baseline_outputs[3], f)
+                outputs.append(baseline_outputs["entropy"])
+                json.dump(baseline_outputs["entropy"], f)
             if ref_config is not None:
-                with open(os.path.join(SAVE_FOLDER, f"lr_ratio_threshold_results.json"), "w") as f:
-                    json.dump(baseline_outputs[4], f)
+                for ref_model in ref_models:
+                    with open(os.path.join(SAVE_FOLDER, f"ref_model_{ref_model.name.replace('/', '_')}_lira_ratio_threshold_results.json"), "w") as f:
+                        outputs.append(baseline_outputs["lira"][ref_model.name])
+                        json.dump(baseline_outputs["lira"][ref_model.name], f)
+                    with open(os.path.join(SAVE_FOLDER, f"ref_model_{ref_model.name.replace('/', '_')}_contrastive_ratio_threshold_results.json"), "w") as f:
+                        outputs.append(baseline_outputs["contrastive"][ref_model.name])
+                        json.dump(baseline_outputs["contrastive"][ref_model.name], f)
 
         # Skipping openai-detector (for now)
         # write supervised results to a file
-        if config.max_tokens < 512:
-            with open(os.path.join(SAVE_FOLDER, f"roberta-base-openai-detector_results.json"), "w") as f:
-                json.dump(baseline_outputs[-2], f)
+        # TODO: update to read from baseline result dict
+        # if config.max_tokens < 512:
+        #     with open(os.path.join(SAVE_FOLDER, f"roberta-base-openai-detector_results.json"), "w") as f:
+        #         json.dump(baseline_outputs[-2], f)
             
-            # write supervised results to a file
-            with open(os.path.join(SAVE_FOLDER, f"roberta-large-openai-detector_results.json"), "w") as f:
-                json.dump(baseline_outputs[-1], f)
-
-        outputs += baseline_outputs
+        #     # write supervised results to a file
+        #     with open(os.path.join(SAVE_FOLDER, f"roberta-large-openai-detector_results.json"), "w") as f:
+        #         json.dump(baseline_outputs[-1], f)
 
     plot_utils.save_roc_curves(outputs, save_folder=SAVE_FOLDER, model_name=base_model_name, neighbor_model_name=neigh_config.model)
     plot_utils.save_ll_histograms(outputs, save_folder=SAVE_FOLDER)

@@ -18,15 +18,16 @@ NAME_KEY_MAPPING = {
 
 
 class Data:
-    def __init__(self, name, config: ExperimentConfig):
+    def __init__(self, name, config: ExperimentConfig, presampled: str=None):
         self.config = config
         self.name = name
-        self.key = NAME_KEY_MAPPING.get(name, None)
+        self.presampled = presampled
+        self.key = config.dataset_key if config.dataset_key else NAME_KEY_MAPPING.get(name, None)
         if self.key is None:
-            raise ValueError(f'Key for dataset {name} not found in NAME_KEY_MAPPING')
+            raise ValueError(f'Key for dataset {name} not provided or found in NAME_KEY_MAPPING')
         self.cache_dir = self.config.env_config.cache_dir
 
-    def load(self, tokenizer, train: bool):
+    def load(self, train: bool, tokenizer=None):
         data_split = 'train' if train else 'test'
         n_samples = self.config.n_samples
 
@@ -41,7 +42,9 @@ class Data:
                                                min_length=self.config.min_words, max_length=self.config.max_words,
                                                n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
         else:
-            if self.name in custom_datasets.DATASETS:
+            if self.presampled:
+                data = datasets.load_dataset("json", data_files=self.presampled, split=f'train', cache_dir=self.cache_dir)[self.key]
+            elif self.name in custom_datasets.DATASETS:
                 data = custom_datasets.load(self.name)
             elif self.name == 'the_pile':
                 min_load = max(10000, self.config.max_data)
@@ -54,7 +57,7 @@ class Data:
             else:
                 data = datasets.load_dataset(self.name, split=f'train', cache_dir=self.cache_dir)[self.key]
     
-        # get unique examples, strip whitespace, and remove newlines
+        # get unique examples
         # then take just the long examples, shuffle, take the first 5,000 to tokenize to save time
         # then take just the examples that are <= 512 tokens (for the mask model)
         # then generate n_samples samples
@@ -63,12 +66,6 @@ class Data:
 
         # remove duplicates from the data
         data = list(dict.fromkeys(data))  # deterministic, as opposed to set()
-    
-        # strip whitespace around each example
-        data = [x.strip() for x in data]
-
-        # remove newlines from each example
-        data = [strip_newlines(x) for x in data]
 
         whitespace_tokenized_spans = [(x, list(wsp_tokenizer.span_tokenize(x))) for x in data]
 
@@ -90,10 +87,11 @@ class Data:
 
         data = data[:self.config.max_data]
 
-        # keep only examples with <= 512 tokens according to mask_tokenizer
+        # If thre is mask tokenizer, keep only examples with <= 512 tokens according to mask_tokenizer
         # this step has the extra effect of removing examples with low-quality/garbage content
-        tokenized_data = tokenizer(data)
-        data = [x for x, y in zip(data, tokenized_data["input_ids"]) if len(y) <= self.config.max_tokens]
+        if tokenizer:
+            tokenized_data = tokenizer(data)
+            data = [x for x, y in zip(data, tokenized_data["input_ids"]) if len(y) <= self.config.max_tokens]
 
         # print stats about remainining data
         print(f"Total number of samples: {len(data)}")
