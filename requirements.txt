@@ -12,3 +12,4 @@ pytorch-lightning
 zstandard
 simple-parsing
 nltk
+scipy>=1.11.2

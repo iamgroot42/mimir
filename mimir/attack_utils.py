@@ -55,7 +55,7 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(real_preds, sample_preds, perform_bootstrap=False):
+def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False):
     real_preds =  [element for element in real_preds if not math.isnan(element)]
     sample_preds = [element for element in sample_preds if not math.isnan(element)]
     total_preds = real_preds + sample_preds
@@ -69,7 +69,7 @@ def get_roc_metrics(real_preds, sample_preds, perform_bootstrap=False):
             out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
-        
+
         res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
         return fpr.tolist(), tpr.tolist(), float(roc_auc), res
     

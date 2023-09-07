@@ -9,8 +9,12 @@
     "output_name": "unified_mia",
     "specific_source": "Github",
     "n_samples": 1000,
+    "baselines_only": true,
     "ref_config": {
-        "model": "gpt2-xl"
+        "models": [
+            "EleutherAI/pythia-70m",
+            "gpt2"
+        ]
     },
     "neighborhood_config": {
         "model": "bert",
@@ -23,6 +27,6 @@
     "env_config": {
         "results": "results_new"
     },
-    "dump_cache": true,
-    "load_from_cache": false
+    "dump_cache": false,
+    "load_from_cache": true
 }

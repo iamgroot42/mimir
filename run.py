@@ -255,7 +255,7 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
     return data, seq_lens, n_samples
 
 
-def generate_data(dataset: str, train: bool=True, presampled: str=None):
+def generate_data(dataset: str, train: bool=True, presampled: str = None):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
     return data

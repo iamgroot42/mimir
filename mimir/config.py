@@ -5,6 +5,7 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from simple_parsing.helpers import Serializable, field
+from mimir.utils import CACHE_PATH, DATA_SOURCE
 
 
 @dataclass
@@ -52,9 +53,9 @@ class EnvironmentConfig(Serializable):
     """
         Config for environment-specific parameters
     """
-    cache_dir: Optional[str] = "/trunk/model-hub"
+    cache_dir: Optional[str] = None
     """Path to cache directory"""
-    data_source: Optional[str] = "/trunk/datasets/niloofar"
+    data_source: Optional[str] = None
     """Path where data is stored"""
     device: Optional[str] = 'cuda:0'
     """Device (GPU) to load main model on"""
@@ -70,6 +71,11 @@ class EnvironmentConfig(Serializable):
     """Path for saving final results"""
     tmp_results: Optional[str] = 'tmp_results'
 
+    def __post_init__(self):
+        if self.cache_dir is None:
+            self.cache_dir = CACHE_PATH
+        if self.data_source is None:
+            self.data_source = DATA_SOURCE
 
 @dataclass
 class OpenAIConfig(Serializable):
@@ -102,11 +108,11 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
-    presampled_dataset_member: str = None
+    presampled_dataset_member: Optional[str] = None
     """Path to presampled dataset source for members"""
-    presampled_dataset_nonmember: str = None
+    presampled_dataset_nonmember: Optional[str] = None
     """Path to presampled dataset source for mpmmembers"""
-    dataset_key: str = None
+    dataset_key: Optional[str] = None
     """Dataset key"""
     output_name: Optional[str] = None
     """Output name for sub-directory. Defaults to nothing"""

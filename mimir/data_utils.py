@@ -87,7 +87,7 @@ class Data:
 
         data = data[:self.config.max_data]
 
-        # If thre is mask tokenizer, keep only examples with <= 512 tokens according to mask_tokenizer
+        # If there is mask tokenizer, keep only examples with <= 512 tokens according to mask_tokenizer
         # this step has the extra effect of removing examples with low-quality/garbage content
         if tokenizer:
             tokenized_data = tokenizer(data)
