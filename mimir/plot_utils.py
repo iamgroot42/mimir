@@ -33,6 +33,22 @@ def save_roc_curves(experiments, save_folder, model_name, neighbor_model_name):
     plt.legend(loc="lower right", fontsize=6)
     plt.savefig(f"{save_folder}/roc_curves.png")
 
+    # Also plot ROC curves for low TPR-FPR region
+    plt.clf()
+    for experiment, color in zip(experiments, COLORS):
+        metrics = experiment["metrics"]
+        plt.plot(metrics["fpr"], metrics["tpr"], label=f"{experiment['name']}, roc_auc={metrics['roc_auc']:.3f}", color=color)
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlim(1e-5, 1)
+    plt.ylim(1e-5, 1)
+    plt.plot([1e-5, 1], [1e-5, 1], color='black', lw=2, linestyle='--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title(f'ROC Curves ({model_name} - {neighbor_model_name}) : low FPR region')
+    plt.legend(loc="lower right", fontsize=6)
+    plt.savefig(f"{save_folder}/roc_curves_low_fpr.png")
+
 
 def save_f1_histogram(f1_scores, save_folder):
     plt.hist(f1_scores, bins=20, edgecolor='black', alpha=0.7)

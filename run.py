@@ -177,7 +177,7 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
     fpr, tpr, roc_auc, res = get_roc_metrics(predictions['real'], predictions['samples'], True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
-    print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
+    print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}, tpr_at_low_fpr: {tpr_at_low_fpr}")
     return {
         'name': f'{name}_threshold',
         'predictions': predictions,
