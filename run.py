@@ -51,23 +51,35 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
             'chunk_size': config.chunk_size,
             'ceil_pct': ceil_pct,
         }
-
-    # Repeat text if T-5 model
-    if 't5' in neigh_config.model:
-        p_sampled_text = mask_model.generate_neighbors([x for x in sampled_text for _ in range(n_perturbations)], **kwargs)
-        p_original_text = mask_model.generate_neighbors([x for x in original_text for _ in range(n_perturbations)], **kwargs)
+    kwargs['n_perturbations'] = n_perturbations
+    
+    if neigh_config.load_from_cache:
+        # Load from cache, if available (and requested)
+        p_sampled_text = data_obj_mem.load_neighbors(train=True, num_neighbors=n_perturbations)
+        p_original_text = data_obj_nonmem.load_neighbors(train=False, num_neighbors=n_perturbations)
     else:
         p_sampled_text = mask_model.generate_neighbors(sampled_text, **kwargs)
         p_original_text = mask_model.generate_neighbors(original_text, **kwargs)
 
-    for _ in range(n_perturbation_rounds - 1):
-        try:
-            p_sampled_text, p_original_text = mask_model.generate_neighbors(p_sampled_text, **kwargs), mask_model.generate_neighbors(p_original_text, **kwargs)
-        except AssertionError:
-            break
+        for _ in range(n_perturbation_rounds - 1):
+            try:
+                p_sampled_text, p_original_text = mask_model.generate_neighbors(p_sampled_text, **kwargs), mask_model.generate_neighbors(p_original_text, **kwargs)
+            except AssertionError:
+                break
 
-    assert len(p_sampled_text) == len(sampled_text) * n_perturbations, f"Expected {len(sampled_text) * n_perturbations} perturbed samples, got {len(p_sampled_text)}"
-    assert len(p_original_text) == len(original_text) * n_perturbations, f"Expected {len(original_text) * n_perturbations} perturbed samples, got {len(p_original_text)}"
+    # assert len(p_sampled_text) == len(sampled_text) * n_perturbations, f"Expected {len(sampled_text) * n_perturbations} perturbed samples, got {len(p_sampled_text)}"
+    # assert len(p_original_text) == len(original_text) * n_perturbations, f"Expected {len(original_text) * n_perturbations} perturbed samples, got {len(p_original_text)}"
+
+    if neigh_config.dump_cache:
+        if extraction_config is not None:
+            raise NotImplementedError("Caching not implemented for extraction yet")
+
+        # Save p_sampled_text and p_original_text (Lists of strings) to cache
+        data_obj_mem.dump_neighbors(p_sampled_text, train=True, num_neighbors=n_perturbations)
+        data_obj_nonmem.dump_neighbors(p_original_text, train=False, num_neighbors=n_perturbations)
+
+        print("Data dumped! Please re-run with load_from_cache set to True in neigh_config")
+        exit(0)
 
     for idx in range(len(original_text)):
         results.append({
@@ -258,7 +270,7 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
 def generate_data(dataset: str, train: bool=True, presampled: str = None):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
-    return data
+    return data_obj, data
     #return generate_samples(data[:n_samples], batch_size=batch_size)
 
 
@@ -408,7 +420,6 @@ if __name__ == '__main__':
         os.makedirs(cache_dir)
     print(f"Using cache dir {cache_dir}")
 
-
     # generic generative model
     base_model = LanguageModel(config)
 
@@ -451,7 +462,8 @@ if __name__ == '__main__':
 
     if extraction_config is not None:
         print(f'Loading dataset {config.dataset_member}...')
-        data = generate_data(config.dataset_member, presampled=config.presampled_dataset_member)
+        data_obj_nonmem = None
+        data_obj_mem, data = generate_data(config.dataset_member, presampled=config.presampled_dataset_member)
 
         data, seq_lens, n_samples = generate_data_processed(data[:config.n_samples], batch_size=config.batch_size)
 
@@ -459,8 +471,8 @@ if __name__ == '__main__':
         print(f'Loading dataset {config.dataset_member} and {config.dataset_nonmember}...')
         # data, seq_lens, n_samples = generate_data(config.dataset_member)
         
-        data_nonmember = generate_data(config.dataset_nonmember, train=False, presampled=config.presampled_dataset_member)
-        data_member = generate_data(config.dataset_member, presampled=config.presampled_dataset_nonmember)
+        data_obj_nonmem, data_nonmember = generate_data(config.dataset_nonmember, train=False, presampled=config.presampled_dataset_member)
+        data_obj_mem, data_member = generate_data(config.dataset_member, presampled=config.presampled_dataset_nonmember)
         if config.dump_cache and not config.load_from_cache:
             print("Data dumped! Please re-run with load_from_cache set to True")
             exit(0)

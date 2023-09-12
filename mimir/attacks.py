@@ -21,7 +21,7 @@ class MaskFillingModel(Model):
         self.device = self.config.env_config.device_aux
         self.name = self.config.neighborhood_config.model
 
-    def generate_neighbors(self, texts, **kwargs):
+    def generate_neighbors(self, texts, **kwargs) -> List[str]:
         raise NotImplementedError("generate_neighbors not implemented")
 
 
@@ -172,14 +172,18 @@ class T5Model(MaskFillingModel):
 
         return perturbed_texts
 
-    def generate_neighbors(self, texts, **kwargs):
+    def generate_neighbors(self, texts, **kwargs) -> List[str]:
+        n_neighbors = kwargs.get('n_perturbations', 25)
+        # Repeat text if T-5 model
+        texts_use = [x for x in texts for _ in range(n_neighbors)]
+
         chunk_size = self.config.chunk_size
         if '11b' in self.config.neighborhood_config.model:
             chunk_size //= 2
 
         outputs = []
-        for i in tqdm(range(0, len(texts), chunk_size), desc="Applying perturbations"):
-            outputs.extend(self.generate_neighbors_(texts[i:i + chunk_size], **kwargs))
+        for i in tqdm(range(0, len(texts_use), chunk_size), desc="Applying perturbations"):
+            outputs.extend(self.generate_neighbors_(texts_use[i:i + chunk_size], **kwargs))
         return outputs
 
 
@@ -199,16 +203,17 @@ class BertModel(MaskFillingModel):
         else:
             raise ValueError(f"Invalid model name {self.name}")
 
-    def generate_neighbors(self, texts):
+    def generate_neighbors(self, texts, **kwargs) -> List[str]:
         neighbors = []
         for text in tqdm(texts, desc="Generating neighbors"):
-            neighbors.extend(self.generate_neighbors_(text))
+            neighbors.extend(self.generate_neighbors_(text, **kwargs))
         return neighbors
 
     def generate_neighbors_(self, text: str, **kwargs):
         text_tokenized = self.tokenizer(text, padding=True, truncation=True,
                                         max_length=self.config.max_tokens, return_tensors='pt').input_ids.to(self.device)
         original_text = self.tokenizer.batch_decode(text_tokenized)[0]
+        n_neighbors = kwargs.get('n_perturbations', 25)
 
         candidate_scores = dict()
         replacements = dict()
@@ -243,8 +248,7 @@ class BertModel(MaskFillingModel):
                     else:
                         replacements[(target_token_index, cand)] = prob.item()/(1-original_prob.item())
 
-        # TODO: Swap out '20' with n_perturbation_list
-        replacement_keys = nlargest(20, replacements, key=replacements.get)
+        replacement_keys = nlargest(n_neighbors, replacements, key=replacements.get)
         replacements_new = dict()
         for rk in replacement_keys:
             replacements_new[rk] = replacements[rk]
@@ -259,6 +263,8 @@ class BertModel(MaskFillingModel):
             target_token_index, cand = single
             alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
             alt_text = self.tokenizer.batch_decode(alt)[0]
+            # Remove [CLS] and [SEP] tokens
+            alt_text = alt_text.replace('[CLS]', '').replace('[SEP]', '')
             texts.append((alt_text, replacements[single]))
             neighbors.append(alt_text)
 

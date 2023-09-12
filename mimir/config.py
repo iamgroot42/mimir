@@ -26,6 +26,10 @@ class NeighborhoodConfig(Serializable):
     """Mask-filling model"""
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
     """List of n_neighbors to try."""
+    dump_cache: Optional[bool] = False
+    "Dump neighbors data to cache? Exits program after dumping"
+    load_from_cache: Optional[bool] = False
+    """Load neighbors data from cache?""" 
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
     """Span length for neighborhood attack"""
@@ -46,6 +50,9 @@ class NeighborhoodConfig(Serializable):
     ceil_pct: Optional[bool] = False
     """Apply ceil operation on span length calculation?"""
 
+    def __post_init__(self):
+        if self.dump_cache and self.load_from_cache:
+            raise ValueError("Cannot dump and load cache at the same time")
 
 
 @dataclass
@@ -170,4 +177,10 @@ class ExperimentConfig(Serializable):
     """OpenAI config"""
     extraction_config: Optional[ExtractionConfig] = None
     """Extraction config"""
-    
+
+    def __post_init__(self):
+        if self.dump_cache and self.load_from_cache:
+            raise ValueError("Cannot dump and load cache at the same time")
+        
+        if (self.neighborhood_config.dump_cache or self.neighborhood_config.load_from_cache) and not (self.load_from_cache or self.dump_cache):
+            raise ValueError("Using dump/load for neighborhood cache without dumping/loading main cache does not make sense")

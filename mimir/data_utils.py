@@ -4,7 +4,6 @@
 import datasets
 import random
 import numpy as np
-from typing import List
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
@@ -26,6 +25,21 @@ class Data:
         if self.key is None:
             raise ValueError(f'Key for dataset {name} not provided or found in NAME_KEY_MAPPING')
         self.cache_dir = self.config.env_config.cache_dir
+    
+    def load_neighbors(self, train: bool, num_neighbors: int):
+        data_split = 'train' if train else 'test'
+        filename = self._get_name_to_save() + "_neighbors_{}".format(num_neighbors)
+        data = custom_datasets.load_cached(self.cache_dir, data_split, filename,
+                                               min_length=self.config.min_words, max_length=self.config.max_words,
+                                               n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
+        return data
+
+    def dump_neighbors(self, data, train: bool, num_neighbors: int):
+        data_split = 'train' if train else 'test'
+        filename = self._get_name_to_save() + "_neighbors_{}".format(num_neighbors)
+        custom_datasets.dump_to_cache(data, self.cache_dir, data_split, filename,
+                                      min_length=self.config.min_words, max_length=self.config.max_words,
+                                      n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
 
     def load(self, train: bool, tokenizer=None):
         data_split = 'train' if train else 'test'
@@ -33,11 +47,7 @@ class Data:
 
         # Load from cache, if requested
         if self.config.load_from_cache:
-            if self.config.specific_source and self.name == 'the_pile':
-                processed_source = sourcename_process(self.config.specific_source)
-                filename = f'{self.name}_{processed_source}'
-            else:
-                filename = self.name
+            filename = self._get_name_to_save()
             data = custom_datasets.load_cached(self.cache_dir, data_split, filename,
                                                min_length=self.config.min_words, max_length=self.config.max_words,
                                                n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
@@ -61,7 +71,6 @@ class Data:
         # then take just the long examples, shuffle, take the first 5,000 to tokenize to save time
         # then take just the examples that are <= 512 tokens (for the mask model)
         # then generate n_samples samples
-
         wsp_tokenizer = WhitespaceTokenizer()
 
         # remove duplicates from the data
@@ -110,14 +119,19 @@ class Data:
         return data
 
     def dump_to_cache(self, data, data_split):
+        filename = self._get_name_to_save()
+        custom_datasets.dump_to_cache(data, self.cache_dir, data_split, filename,
+                                      min_length=self.config.min_words, max_length=self.config.max_words,
+                                      n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
+    
+    def _get_name_to_save(self):
         if self.config.specific_source and self.name == 'the_pile':
             processed_source = sourcename_process(self.config.specific_source)
             filename = f'{self.name}_{processed_source}'
         else:
             filename = self.name
-        custom_datasets.dump_to_cache(data, self.cache_dir, data_split, filename,
-                                      min_length=self.config.min_words, max_length=self.config.max_words,
-                                      n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
+        return filename
+
 
 def strip_newlines(text):
     """

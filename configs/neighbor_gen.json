@@ -1,0 +1,35 @@
+{
+    "base_model": "EleutherAI/gpt-neo-125m",
+    "dataset_member": "the_pile",
+    "dataset_nonmember": "the_pile",
+    "min_words": 100,
+    "max_words": 200,
+    "max_tokens": 512,
+    "max_data": 100000,
+    "output_name": "neighbor_gen",
+    "specific_source": "ArXiv",
+    "n_samples": 1000,
+    "baselines_only": false,
+    "skip_baselines": true,
+    "ref_config": {
+        "models": [
+            "EleutherAI/pythia-70m",
+            "gpt2"
+        ]
+    },
+    "neighborhood_config": {
+        "model": "bert",
+        "n_perturbation_list": [
+            25
+        ],
+        "pct_words_masked": 0.3,
+        "span_length": 2,
+        "dump_cache": true,
+        "load_from_cache": false
+    },
+    "env_config": {
+        "results": "results_new_again_again"
+    },
+    "dump_cache": false,
+    "load_from_cache": true
+}

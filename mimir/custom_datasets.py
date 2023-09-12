@@ -28,6 +28,11 @@ def load_cached(cache_dir, path: str, filename: str, min_length: int, max_length
     file_path = os.path.join(cache_dir, f"cache_{min_length}_{max_length}_{n_samples}_{max_tokens}", path, filename + ".jsonl")
     if not os.path.exists(file_path):
         raise ValueError(f"Requested cache file {file_path} does not exist")
+    data = load_data(file_path)
+    return data
+
+
+def load_data(file_path):
     with open(file_path, 'r') as f:
         data = [json.loads(line) for line in f.readlines()]
     return data
@@ -42,7 +47,12 @@ def dump_to_cache(data: List[str], cache_dir, path, filename: str, min_length: i
     os.makedirs(subdir, exist_ok=True)
     # Dump to file
     # Since each datum has newlines in it potentially, use jsonl format
-    with open(os.path.join(subdir, filename + ".jsonl"), 'w') as f:
+    save_data(os.path.join(subdir, filename + ".jsonl"), data)
+
+
+def save_data(file_path, data):
+    # Since each datum has newlines in it potentially, use jsonl format
+    with open(file_path, 'w') as f:
         for datum in data:
             f.write(json.dumps(datum) + "\n")
 
