@@ -267,7 +267,7 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
     return data, seq_lens, n_samples
 
 
-def generate_data(dataset: str, train: bool=True, presampled: str = None):
+def generate_data(dataset: str, train: bool=True, presampled: str=None):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
     return data_obj, data
@@ -471,8 +471,8 @@ if __name__ == '__main__':
         print(f'Loading dataset {config.dataset_member} and {config.dataset_nonmember}...')
         # data, seq_lens, n_samples = generate_data(config.dataset_member)
         
-        data_obj_nonmem, data_nonmember = generate_data(config.dataset_nonmember, train=False, presampled=config.presampled_dataset_member)
-        data_obj_mem, data_member = generate_data(config.dataset_member, presampled=config.presampled_dataset_nonmember)
+        data_obj_nonmem, data_nonmember = generate_data(config.dataset_nonmember, train=False, presampled=config.presampled_dataset_nonmember)
+        data_obj_mem, data_member = generate_data(config.dataset_member, presampled=config.presampled_dataset_member)
         if config.dump_cache and not config.load_from_cache:
             print("Data dumped! Please re-run with load_from_cache set to True")
             exit(0)
@@ -537,19 +537,17 @@ if __name__ == '__main__':
         baseline_outputs["ll"] = run_baseline_threshold_experiment(base_model.get_ll, "likelihood", n_samples=n_samples)
 
         if openai_config is None:
-            rank_criterion = lambda text: -base_model.get_rank(text, log=False)
-            baseline_outputs["rank"] = run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples)
-            logrank_criterion = lambda text: -base_model.get_rank(text, log=True)
-            baseline_outputs["logrank"] = run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples)
-            entropy_criterion = lambda text: base_model.get_entropy(text)
-            baseline_outputs["entropy"] = run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples)
+            # rank_criterion = lambda text: -base_model.get_rank(text, log=False)
+            # baseline_outputs["rank"] = run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples)
+            # logrank_criterion = lambda text: -base_model.get_rank(text, log=True)
+            # baseline_outputs["logrank"] = run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples)
+            # entropy_criterion = lambda text: base_model.get_entropy(text)
+            # baseline_outputs["entropy"] = run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples)
             if ref_config is not None:
                 for ref_model in ref_models:
                     ref_model.load()
                     get_lira = lambda text: base_model.get_lira(text, ref_model)
                     baseline_outputs["lira"][ref_model.name] = run_baseline_threshold_experiment(get_lira, f"{ref_model.name}_lr_ratio", n_samples=n_samples)
-                    get_contrastive = lambda text: base_model.get_contrastive(text, ref_model)
-                    baseline_outputs["contrastive"][ref_model.name] = run_baseline_threshold_experiment(get_contrastive, f"{ref_model.name}_contrastive_ratio", n_samples=n_samples)
                     ref_model.unload()
 
         # Skipping openai-detector (for now)
@@ -580,27 +578,29 @@ if __name__ == '__main__':
 
         if openai_config is None:
             # write rank threshold results to a file
-            with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
-                outputs.append(baseline_outputs["rank"])
-                json.dump(baseline_outputs["rank"], f)
-
-            # write log rank threshold results to a file
-            with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
-                outputs.append(baseline_outputs["logrank"])
-                json.dump(baseline_outputs["logrank"], f)
-
-            # write entropy threshold results to a file
-            with open(os.path.join(SAVE_FOLDER, f"entropy_threshold_results.json"), "w") as f:
-                outputs.append(baseline_outputs["entropy"])
-                json.dump(baseline_outputs["entropy"], f)
+            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
+            #     outputs.append(baseline_outputs["rank"])
+            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
+            #     outputs.append(baseline_outputs["rank"])
+            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
+            #     outputs.append(baseline_outputs["rank"])
+            #     json.dump(baseline_outputs["rank"], f)
+            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
+            # # write log rank threshold results to a file
+            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
+            #     outputs.append(baseline_outputs["logrank"])
+            #     json.dump(baseline_outputs["logrank"], f)
+            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
+            # # write entropy threshold results to a file
+            # with open(os.path.join(SAVE_FOLDER, f"entropy_threshold_results.json"), "w") as f:
+            #     outputs.append(baseline_outputs["entropy"])
+            #     json.dump(baseline_outputs["entropy"], f)
+            
             if ref_config is not None:
                 for ref_model in ref_models:
                     with open(os.path.join(SAVE_FOLDER, f"ref_model_{ref_model.name.replace('/', '_')}_lira_ratio_threshold_results.json"), "w") as f:
                         outputs.append(baseline_outputs["lira"][ref_model.name])
                         json.dump(baseline_outputs["lira"][ref_model.name], f)
-                    with open(os.path.join(SAVE_FOLDER, f"ref_model_{ref_model.name.replace('/', '_')}_contrastive_ratio_threshold_results.json"), "w") as f:
-                        outputs.append(baseline_outputs["contrastive"][ref_model.name])
-                        json.dump(baseline_outputs["contrastive"][ref_model.name], f)
 
         # Skipping openai-detector (for now)
         # write supervised results to a file

@@ -59,14 +59,14 @@ def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False):
     real_preds =  [element for element in real_preds if not math.isnan(element)]
     sample_preds = [element for element in sample_preds if not math.isnan(element)]
     total_preds = real_preds + sample_preds
-    total_labels = [0] * len(real_preds) + [1] * len(sample_preds)
+    total_labels = [1] * len(real_preds) + [0] * len(sample_preds)
     fpr, tpr, _ = roc_curve(total_labels, total_preds)
     roc_auc = auc(fpr, tpr)
 
     if perform_bootstrap:
         def roc_auc_statistic(preds, labels):
-            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
-            out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
+            in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
+            out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
 

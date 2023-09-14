@@ -24,6 +24,7 @@ class Model(nn.Module):
         self.tokenizer = None # Set by child class
         self.config = config
         self.device = None
+        self.device_map = None
         self.name = None
         self.kwargs = kwargs
         self.cache_dir = self.config.env_config.cache_dir
@@ -33,18 +34,19 @@ class Model(nn.Module):
     
     def load(self):
         """
-            Load model onto GPU (and compile, if requested)
+            Load model onto GPU (and compile, if requested) if not already loaded with device map
         """
-        start = time.time()
-        try:
-            self.model.cpu()
-        except NameError:
-            pass
-        if self.config.openai_config is None:
-            self.model.to(self.device)
-        if self.config.env_config.compile:
-            torch.compile(self.model)
-        print(f'DONE ({time.time() - start:.2f}s)')
+        if not self.device_map:
+            start = time.time()
+            try:
+                self.model.cpu()
+            except NameError:
+                pass
+            if self.config.openai_config is None:
+                self.model.to(self.device)
+            if self.config.env_config.compile:
+                torch.compile(self.model)
+            print(f'DONE ({time.time() - start:.2f}s)')
     
     def unload(self):
         """
@@ -68,7 +70,23 @@ class Model(nn.Module):
         tokenized = self.tokenizer(
             text, return_tensors="pt").to(self.device)
         labels = tokenized.input_ids
-        return self.model(**tokenized, labels=labels).loss.item()
+
+        nlls = []
+        for i in range(0, labels.size(1), self.stride):
+            begin_loc = max(i + self.stride - self.max_length, 0)
+            end_loc = min(i + self.stride, labels.size(1))
+            trg_len = end_loc - i  # may be different from stride on last loop
+            input_ids = labels[:, begin_loc:end_loc]
+            target_ids = input_ids.clone()
+            target_ids[:, :-trg_len] = -100
+
+            with torch.no_grad():
+                outputs = self.model(input_ids, labels=target_ids)
+                neg_log_likelihood = outputs[0] * trg_len
+
+            nlls.append(neg_log_likelihood)
+
+        return torch.stack(nlls).sum().item() / end_loc
     
     def load_base_model_and_tokenizer(self, model_kwargs):
         if self.device is None or self.name is None:
@@ -76,8 +94,9 @@ class Model(nn.Module):
 
         if self.config.openai_config is None:
             print(f'Loading BASE model {self.name}...')
+            device_map = self.device_map if self.device_map else 'cpu' 
             model = transformers.AutoModelForCausalLM.from_pretrained(
-                self.name, **model_kwargs, cache_dir=self.cache_dir)
+                self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
         else:
             model = None
 
@@ -92,6 +111,17 @@ class Model(nn.Module):
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
         return model, tokenizer
+    
+    def load_model_properties(self):
+         # TODO: getting max_length of input could be more generic
+        if hasattr(self.model.config, 'max_position_embeddings'):
+            self.max_length = self.model.config.max_position_embeddings
+        elif hasattr(self.model.config, 'n_positions'):
+            self.max_length = self.model.config.n_positions
+        else:
+            # Default window size
+            self.max_length = 1024
+        self.stride = self.max_length // 2
 
 
 class ReferenceModel(Model):
@@ -109,6 +139,7 @@ class ReferenceModel(Model):
             base_model_kwargs.update(dict(revision='float16'))
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
+        self.load_model_properties()
 
 
 class EvalModel(Model):
@@ -140,18 +171,22 @@ class LanguageModel(Model):
     def __init__(self, config: ExperimentConfig, **kwargs):
         super().__init__(config, **kwargs)
         self.device = self.config.env_config.device
-        
+        self.device_map = self.config.env_config.device_map        
         # Use provided name (if provided)
         # Relevant for scoring-model scenario
         self.name = self.kwargs.get('name', self.config.base_model)
 
         base_model_kwargs = {}
+        if config.revision:
+            base_model_kwargs.update(dict(revision=config.revision))
         if 'gpt-j' in self.name or 'neox' in self.name:
             base_model_kwargs.update(dict(torch_dtype=torch.float16))
         if 'gpt-j' in self.name:
             base_model_kwargs.update(dict(revision='float16'))
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
+        self.load_model_properties()
+        
     
     @torch.no_grad()
     def get_lira(self, text: str, ref_model: ReferenceModel):

@@ -1,0 +1,32 @@
+{
+    "base_model": "EleutherAI/pythia-160m",
+    "dataset_member": "the_pile",
+    "presampled_dataset_member": "/gscratch/h2lab/micdun/mimir/data/pile_subsets/pile_cc/train.jsonl",
+    "dataset_nonmember": "the_pile",
+    "presampled_dataset_nonmember": "/gscratch/h2lab/micdun/mimir/data/pile_subsets/pile_cc/test.jsonl",
+    "dataset_key": "text",
+    "min_words": 100,
+    "max_words": 200,
+    "max_tokens": 512,
+    "output_name": "cache_data",
+    "specific_source": "pile_cc",
+    "n_samples": 1000,
+    "baselines_only": true,
+    "ref_config": {
+        "models": ["EleutherAI/pythia-70m", "gpt2"]
+    },
+    "neighborhood_config": {
+        "model": "bert",
+        "n_perturbation_list": [
+            20
+        ],
+        "pct_words_masked": 0.3,
+        "span_length": 2
+    },
+    "env_config": {
+        "results": "results",
+        "cache_dir": "cache_dir"
+    },
+    "dump_cache": true,
+    "load_from_cache": false
+}

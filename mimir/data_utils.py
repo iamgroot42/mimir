@@ -53,6 +53,7 @@ class Data:
                                                n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
         else:
             if self.presampled:
+                print("using presampled data")
                 data = datasets.load_dataset("json", data_files=self.presampled, split=f'train', cache_dir=self.cache_dir)[self.key]
             elif self.name in custom_datasets.DATASETS:
                 data = custom_datasets.load(self.name)
@@ -100,7 +101,24 @@ class Data:
         # this step has the extra effect of removing examples with low-quality/garbage content
         if tokenizer:
             tokenized_data = tokenizer(data)
-            data = [x for x, y in zip(data, tokenized_data["input_ids"]) if len(y) <= self.config.max_tokens]
+            new_data = []
+            for i, (x, y) in enumerate(zip(data, tokenized_data["input_ids"])):
+                if len(y) <= self.config.max_tokens:
+                    new_data.append(x)
+                else:
+                    print("Trimming text to nearest word that fits within mask tokenizer window")
+                    max_token_char_span = tokenized_data.token_to_chars(i, self.config.max_tokens - 1)
+                    x = x[:max_token_char_span.end]
+                    token_truncated_word_spans = list(wsp_tokenizer.span_tokenize(x))
+                    
+                    # Pop off the last "word" since it may be a word piece
+                    second_last_span = token_truncated_word_spans[-2]
+                    x = x[:second_last_span[1]] 
+
+                    new_len = len(tokenizer(x)["input_ids"])
+                    assert new_len <= self.config.max_tokens
+                    new_data.append(x)
+        data = new_data
 
         # print stats about remainining data
         print(f"Total number of samples: {len(data)}")

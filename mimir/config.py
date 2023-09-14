@@ -64,9 +64,11 @@ class EnvironmentConfig(Serializable):
     """Path to cache directory"""
     data_source: Optional[str] = None
     """Path where data is stored"""
-    device: Optional[str] = 'cuda:0'
+    device: Optional[str] = 'cuda:1'
     """Device (GPU) to load main model on"""
-    device_aux: Optional[str] = 'cuda:1'
+    device_map: Optional[str] = None
+    """Configuration for device map if needing to split model across gpus"""
+    device_aux: Optional[str] = 'cuda:0'
     """Device (GPU) to load any auxiliary model(s) on"""
     compile: Optional[bool] = True
     """Compile models?"""
@@ -115,6 +117,8 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
+    revision: str = None
+    """Model revision to use"""
     presampled_dataset_member: Optional[str] = None
     """Path to presampled dataset source for members"""
     presampled_dataset_nonmember: Optional[str] = None

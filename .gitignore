@@ -1,18 +1,18 @@
 # Ignore all caching folders
 *cache/
 */__pycache__/
+*cache_dir/
 
 # Ignore results
-tmp_results/
-tmp_results_cross/
-data/*
-results/*
-results_cross/*
-results/
-results_new/*
-results_cross/
+tmp_results*/
+results*/
 models/*
-results_new_again/*
+
+# Ignore generated data
+data/*/
+
+# Ignore local helper scripts
+local/
 
 # Logs (from cluster runs)
 logs/*

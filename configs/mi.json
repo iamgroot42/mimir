@@ -10,6 +10,7 @@
     "specific_source": "Github",
     "n_samples": 1000,
     "baselines_only": true,
+    "skip_baselines": false,
     "ref_config": {
         "models": [
             "EleutherAI/pythia-70m",
@@ -19,13 +20,16 @@
     "neighborhood_config": {
         "model": "bert",
         "n_perturbation_list": [
-            20
+            25
         ],
         "pct_words_masked": 0.3,
-        "span_length": 2
+        "span_length": 2,
+        "dump_cache": false,
+        "load_from_cache": true
     },
     "env_config": {
-        "results": "results_new"
+        "results": "results_new",
+        "device_map": "balanced_low_0"
     },
     "dump_cache": false,
     "load_from_cache": true

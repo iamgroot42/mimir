@@ -192,7 +192,7 @@ class BertModel(MaskFillingModel):
         super().__init__(config, **kwargs)
         self.token_dropout = torch.nn.Dropout(p=0.7)
         if self.name == 'bert':
-            self.tokenizer = transformers.BertTokenizer.from_pretrained('bert-base-uncased', cache_dir=self.cache_dir)
+            self.tokenizer = transformers.BertTokenizerFast.from_pretrained('bert-base-uncased', cache_dir=self.cache_dir)
             self.model = transformers.BertForMaskedLM.from_pretrained('bert-base-uncased', cache_dir=self.cache_dir)
         elif self.name == 'distilbert':
             self.tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-uncased', cache_dir=self.cache_dir)
