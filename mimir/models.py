@@ -237,7 +237,23 @@ class LanguageModel(Model):
         return ranks.float().mean().item()
 
     def get_lls(self, texts: str):
-        return [self.get_ll(text) for text in texts]
+        # return [self.get_ll(text) for text in texts]
+        tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
+        labels = tokenized.input_ids
+        batch_size = 25
+        losses = []
+        with torch.no_grad():
+            for i in range(0, labels.shape[0], batch_size):
+                label_batch = labels[i:i+batch_size].to(self.device)
+                output = self.model(label_batch, labels=label_batch)
+                logits = output.logits
+                # Shift so that tokens < n predict n
+                shift_logits = logits[..., :-1, :].contiguous()
+                shift_logits = torch.transpose(shift_logits, 1, 2)
+                shift_labels = label_batch[..., 1:].contiguous()
+                loss = F.cross_entropy(input=shift_logits, target=shift_labels, reduction='none').mean(dim=1)
+                losses.extend(loss.tolist())
+            return losses
     
     def sample_from_model(self, texts: List[str], **kwargs):
         """

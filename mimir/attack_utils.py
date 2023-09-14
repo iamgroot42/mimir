@@ -5,6 +5,7 @@ from typing import List
 import torch
 from collections import Counter
 import math
+import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve
 from scipy.stats import bootstrap
 
@@ -55,25 +56,36 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False):
+def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False): # fpr_list,
     real_preds =  [element for element in real_preds if not math.isnan(element)]
     sample_preds = [element for element in sample_preds if not math.isnan(element)]
     total_preds = real_preds + sample_preds
-    total_labels = [1] * len(real_preds) + [0] * len(sample_preds)
+    total_labels = [0] * len(real_preds) + [1] * len(sample_preds)
     fpr, tpr, _ = roc_curve(total_labels, total_preds)
     roc_auc = auc(fpr, tpr)
+    # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in fpr_list}
 
     if perform_bootstrap:
         def roc_auc_statistic(preds, labels):
-            in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
-            out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
+            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
+            out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
 
-        res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), res
+        auc_roc_res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
+        
+        # tpr_at_low_fpr_res = {}    
+        # for ub in fpr_list:
+        #     def tpr_at_fpr_statistic(preds, labels):
+        #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
+        #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
+        #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
+        #         return tpr_at_low_fpr[ub]
+            
+        #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
+        return fpr.tolist(), tpr.tolist(), float(roc_auc), auc_roc_res #tpr_at_low_fpr, tpr_at_low_fpr_res
     
-    return fpr.tolist(), tpr.tolist(), float(roc_auc)
+    return fpr.tolist(), tpr.tolist(), float(roc_auc) #, tpr_at_low_fpr
 
 
 def get_precision_recall_metrics(real_preds, sample_preds):

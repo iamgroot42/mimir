@@ -9,8 +9,6 @@
     "output_name": "unified_mia",
     "specific_source": "Github",
     "n_samples": 1000,
-    "baselines_only": true,
-    "skip_baselines": false,
     "ref_config": {
         "models": [
             "EleutherAI/pythia-70m",

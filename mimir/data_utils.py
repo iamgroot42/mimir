@@ -51,6 +51,7 @@ class Data:
             data = custom_datasets.load_cached(self.cache_dir, data_split, filename,
                                                min_length=self.config.min_words, max_length=self.config.max_words,
                                                n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
+            return data
         else:
             if self.presampled:
                 print("using presampled data")
@@ -92,8 +93,9 @@ class Data:
             if len(data) == 0:
                 raise ValueError("No examples with length < max_words")
 
-        random.seed(0)
-        random.shuffle(data)
+        # TODO: why shuffle
+        # random.seed(0)
+        # random.shuffle(data)
 
         data = data[:self.config.max_data]
 

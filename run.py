@@ -31,6 +31,7 @@ np.random.seed(0)
 random.seed(0)
 
 
+# TODO: fix labels flip
 def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     print('MOVING MASK MODEL TO GPU...', end='', flush=True)
     mask_model.load()
@@ -130,7 +131,7 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
             predictions['real'].append((res['original_ll'] - res['perturbed_original_ll']) / res['perturbed_original_ll_std'])
             predictions['samples'].append((res['sampled_ll'] - res['perturbed_sampled_ll']) / res['perturbed_sampled_ll_std'])
 
-    fpr, tpr, roc_auc, res = get_roc_metrics(predictions['real'], predictions['samples'], True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(predictions['real'], predictions['samples'], True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
     name = f'perturbation_{n_perturbations}_{criterion}'
@@ -149,8 +150,8 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
             'roc_auc': roc_auc,
             'fpr': fpr,
             'tpr': tpr,
-            'bootstrap_roc_auc_mean': np.mean(res.bootstrap_distribution),
-            'bootstrap_roc_auc_std': res.standard_error,
+            'bootstrap_roc_auc_mean': np.mean(roc_auc_res.bootstrap_distribution),
+            'bootstrap_roc_auc_std': roc_auc_res.standard_error,
             'tpr_at_low_fpr': tpr_at_low_fpr
         },
         'pr_metrics': {
@@ -169,26 +170,26 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
 
     results = []
     for batch in tqdm(range((n_samples // batch_size) + 1), desc=f"Computing {name} criterion"):
-        original_text = data["nonmember"][batch * batch_size:(batch + 1) * batch_size]
-        sampled_text = data["member"][batch * batch_size:(batch + 1) * batch_size]
+        original_text = data["member"][batch * batch_size:(batch + 1) * batch_size]
+        sampled_text = data["nonmember"][batch * batch_size:(batch + 1) * batch_size]
 
         for idx in range(len(original_text)):
             results.append({
-                "nonmember": original_text[idx],
-                "nonmember_crit": criterion_fn(original_text[idx]),
-                "member": sampled_text[idx],
-                "member_crit": criterion_fn(sampled_text[idx]),
+                "member": original_text[idx],
+                "member_crit": criterion_fn(original_text[idx]),
+                "nonmember": sampled_text[idx],
+                "nonmember_crit": criterion_fn(sampled_text[idx]),
             })
 
     # compute prediction scores for real/sampled passages
     predictions = {
-        'real': [x["nonmember_crit"] for x in results],
-        'samples': [x["member_crit"] for x in results],
+        'members': [x["member_crit"] for x in results], # TODO: change class here
+        'nonmembers': [x["nonmember_crit"] for x in results],
     }
 
-    fpr, tpr, roc_auc, res = get_roc_metrics(predictions['real'], predictions['samples'], True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(predictions['members'], predictions['nonmembers'], True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
+    p, r, pr_auc = get_precision_recall_metrics(predictions['members'], predictions['nonmembers'])
     print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}, tpr_at_low_fpr: {tpr_at_low_fpr}")
     return {
         'name': f'{name}_threshold',
@@ -201,9 +202,9 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
             'roc_auc': roc_auc,
             'fpr': fpr,
             'tpr': tpr,
-            'bootstrap_roc_auc_mean': np.mean(res.bootstrap_distribution),
-            'bootstrap_roc_auc_std': res.standard_error,
-            'tpr_at_low_fpr': tpr_at_low_fpr
+            'bootstrap_roc_auc_mean': np.mean(roc_auc_res.bootstrap_distribution),
+            'bootstrap_roc_auc_std': roc_auc_res.standard_error,
+            'tpr_at_low_fpr': tpr_at_low_fpr,
         },
         'pr_metrics': {
             'pr_auc': pr_auc,
@@ -290,7 +291,7 @@ def eval_supervised(data, model):
         'samples': fake_preds,
     }
 
-    fpr, tpr, roc_auc, res = get_roc_metrics(real_preds, fake_preds, True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(real_preds, fake_preds, True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
     p, r, pr_auc = get_precision_recall_metrics(real_preds, fake_preds)
     print(f"{model} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
@@ -309,8 +310,8 @@ def eval_supervised(data, model):
             'roc_auc': roc_auc,
             'fpr': fpr,
             'tpr': tpr,
-            'bootstrap_roc_auc_mean': np.mean(res.bootstrap_distribution),
-            'bootstrap_roc_auc_std': res.standard_error,
+            'bootstrap_roc_auc_mean': np.mean(roc_auc_res.bootstrap_distribution),
+            'bootstrap_roc_auc_std': roc_auc_res.standard_error,
             'tpr_at_low_fpr': tpr_at_low_fpr
         },
         'pr_metrics': {
