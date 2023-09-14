@@ -218,7 +218,8 @@ class BertModel(MaskFillingModel):
         candidate_scores = dict()
         replacements = dict()
 
-        for target_token_index in list(range(len(text_tokenized[0, :])))[1:]:
+        target_token_indices = range(1, len(text_tokenized[0, :]))
+        for target_token_index in target_token_indices:
 
             target_token = text_tokenized[0, target_token_index]
             if self.name == 'bert':

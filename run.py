@@ -31,7 +31,6 @@ np.random.seed(0)
 random.seed(0)
 
 
-# TODO: fix labels flip
 def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     print('MOVING MASK MODEL TO GPU...', end='', flush=True)
     mask_model.load()
@@ -40,8 +39,8 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     np.random.seed(0)
 
     results = []
-    original_text = data["nonmember"]
-    sampled_text = data["member"]
+    nonmember_text = data["nonmember"]
+    member_text    = data["member"]
 
     ceil_pct = neigh_config.ceil_pct
     kwargs = {}
@@ -56,38 +55,39 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     
     if neigh_config.load_from_cache:
         # Load from cache, if available (and requested)
-        p_sampled_text = data_obj_mem.load_neighbors(train=True, num_neighbors=n_perturbations)
-        p_original_text = data_obj_nonmem.load_neighbors(train=False, num_neighbors=n_perturbations)
+        p_member_text    = data_obj_mem.load_neighbors(train=True, num_neighbors=n_perturbations)
+        p_nonmember_text = data_obj_nonmem.load_neighbors(train=False, num_neighbors=n_perturbations)
     else:
-        p_sampled_text = mask_model.generate_neighbors(sampled_text, **kwargs)
-        p_original_text = mask_model.generate_neighbors(original_text, **kwargs)
+        p_member_text    = mask_model.generate_neighbors(member_text, **kwargs)
+        p_nonmember_text = mask_model.generate_neighbors(nonmember_text, **kwargs)
 
         for _ in range(n_perturbation_rounds - 1):
             try:
-                p_sampled_text, p_original_text = mask_model.generate_neighbors(p_sampled_text, **kwargs), mask_model.generate_neighbors(p_original_text, **kwargs)
+                p_member_text    = mask_model.generate_neighbors(p_member_text, **kwargs)
+                p_nonmember_text = mask_model.generate_neighbors(p_nonmember_text, **kwargs)
             except AssertionError:
                 break
 
-    # assert len(p_sampled_text) == len(sampled_text) * n_perturbations, f"Expected {len(sampled_text) * n_perturbations} perturbed samples, got {len(p_sampled_text)}"
-    # assert len(p_original_text) == len(original_text) * n_perturbations, f"Expected {len(original_text) * n_perturbations} perturbed samples, got {len(p_original_text)}"
+    # assert len(p_member_text) == len(member_text) * n_perturbations, f"Expected {len(member_text) * n_perturbations} perturbed samples, got {len(p_member_text)}"
+    # assert len(p_nonmember_text) == len(nonmember_text) * n_perturbations, f"Expected {len(nonmember_text) * n_perturbations} perturbed samples, got {len(p_nonmember_text)}"
 
     if neigh_config.dump_cache:
         if extraction_config is not None:
             raise NotImplementedError("Caching not implemented for extraction yet")
 
-        # Save p_sampled_text and p_original_text (Lists of strings) to cache
-        data_obj_mem.dump_neighbors(p_sampled_text, train=True, num_neighbors=n_perturbations)
-        data_obj_nonmem.dump_neighbors(p_original_text, train=False, num_neighbors=n_perturbations)
+        # Save p_member_text and p_nonmember_text (Lists of strings) to cache
+        data_obj_mem.dump_neighbors(p_member_text, train=True, num_neighbors=n_perturbations)
+        data_obj_nonmem.dump_neighbors(p_nonmember_text, train=False, num_neighbors=n_perturbations)
 
         print("Data dumped! Please re-run with load_from_cache set to True in neigh_config")
         exit(0)
 
-    for idx in range(len(original_text)):
+    for idx in range(len(nonmember_text)):
         results.append({
-            "nonmember": original_text[idx],
-            "member": sampled_text[idx],
-            "perturbed_sampled": p_sampled_text[idx * n_perturbations: (idx + 1) * n_perturbations],
-            "perturbed_original": p_original_text[idx * n_perturbations: (idx + 1) * n_perturbations]
+            "nonmember": nonmember_text[idx],
+            "member": member_text[idx],
+            "perturbed_member": p_member_text[idx * n_perturbations: (idx + 1) * n_perturbations],
+            "perturbed_nonmember": p_nonmember_text[idx * n_perturbations: (idx + 1) * n_perturbations]
         })
 
     print('MOVING BASE MODEL TO GPU...', end='', flush=True)
@@ -96,16 +96,20 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     # load_model(ref_model, env_config.device_aux)
 
     for res in tqdm(results, desc="Computing log likelihoods"):
-        p_sampled_ll = base_model.get_lls(res["perturbed_sampled"])
-        p_original_ll = base_model.get_lls(res["perturbed_original"])
-        res["original_ll"] = base_model.get_ll(res["nonmember"])
-        res["sampled_ll"] = base_model.get_ll(res["member"])
-        res["all_perturbed_sampled_ll"] = p_sampled_ll
-        res["all_perturbed_original_ll"] = p_original_ll
-        res["perturbed_sampled_ll"] = np.mean(p_sampled_ll)
-        res["perturbed_original_ll"] = np.mean(p_original_ll)
-        res["perturbed_sampled_ll_std"] = np.std(p_sampled_ll) if len(p_sampled_ll) > 1 else 1
-        res["perturbed_original_ll_std"] = np.std(p_original_ll) if len(p_original_ll) > 1 else 1
+        # Get likelihoods for perturbed samples
+        p_member_ll    = base_model.get_lls(res["perturbed_member"])
+        p_nonmember_ll = base_model.get_lls(res["perturbed_nonmember"])
+        res["all_perturbed_member_ll"] = p_member_ll
+        res["all_perturbed_nonmember_ll"] = p_nonmember_ll
+        # Get likelihoods for original samples
+        res["nonmember_ll"] = base_model.get_ll(res["nonmember"])
+        res["member_ll"] = base_model.get_ll(res["member"])
+        # Average neighbor likelihoods
+        res["perturbed_member_ll"] = np.mean(p_member_ll)
+        res["perturbed_nonmember_ll"] = np.mean(p_nonmember_ll)
+        # Standard deviation of neighbor likelihoods
+        res["perturbed_member_ll_std"] = np.std(p_member_ll) if len(p_member_ll) > 1 else 1
+        res["perturbed_nonmember_ll_std"] = np.std(p_nonmember_ll) if len(p_nonmember_ll) > 1 else 1
 
     return results
 
@@ -131,9 +135,12 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
             predictions['real'].append((res['original_ll'] - res['perturbed_original_ll']) / res['perturbed_original_ll_std'])
             predictions['samples'].append((res['sampled_ll'] - res['perturbed_sampled_ll']) / res['perturbed_sampled_ll_std'])
 
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(predictions['real'], predictions['samples'], True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=predictions['real'],
+                                                     preds_nonmember=predictions['samples'],
+                                                     perform_bootstrap=True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(predictions['real'], predictions['samples'])
+    p, r, pr_auc = get_precision_recall_metrics(preds_member=predictions['real'],
+                                                preds_nonmember=predictions['samples'])
     name = f'perturbation_{n_perturbations}_{criterion}'
     print(f"{name} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
     return {
@@ -187,9 +194,12 @@ def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
         'nonmembers': [x["nonmember_crit"] for x in results],
     }
 
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(predictions['members'], predictions['nonmembers'], True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=predictions['members'],
+                                                     preds_nonmember=predictions['nonmembers'],
+                                                     perform_bootstrap=True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(predictions['members'], predictions['nonmembers'])
+    p, r, pr_auc = get_precision_recall_metrics(preds_member=predictions['members'],
+                                                preds_nonmember=predictions['nonmembers'])
     print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}, tpr_at_low_fpr: {tpr_at_low_fpr}")
     return {
         'name': f'{name}_threshold',
@@ -291,9 +301,12 @@ def eval_supervised(data, model):
         'samples': fake_preds,
     }
 
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(real_preds, fake_preds, True)
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=real_preds,
+                                                     preds_nonmember=fake_preds,
+                                                     perform_bootstrap=True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(real_preds, fake_preds)
+    p, r, pr_auc = get_precision_recall_metrics(preds_member=real_preds,
+                                                preds_nonmember=fake_preds)
     print(f"{model} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
 
     del eval_model

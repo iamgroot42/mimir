@@ -117,7 +117,7 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
-    revision: str = None
+    revision: Optional[str] = None
     """Model revision to use"""
     presampled_dataset_member: Optional[str] = None
     """Path to presampled dataset source for members"""

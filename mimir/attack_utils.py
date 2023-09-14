@@ -56,18 +56,21 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False): # fpr_list,
-    real_preds =  [element for element in real_preds if not math.isnan(element)]
-    sample_preds = [element for element in sample_preds if not math.isnan(element)]
-    total_preds = real_preds + sample_preds
-    total_labels = [0] * len(real_preds) + [1] * len(sample_preds)
+def get_roc_metrics(preds_member, preds_nonmember, perform_bootstrap: bool=False): # fpr_list,
+    preds_member_    = filter_out_nan(preds_member)
+    preds_nonmember_ = filter_out_nan(preds_nonmember)
+    total_preds = preds_member_ + preds_nonmember_
+    # Assign label '0' to members for computation, since sklearn
+    # expectes label '0' data to have lower values to get assigned that label
+    # which is true for our attacks (lower loss for members, e.g.)
+    total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
     fpr, tpr, _ = roc_curve(total_labels, total_preds)
     roc_auc = auc(fpr, tpr)
     # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in fpr_list}
 
     if perform_bootstrap:
         def roc_auc_statistic(preds, labels):
-            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
+            in_preds  = [pred for pred, label in zip(preds, labels) if label == 0]
             out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
@@ -88,10 +91,17 @@ def get_roc_metrics(real_preds, sample_preds, perform_bootstrap: bool=False): # 
     return fpr.tolist(), tpr.tolist(), float(roc_auc) #, tpr_at_low_fpr
 
 
-def get_precision_recall_metrics(real_preds, sample_preds):
-    real_preds =  [element for element in real_preds if not math.isnan(element)]
-    sample_preds = [element for element in sample_preds if not math.isnan(element)]
+def get_precision_recall_metrics(preds_member, preds_nonmember):
+    preds_member_    =  filter_out_nan(preds_member)
+    preds_nonmember_ = filter_out_nan(preds_nonmember)
+    total_preds = preds_member_ + preds_nonmember_
 
-    precision, recall, _ = precision_recall_curve([0] * len(real_preds) + [1] * len(sample_preds), real_preds + sample_preds)
+    total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
+
+    precision, recall, _ = precision_recall_curve(total_labels, total_preds)
     pr_auc = auc(recall, precision)
     return precision.tolist(), recall.tolist(), float(pr_auc)
+
+
+def filter_out_nan(x):
+    return [element for element in x if not math.isnan(element)]
