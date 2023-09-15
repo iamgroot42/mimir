@@ -113,34 +113,34 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
 
     return results
 
-
+# TODO: change keys
 def run_perturbation_experiment(results, criterion, n_samples: int, span_length: int=10, n_perturbations: int=1):
     # compute diffs with perturbed
-    predictions = {'real': [], 'samples': []}
+    predictions = {'member': [], 'nonmember': []}
     for res in results:
         if criterion == 'd':
-            predictions['real'].append(res['original_ll'] - res['perturbed_original_ll'])
-            predictions['samples'].append(res['sampled_ll'] - res['perturbed_sampled_ll'])
+            predictions['member'].append(res['member_ll'] - res['perturbed_member_ll'])
+            predictions['nonmember'].append(res['nonmember_ll'] - res['perturbed_nonmember_ll'])
         elif criterion == 'z':
-            if res['perturbed_original_ll_std'] == 0:
-                res['perturbed_original_ll_std'] = 1
+            if res['perturbed_member_ll_std'] == 0:
+                res['perturbed_member_ll_std'] = 1
                 print("WARNING: std of perturbed original is 0, setting to 1")
-                print(f"Number of unique perturbed original texts: {len(set(res['perturbed_original']))}")
-                print(f"Original text: {res['nonmember']}")
-            if res['perturbed_sampled_ll_std'] == 0:
-                res['perturbed_sampled_ll_std'] = 1
+                print(f"Number of unique perturbed original texts: {len(set(res['perturbed_member']))}")
+                print(f"Member text: {res['member']}")
+            if res['perturbed_nonmember_ll_std'] == 0:
+                res['perturbed_nonmember_ll_std'] = 1
                 print("WARNING: std of perturbed sampled is 0, setting to 1")
-                print(f"Number of unique perturbed sampled texts: {len(set(res['perturbed_sampled']))}")
-                print(f"Sampled text: {res['member']}")
-            predictions['real'].append((res['original_ll'] - res['perturbed_original_ll']) / res['perturbed_original_ll_std'])
-            predictions['samples'].append((res['sampled_ll'] - res['perturbed_sampled_ll']) / res['perturbed_sampled_ll_std'])
+                print(f"Number of unique perturbed sampled texts: {len(set(res['perturbed_nonmember']))}")
+                print(f"Nonmember text: {res['nonmember']}")
+            predictions['member'].append((res['member_ll'] - res['perturbed_member_ll']) / res['perturbed_member_ll_std'])
+            predictions['nonmember'].append((res['nonmember_ll'] - res['perturbed_nonmember_ll']) / res['perturbed_nonmember_ll_std'])
 
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=predictions['real'],
-                                                     preds_nonmember=predictions['samples'],
+    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=predictions['member'],
+                                                     preds_nonmember=predictions['nonmember'],
                                                      perform_bootstrap=True)
     tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(preds_member=predictions['real'],
-                                                preds_nonmember=predictions['samples'])
+    p, r, pr_auc = get_precision_recall_metrics(preds_member=predictions['member'],
+                                                preds_nonmember=predictions['nonmember'])
     name = f'perturbation_{n_perturbations}_{criterion}'
     print(f"{name} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
     return {
