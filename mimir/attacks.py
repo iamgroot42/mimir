@@ -210,12 +210,17 @@ class BertModel(MaskFillingModel):
         return neighbors
 
     def generate_neighbors_(self, text: str, **kwargs):
-        text_tokenized = self.tokenizer(text, padding=True, truncation=True,
-                                        max_length=self.config.max_tokens, return_tensors='pt').input_ids.to(self.device)
-        original_text = self.tokenizer.batch_decode(text_tokenized)[0]
+        in_place_swap = self.config.neighborhood_config.original_tokenization_swap
+
+        tokenizer_output = self.tokenizer(text, padding=True, truncation=True,
+                                          return_offsets_mapping=in_place_swap,
+                                          max_length=self.config.max_tokens, return_tensors='pt')
+        text_tokenized = tokenizer_output.input_ids.to(self.device)
         n_neighbors = kwargs.get('n_perturbations', 25)
 
-        candidate_scores = dict()
+        if in_place_swap:
+            token_positions = tokenizer_output.offset_mapping[0]
+
         replacements = dict()
 
         target_token_indices = range(1, len(text_tokenized[0, :]))
@@ -256,17 +261,28 @@ class BertModel(MaskFillingModel):
     
         replacements = replacements_new
 
+        # TODO: Not sure if this is needed (perhaps making sure we never take >= 100)? Consider removing later
         highest_scored = nlargest(100, replacements, key=replacements.get)
 
-        neighbors, texts = [], []
+        neighbors = []
         for single in highest_scored:
-            alt = text_tokenized
             target_token_index, cand = single
-            alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
-            alt_text = self.tokenizer.batch_decode(alt)[0]
-            # Remove [CLS] and [SEP] tokens
-            alt_text = alt_text.replace('[CLS]', '').replace('[SEP]', '')
-            texts.append((alt_text, replacements[single]))
+
+            if in_place_swap:
+                # Get indices of original text that we want to swap out
+                start, end = token_positions[target_token_index]
+                # Get text corresponding to cand token
+                fill_in_text = self.tokenizer.decode(cand)
+                # Remove any '##' from prefix (since we're doing a plug back into text)
+                fill_in_text = fill_in_text.replace('##', '')
+                alt_text = text[:start] + fill_in_text + text[end:]
+            else:
+                alt = text_tokenized
+                alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
+                alt_text = self.tokenizer.batch_decode(alt)[0]
+                # Remove [CLS] and [SEP] tokens
+                alt_text = alt_text.replace('[CLS]', '').replace('[SEP]', '')
+                # texts.append((alt_text, replacements[single]))
             neighbors.append(alt_text)
 
         # return texts

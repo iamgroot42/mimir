@@ -29,7 +29,10 @@ class NeighborhoodConfig(Serializable):
     dump_cache: Optional[bool] = False
     "Dump neighbors data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
-    """Load neighbors data from cache?""" 
+    """Load neighbors data from cache?"""
+    # BERT-specific param
+    original_tokenization_swap: Optional[bool] = False
+    """Swap out token in original text with neighbor token, instead of re-generating text"""
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
     """Span length for neighborhood attack"""
