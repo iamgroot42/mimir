@@ -26,17 +26,17 @@ class Data:
             raise ValueError(f'Key for dataset {name} not provided or found in NAME_KEY_MAPPING')
         self.cache_dir = self.config.env_config.cache_dir
     
-    def load_neighbors(self, train: bool, num_neighbors: int):
+    def load_neighbors(self, train: bool, num_neighbors: int, model: str='bert'):
         data_split = 'train' if train else 'test'
-        filename = self._get_name_to_save() + "_neighbors_{}".format(num_neighbors)
+        filename = self._get_name_to_save() + "_neighbors_{}_{}".format(num_neighbors, model)
         data = custom_datasets.load_cached(self.cache_dir, data_split, filename,
                                                min_length=self.config.min_words, max_length=self.config.max_words,
                                                n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)
         return data
 
-    def dump_neighbors(self, data, train: bool, num_neighbors: int):
+    def dump_neighbors(self, data, train: bool, num_neighbors: int, model: str='bert'):
         data_split = 'train' if train else 'test'
-        filename = self._get_name_to_save() + "_neighbors_{}".format(num_neighbors)
+        filename = self._get_name_to_save() + "_neighbors_{}_{}".format(num_neighbors, model)
         custom_datasets.dump_to_cache(data, self.cache_dir, data_split, filename,
                                       min_length=self.config.min_words, max_length=self.config.max_words,
                                       n_samples=self.config.n_samples, max_tokens=self.config.max_tokens)

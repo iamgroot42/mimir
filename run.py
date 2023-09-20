@@ -55,8 +55,8 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
     
     if neigh_config.load_from_cache:
         # Load from cache, if available (and requested)
-        p_member_text    = data_obj_mem.load_neighbors(train=True, num_neighbors=n_perturbations)
-        p_nonmember_text = data_obj_nonmem.load_neighbors(train=False, num_neighbors=n_perturbations)
+        p_member_text    = data_obj_mem.load_neighbors(train=True, num_neighbors=n_perturbations, model=neigh_config.model)
+        p_nonmember_text = data_obj_nonmem.load_neighbors(train=False, num_neighbors=n_perturbations, model=neigh_config.model)
     else:
         p_member_text    = mask_model.generate_neighbors(member_text, **kwargs)
         p_nonmember_text = mask_model.generate_neighbors(nonmember_text, **kwargs)
@@ -76,8 +76,8 @@ def get_perturbation_results(span_length: int=10, n_perturbations: int=1):
             raise NotImplementedError("Caching not implemented for extraction yet")
 
         # Save p_member_text and p_nonmember_text (Lists of strings) to cache
-        data_obj_mem.dump_neighbors(p_member_text, train=True, num_neighbors=n_perturbations)
-        data_obj_nonmem.dump_neighbors(p_nonmember_text, train=False, num_neighbors=n_perturbations)
+        data_obj_mem.dump_neighbors(p_member_text, train=True, num_neighbors=n_perturbations, model=neigh_config.model)
+        data_obj_nonmem.dump_neighbors(p_nonmember_text, train=False, num_neighbors=n_perturbations, model=neigh_config.model)
 
         print("Data dumped! Please re-run with load_from_cache set to True in neigh_config")
         exit(0)
