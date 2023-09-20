@@ -7,6 +7,7 @@
 tmp_results*/
 results*/
 models/*
+*results*/
 
 # Ignore generated data
 data/*/
