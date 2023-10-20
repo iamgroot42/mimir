@@ -22,8 +22,8 @@ from mimir.config import (
 import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
 from mimir.models import EvalModel, LanguageModel, ReferenceModel, OpenAI_APIModel
-from mimir.attacks import T5Model, BertModel
-from mimir.attack_utils import f1_score, get_roc_metrics, get_precision_recall_metrics
+from mimir.attacks.neighborhood import T5Model, BertModel
+from mimir.attacks.attack_utils import f1_score, get_roc_metrics, get_precision_recall_metrics
 
 
 torch.manual_seed(0)
@@ -172,15 +172,15 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
     }
 
 
-def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
+def run_baseline_threshold_experiment(data_use, criterion_fn, name, n_samples: int):
     torch.manual_seed(0)
     np.random.seed(0)
     batch_size = config.batch_size
 
     results = []
     for batch in tqdm(range((n_samples // batch_size) + 1), desc=f"Computing {name} criterion"):
-        original_text = data["member"][batch * batch_size:(batch + 1) * batch_size]
-        sampled_text = data["nonmember"][batch * batch_size:(batch + 1) * batch_size]
+        original_text = data_use["member"][batch * batch_size:(batch + 1) * batch_size]
+        sampled_text = data_use["nonmember"][batch * batch_size:(batch + 1) * batch_size]
 
         for idx in range(len(original_text)):
             results.append({
@@ -550,20 +550,20 @@ if __name__ == '__main__':
 
     if not config.skip_baselines:
         baseline_outputs = defaultdict(dict)
-        baseline_outputs["ll"] = run_baseline_threshold_experiment(base_model.get_ll, "likelihood", n_samples=n_samples)
+        baseline_outputs["ll"] = run_baseline_threshold_experiment(data, base_model.get_ll, "likelihood", n_samples=n_samples)
 
         if openai_config is None:
             # rank_criterion = lambda text: -base_model.get_rank(text, log=False)
-            # baseline_outputs["rank"] = run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples)
+            # baseline_outputs["rank"] = run_baseline_threshold_experiment(data, rank_criterion, "rank", n_samples=n_samples)
             # logrank_criterion = lambda text: -base_model.get_rank(text, log=True)
-            # baseline_outputs["logrank"] = run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples)
+            # baseline_outputs["logrank"] = run_baseline_threshold_experiment(data, logrank_criterion, "log_rank", n_samples=n_samples)
             # entropy_criterion = lambda text: base_model.get_entropy(text)
-            # baseline_outputs["entropy"] = run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples)
+            # baseline_outputs["entropy"] = run_baseline_threshold_experiment(data, entropy_criterion, "entropy", n_samples=n_samples)
             if ref_config is not None:
                 for ref_model in ref_models:
                     ref_model.load()
                     get_lira = lambda text: base_model.get_lira(text, ref_model)
-                    baseline_outputs["lira"][ref_model.name] = run_baseline_threshold_experiment(get_lira, f"{ref_model.name}_lr_ratio", n_samples=n_samples)
+                    baseline_outputs["lira"][ref_model.name] = run_baseline_threshold_experiment(data, get_lira, f"{ref_model.name}_lr_ratio", n_samples=n_samples)
                     ref_model.unload()
 
         # Skipping openai-detector (for now)
@@ -576,6 +576,9 @@ if __name__ == '__main__':
 
     if not config.baselines_only:
         # run perturbation experiments
+
+        ## SKIP FOR NOW
+        # """
         for n_perturbations in n_perturbation_list:
             perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
             for perturbation_mode in ['d', 'z']:
@@ -585,6 +588,16 @@ if __name__ == '__main__':
                 outputs.append(output)
                 with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
                     json.dump(output, f)
+        # """
+
+        # run tokenization attack, if requested
+        if config.tokenization_attack:
+            from mimir.attacks.tokenization import token_attack
+            def token_attack_wrapper(text): return token_attack(base_model, text)
+            output = run_baseline_threshold_experiment(data, token_attack_wrapper, "tokenization_attack", n_samples=n_samples)
+            outputs.append(output)
+            with open(os.path.join(SAVE_FOLDER, f"tokenization_attack_results.json"), "w") as f:
+                json.dump(output, f)
 
     if not config.skip_baselines:
         # write likelihood threshold results to a file

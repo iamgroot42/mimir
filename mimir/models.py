@@ -94,7 +94,7 @@ class Model(nn.Module):
 
         if self.config.openai_config is None:
             print(f'Loading BASE model {self.name}...')
-            device_map = self.device_map if self.device_map else 'cpu' 
+            device_map = self.device_map # if self.device_map else 'cpu'
             model = transformers.AutoModelForCausalLM.from_pretrained(
                 self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
         else:
@@ -236,7 +236,7 @@ class LanguageModel(Model):
 
         return ranks.float().mean().item()
 
-    def get_lls(self, texts: str):
+    def get_lls(self, texts: str, tokenized: bool = False):
         # return [self.get_ll(text) for text in texts]
         tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
         labels = tokenized.input_ids

@@ -31,8 +31,12 @@ class NeighborhoodConfig(Serializable):
     load_from_cache: Optional[bool] = False
     """Load neighbors data from cache?"""
     # BERT-specific param
-    original_tokenization_swap: Optional[bool] = False
+    original_tokenization_swap: Optional[bool] = True
     """Swap out token in original text with neighbor token, instead of re-generating text"""
+    pct_swap_bert: Optional[float] = 0.05
+    """Percentage of tokens per neighbor that are different from the original text"""
+    neighbor_strategy: Optional[str] = 'deterministic'
+    """Strategy for generating neighbors. One of ['deterministic', 'random']. Deterministic uses only one-word neighbors"""
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
     """Span length for neighborhood attack"""
@@ -136,10 +140,14 @@ class ExperimentConfig(Serializable):
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
+
     baselines_only: Optional[bool] = False
     """Evaluate only baselines?"""
     skip_baselines: Optional[bool] = False
     """Skip baselines?"""
+    tokenization_attack: Optional[bool] = False
+    """Run tokenization attack?"""
+
     n_samples: Optional[int] = 200
     """Number of records (member and non-member each) to run the attack(s) for"""
     max_tokens: Optional[int] = 512

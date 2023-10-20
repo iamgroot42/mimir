@@ -11,7 +11,7 @@ import transformers
 from typing import List
 
 from mimir.config import ExperimentConfig
-from mimir.attack_utils import count_masks, apply_extracted_fills
+from mimir.attacks.attack_utils import count_masks, apply_extracted_fills
 from mimir.models import Model
 
 
@@ -217,13 +217,15 @@ class BertModel(MaskFillingModel):
                                           max_length=self.config.max_tokens, return_tensors='pt')
         text_tokenized = tokenizer_output.input_ids.to(self.device)
         n_neighbors = kwargs.get('n_perturbations', 25)
+        num_tokens = len(text_tokenized[0, :])
+        n_swap = int(num_tokens * self.config.neighborhood_config.pct_swap_bert)
 
         if in_place_swap:
             token_positions = tokenizer_output.offset_mapping[0]
 
         replacements = dict()
 
-        target_token_indices = range(1, len(text_tokenized[0, :]))
+        target_token_indices = range(1, num_tokens)
         for target_token_index in target_token_indices:
 
             target_token = text_tokenized[0, target_token_index]
@@ -254,36 +256,91 @@ class BertModel(MaskFillingModel):
                     else:
                         replacements[(target_token_index, cand)] = prob.item()/(1-original_prob.item())
 
-        replacement_keys = nlargest(n_neighbors, replacements, key=replacements.get)
-        replacements_new = dict()
-        for rk in replacement_keys:
-            replacements_new[rk] = replacements[rk]
+        if self.config.neighborhood_config.neighbor_strategy == "deterministic":
+            replacement_keys = nlargest(n_neighbors, replacements, key=replacements.get)
+            replacements_new = dict()
+            for rk in replacement_keys:
+                replacements_new[rk] = replacements[rk]
     
-        replacements = replacements_new
+            replacements = replacements_new
 
-        # TODO: Not sure if this is needed (perhaps making sure we never take >= 100)? Consider removing later
-        highest_scored = nlargest(100, replacements, key=replacements.get)
+            # TODO: Not sure if this is needed (perhaps making sure we never take >= 100)? Consider removing later
+            highest_scored = nlargest(100, replacements, key=replacements.get)
 
-        neighbors = []
-        for single in highest_scored:
-            target_token_index, cand = single
+            neighbors = []
+            for single in highest_scored:
+                target_token_index, cand = single
 
-            if in_place_swap:
-                # Get indices of original text that we want to swap out
-                start, end = token_positions[target_token_index]
-                # Get text corresponding to cand token
-                fill_in_text = self.tokenizer.decode(cand)
-                # Remove any '##' from prefix (since we're doing a plug back into text)
-                fill_in_text = fill_in_text.replace('##', '')
-                alt_text = text[:start] + fill_in_text + text[end:]
-            else:
-                alt = text_tokenized
-                alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
-                alt_text = self.tokenizer.batch_decode(alt)[0]
-                # Remove [CLS] and [SEP] tokens
-                alt_text = alt_text.replace('[CLS]', '').replace('[SEP]', '')
-                # texts.append((alt_text, replacements[single]))
-            neighbors.append(alt_text)
+                if in_place_swap:
+                    # Get indices of original text that we want to swap out
+                    start, end = token_positions[target_token_index]
+                    # Get text corresponding to cand token
+                    fill_in_text = self.tokenizer.decode(cand)
+                    # Remove any '##' from prefix (since we're doing a plug back into text)
+                    fill_in_text = fill_in_text.replace('##', '')
+                    alt_text = text[:start] + fill_in_text + text[end:]
+                else:
+                    alt = text_tokenized
+                    alt = torch.cat((alt[:, :target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(self.device), alt[:, target_token_index+1:]), dim=1)
+                    alt_text = self.tokenizer.batch_decode(alt)[0]
+                    # Remove [CLS] and [SEP] tokens
+                    alt_text = alt_text.replace('[CLS]', '').replace('[SEP]', '')
+                    # texts.append((alt_text, replacements[single]))
+                neighbors.append(alt_text)
+
+        elif self.config.neighborhood_config.neighbor_strategy == "random":
+            if not in_place_swap:
+                raise ValueError("Random neighbor strategy only works with in_place_swap=True right now")
+
+            # Make new dict replacements_new with structure [key[0]]: (key[1], value) for all keys in replacements
+            replacements_new = dict()
+            for k, v in replacements.items():
+                if k[0] not in replacements_new:
+                    replacements_new[k[0]] = []
+                replacements_new[k[0]].append((k[1].item(), v))
+            # Sort each entry by score
+            for k, v in replacements_new.items():
+                replacements_new[k] = sorted(v, key=lambda x: x[1], reverse=True)
+
+            num_trials = int(1e3)
+            replacements, scores = [], []
+            for _ in range(num_trials):
+                # Pick n_swap random positions
+                swap_positions = np.random.choice(list(replacements_new.keys()), n_swap, replace=False)
+                # Out of all replacements, pick keys where target_token_index is in swap_positions
+                picked = [replacements_new[x][0] for x in swap_positions]
+                # Compute score (sum)
+                score = sum([x[1] for x in picked])
+                scores.append(score)
+                # Also keep track of replacements (position, candidate)
+                replacements.append([(i, replacements_new[i][0][0]) for i in swap_positions])
+            
+            # Out of all trials, pick n_neighbors combinations (highest scores)
+            highest_scored = nlargest(n_neighbors, zip(scores, replacements), key=lambda x: x[0])
+
+            neighbors = []
+            for _, single in highest_scored:
+                # Sort according to target_token_index
+                single = sorted(single, key=lambda x: x[0])
+                # Get corresponding positions in text
+                single = [(token_positions[target_token_index], cand) for target_token_index, cand in single]
+                # Add start of text (before first swap)
+                end_prev = 0
+                alt_text = ""
+                for (start, end), cand in single:
+                    # Get text corresponding to cand token
+                    fill_in_text = self.tokenizer.decode(cand)
+                    # Remove any '##' from prefix (since we're doing a plug back into text)
+                    fill_in_text = fill_in_text.replace('##', '')
+                    alt_text += text[end_prev:start] + fill_in_text
+                    end_prev = end
+                # Add remainder text (after last swap)
+                start, end = single[-1][0]
+                alt_text += text[end:]
+                neighbors.append(alt_text)
+
+        else:
+            raise NotImplementedError(f"Invalid neighbor strategy {self.config.neighborhood_config.neighbor_strategy}")
 
         # return texts
         return neighbors
