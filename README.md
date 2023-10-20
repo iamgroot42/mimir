@@ -25,7 +25,7 @@ You can either provide the following environment variables, or pass them via you
 
 ```
 MIMIR_CACHE_PATH: Path to cache directory
-DATA_SOURCE: Path to data directory
+MIMIR_DATA_SOURCE: Path to data directory
 ```
 
 # Using cached data
