@@ -26,3 +26,13 @@ logs/*
 
 # Package files
 *.egg-info/
+
+# Images
+*.png
+*.pdf
+
+# Font files
+*.ttf
+
+# Notebook checkpoints
+.ipynb_checkpoints/
