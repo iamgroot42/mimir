@@ -25,7 +25,6 @@ from mimir.models import EvalModel, LanguageModel, ReferenceModel, OpenAI_APIMod
 from mimir.attacks.neighborhood import T5Model, BertModel
 from mimir.attacks.attack_utils import f1_score, get_roc_metrics, get_precision_recall_metrics
 
-
 torch.manual_seed(0)
 np.random.seed(0)
 random.seed(0)
@@ -391,10 +390,11 @@ if __name__ == '__main__':
     else:
         tok_by_tok_string = '--tok_false'
 
-    if neigh_config.span_length ==2 :
-        span_length_string = ""
-    else:
-        span_length_string = f'--{neigh_config.span_length}'
+    if neigh_config:
+        if neigh_config.span_length ==2 :
+            span_length_string = ""
+        else:
+            span_length_string = f'--{neigh_config.span_length}'
 
     dataset_member_name=config.dataset_member.replace('/', '_')
     dataset_nonmember_name=config.dataset_nonmember.replace('/', '_')
@@ -404,6 +404,7 @@ if __name__ == '__main__':
         sf_ext = 'mia_'
 
     default_prompt_len = extraction_config.prompt_len if extraction_config else 30 # hack: will fix later
+    # suffix = "QUANTILE_TEST"
     suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
     # Add pile source to suffix, if provided
     if config.specific_source is not None:
@@ -426,9 +427,10 @@ if __name__ == '__main__':
     # if not config.dump_cache:
     #     config.save(os.path.join(SAVE_FOLDER, 'args.json'), indent=4)
     
-    n_perturbation_list = neigh_config.n_perturbation_list # [int(x) for x in args.n_perturbation_list.split(",")]
-    n_perturbation_rounds = neigh_config.n_perturbation_rounds
-    # n_similarity_samples = args.n_similarity_samples # NOT USED
+    if neigh_config:
+        n_perturbation_list = neigh_config.n_perturbation_list # [int(x) for x in args.n_perturbation_list.split(",")]
+        n_perturbation_rounds = neigh_config.n_perturbation_rounds
+        # n_similarity_samples = args.n_similarity_samples # NOT USED
 
     cache_dir = env_config.cache_dir
     os.environ["XDG_CACHE_HOME"] = cache_dir
@@ -444,34 +446,35 @@ if __name__ == '__main__':
         ref_models = [ReferenceModel(config, model) for model in ref_config.models]
         # print('MOVING ref MODEL TO GPU...', end='', flush=True)
 
-
     # mask filling t5 model
-    model_kwargs = dict()
-    if not config.baselines_only and not neigh_config.random_fills:
-        if env_config.int8:
-            model_kwargs = dict(load_in_8bit=True, device_map='auto', torch_dtype=torch.bfloat16)
-        elif env_config.half:
-            model_kwargs = dict(torch_dtype=torch.bfloat16)
-
-        try:
-            n_positions = 512 # Should fix later, but for T-5 this is 512 indeed
-            # mask_model.config.n_positions
-        except AttributeError:
+    if neigh_config:
+        model_kwargs = dict()
+        if not config.baselines_only and not neigh_config.random_fills:
+            if env_config.int8:
+                model_kwargs = dict(load_in_8bit=True, device_map='auto', torch_dtype=torch.bfloat16)
+            elif env_config.half:
+                model_kwargs = dict(torch_dtype=torch.bfloat16)
+            try:
+                n_positions = 512 # Should fix later, but for T-5 this is 512 indeed
+                # mask_model.config.n_positions
+            except AttributeError:
+                n_positions = config.max_tokens
+        else:
             n_positions = config.max_tokens
+        tokenizer_kwargs = {
+            'model_max_length': n_positions,
+        }
+        print(f'Loading mask filling model {config.neighborhood_config.model}...')
+        if "t5" in config.neighborhood_config.model:
+            mask_model = T5Model(config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs)
+        elif "bert" in config.neighborhood_config.model:
+            mask_model = BertModel(config)
+        else:
+            raise ValueError(f"Unknown model {config.neighborhood_config.model}")
+        # if config.dataset_member in ['english', 'german']:
+        #     preproc_tokenizer = mask_tokenizer
     else:
-        n_positions = config.max_tokens
-    tokenizer_kwargs = {
-        'model_max_length': n_positions,
-    }
-    print(f'Loading mask filling model {config.neighborhood_config.model}...')
-    if "t5" in config.neighborhood_config.model:
-        mask_model = T5Model(config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs)
-    elif "bert" in config.neighborhood_config.model:
-        mask_model = BertModel(config)
-    else:
-        raise ValueError(f"Unknown model {config.neighborhood_config.model}")
-    # if config.dataset_member in ['english', 'german']:
-    #     preproc_tokenizer = mask_tokenizer
+        mask_model = None
 
     print('MOVING BASE MODEL TO GPU...', end='', flush=True)
     base_model.load()
@@ -497,8 +500,9 @@ if __name__ == '__main__':
             data_member, batch_size=config.batch_size, raw_data_non_member=data_nonmember)
 
     print("NEW N_SAMPLES IS ", n_samples)
-    if neigh_config.random_fills and config.neighborhood_config and "t5" in config.neighborhood_config and config.neighborhood_config.model:
-        mask_model.create_fill_dictionary(data)
+    if neigh_config:
+        if neigh_config.random_fills and config.neighborhood_config and "t5" in config.neighborhood_config and config.neighborhood_config.model:
+            mask_model.create_fill_dictionary(data)
 
     if config.scoring_model_name:
         print(f'Loading SCORING model {config.scoring_model_name}...')
@@ -575,19 +579,21 @@ if __name__ == '__main__':
     outputs = []
 
     if not config.baselines_only:
-        # run perturbation experiments
+        # TODO: have the experiment config accept a list of atacks (and their configs)
+        # and iterate through attacks, instead of this switch-case
 
-        ## SKIP FOR NOW
+        # run perturbation experiments
         # """
-        for n_perturbations in n_perturbation_list:
-            perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
-            for perturbation_mode in ['d', 'z']:
-                output = run_perturbation_experiment(
-                    perturbation_results, perturbation_mode, n_samples=n_samples,
-                    span_length=neigh_config.span_length, n_perturbations=n_perturbations)
-                outputs.append(output)
-                with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
-                    json.dump(output, f)
+        if neigh_config:
+            for n_perturbations in n_perturbation_list:
+                perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
+                for perturbation_mode in ['d', 'z']:
+                    output = run_perturbation_experiment(
+                        perturbation_results, perturbation_mode, n_samples=n_samples,
+                        span_length=neigh_config.span_length, n_perturbations=n_perturbations)
+                    outputs.append(output)
+                    with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
+                        json.dump(output, f)
         # """
 
         # run tokenization attack, if requested
@@ -598,6 +604,23 @@ if __name__ == '__main__':
             outputs.append(output)
             with open(os.path.join(SAVE_FOLDER, f"tokenization_attack_results.json"), "w") as f:
                 json.dump(output, f)
+        
+        # run quantile attack, if requested
+        if config.quantile_attack:
+            from datasets import load_dataset
+            from mimir.attacks.quantile import QuantileAttack
+            alpha = 0.1 # FPR
+            quantile_attacker = QuantileAttack(config, alpha)
+            
+            nonmember_data_other = load_dataset("imdb", split="test")["text"] # use split "unsupervised" for 2x data
+
+            quantile_attacker.attack_prepare(nonmember_data_other, base_model)
+            def quantile_attack_wrapper(text): return quantile_attacker.attack(base_model, text)
+            output = run_baseline_threshold_experiment(data, quantile_attack_wrapper, "quantile_attack", n_samples=n_samples)
+            outputs.append(output)
+            with open(os.path.join(SAVE_FOLDER, f"quantile_attack_results.json"), "w") as f:
+                json.dump(output, f)
+
 
     if not config.skip_baselines:
         # write likelihood threshold results to a file
@@ -642,7 +665,8 @@ if __name__ == '__main__':
         #     with open(os.path.join(SAVE_FOLDER, f"roberta-large-openai-detector_results.json"), "w") as f:
         #         json.dump(baseline_outputs[-1], f)
 
-    plot_utils.save_roc_curves(outputs, save_folder=SAVE_FOLDER, model_name=base_model_name, neighbor_model_name=neigh_config.model)
+    neighbor_model_name = neigh_config.model if neigh_config else None
+    plot_utils.save_roc_curves(outputs, save_folder=SAVE_FOLDER, model_name=base_model_name, neighbor_model_name=neighbor_model_name)
     plot_utils.save_ll_histograms(outputs, save_folder=SAVE_FOLDER)
     plot_utils.save_llr_histograms(outputs, save_folder=SAVE_FOLDER)
 

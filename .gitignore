@@ -36,3 +36,9 @@ logs/*
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+
+# WanDB
+wandb/*
+
+# Quantile model (trained)
+quantile_ref_model/*

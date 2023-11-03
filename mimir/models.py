@@ -8,6 +8,7 @@ import time
 from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 from mimir.config import ExperimentConfig
 from mimir.custom_datasets import SEPARATOR
@@ -139,6 +140,25 @@ class ReferenceModel(Model):
             base_model_kwargs.update(dict(revision='float16'))
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
+        self.load_model_properties()
+
+
+class QuantileReferenceModel(Model):
+    """
+        Wrapper for referenc model, specifically used for quantile regression
+    """
+    def __init__(self, config: ExperimentConfig, name: str):
+        super().__init__(config)
+        self.device = self.config.env_config.device_aux
+        self.name = name
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            name, use_fast=False)
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            name,
+            num_labels=2,
+            max_position_embeddings=1024)
+        # Modify model's last linear layer to have only 1 output
+        self.model.classifier.linear_out = nn.Linear(self.model.classifier.linear_out.in_features, 1)
         self.load_model_properties()
 
 
