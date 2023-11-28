@@ -665,18 +665,18 @@ if __name__ == '__main__':
         pass
         # # TODO: incorporate all attacks below into blackbox attack flow (or separate white box attack flow if necessary)
         # # run perturbation experiments
-        # # """
-        # if neigh_config:
-        #     for n_perturbations in n_perturbation_list:
-        #         perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
-        #         for perturbation_mode in ['d', 'z']:
-        #             output = run_perturbation_experiment(
-        #                 perturbation_results, perturbation_mode, n_samples=n_samples,
-        #                 span_length=neigh_config.span_length, n_perturbations=n_perturbations)
-        #             outputs.append(output)
-        #             with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
-        #                 json.dump(output, f)
-        # # """
+        # """
+        if neigh_config and not config.pretokenized:  # TODO: not supported for pretokenized text
+            for n_perturbations in n_perturbation_list:
+                perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
+                for perturbation_mode in ['d', 'z']:
+                    output = run_perturbation_experiment(
+                        perturbation_results, perturbation_mode, n_samples=n_samples,
+                        span_length=neigh_config.span_length, n_perturbations=n_perturbations)
+                    outputs.append(output)
+                    with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
+                        json.dump(output, f)
+        # """
 
         # # run tokenization attack, if requested
         # if config.tokenization_attack:
