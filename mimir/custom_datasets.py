@@ -38,9 +38,9 @@ def load_data(file_path):
     return data
 
 
-def dump_to_cache(data: List[str], cache_dir, path, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int):
+def dump_to_cache(data: List, cache_dir, path, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int):
     """
-        Cache a file (one text sequence per line)
+        Cache a file (one sample per line)
     """
     # Make sure path directory exists
     subdir = os.path.join(cache_dir, f"cache_{min_length}_{max_length}_{n_samples}_{max_tokens}", path)

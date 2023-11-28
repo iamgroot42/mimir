@@ -30,8 +30,6 @@ if __name__ == '__main__':
             print(f"Loading for split {split}")
             shard_0 = datasets.load_dataset("json", data_files=os.path.join(dir, "0", f"{split}_text.jsonl.gz"), split="train")
             shard_1 = datasets.load_dataset("json", data_files=os.path.join(dir, "1", f"{split}_text.jsonl.gz"), split="train")
-            print(os.path.join(dir, "0", f"{split}_text.jsonl"))
-            print(shard_0)
             assert shard_0["original"][0] == shard_1["original"][0] and shard_0["original"][1] == shard_1["original"][1]
             ngram_inclusion = [np.array(in0) | np.array(in1) for in0, in1 in zip(shard_0["ngram_inclusion"], shard_1["ngram_inclusion"])]
             individual_ngram_overlap = {text: np.mean(d) for text, d in zip(shard_0["original"], ngram_inclusion)}

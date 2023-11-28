@@ -124,32 +124,38 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
+    pretokenized: Optional[bool] = False
+    """Is the data already pretokenized"""
     revision: Optional[str] = None
     """Model revision to use"""
     presampled_dataset_member: Optional[str] = None
     """Path to presampled dataset source for members"""
     presampled_dataset_nonmember: Optional[str] = None
     """Path to presampled dataset source for mpmmembers"""
+    token_frequency_map: Optional[str] = None # TODO: Handling auxiliary data structures
+    """Path to a pre-computed token frequency map"""
     dataset_key: Optional[str] = None
     """Dataset key"""
     output_name: Optional[str] = None
     """Output name for sub-directory. Defaults to nothing"""
     specific_source: Optional[str] = None
     """Specific sub-source to focus on. Only valid for the_pile"""
+    full_doc: Optional[bool] = False # TODO: refactor full_doc design?
+    """Determines whether MIA will be performed over entire doc or not"""
+    max_substrs: Optional[int] = 20
+    """If full_doc, determines the maximum number of sample substrs to evaluate on"""
     dump_cache: Optional[bool] = False
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
-
-    baselines_only: Optional[bool] = False
+    blackbox_attacks: Optional[str] = None
+    """List of attacks to evaluate, concatenated by + signs""" 
+    baselines_only: Optional[bool] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
     """Evaluate only baselines?"""
-    skip_baselines: Optional[bool] = False
-    """Skip baselines?"""
     tokenization_attack: Optional[bool] = False
     """Run tokenization attack?"""
     quantile_attack: Optional[bool] = False
     """Run quantile attack?"""
-
     n_samples: Optional[int] = 200
     """Number of records (member and non-member each) to run the attack(s) for"""
     max_tokens: Optional[int] = 512

@@ -344,3 +344,5 @@ class BertModel(MaskFillingModel):
 
         # return texts
         return neighbors
+
+
