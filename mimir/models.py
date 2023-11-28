@@ -8,10 +8,13 @@ import time
 from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
+import zlib
 
 from mimir.config import ExperimentConfig
 from mimir.custom_datasets import SEPARATOR
 from mimir.data_utils import drop_last_word
+
+from utils.transformers.model import OpenLMforCausalLM
 
 
 class Model(nn.Module):
@@ -58,20 +61,27 @@ class Model(nn.Module):
         except NameError:
             pass
         print(f'DONE ({time.time() - start:.2f}s)')
-    
+
     @torch.no_grad()
-    def get_ll(self, text: str):
+    def get_probabilities(self, text: str, tokens=None):
         """
-            Get the log likelihood of each text under the base_model
+            Get the probabilities or log-softmaxed logits for a text under the current model
         """
         if self.device is None or self.name is None:
             raise ValueError("Please set self.device and self.name in child class")
 
-        tokenized = self.tokenizer(
-            text, return_tensors="pt").to(self.device)
-        labels = tokenized.input_ids
+        if tokens is not None:
+            labels = torch.from_numpy(tokens.astype(np.int64)).type(torch.LongTensor)
+            if labels.shape[0] != 1:
+                # expand first dimension
+                labels = labels.unsqueeze(0)
+            labels = labels.to(self.device)
+        else:
+            tokenized = self.tokenizer(
+                text, return_tensors="pt").to(self.device)
+            labels = tokenized.input_ids
 
-        nlls = []
+        all_prob = []
         for i in range(0, labels.size(1), self.stride):
             begin_loc = max(i + self.stride - self.max_length, 0)
             end_loc = min(i + self.stride, labels.size(1))
@@ -80,13 +90,29 @@ class Model(nn.Module):
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
 
-            with torch.no_grad():
-                outputs = self.model(input_ids, labels=target_ids)
-                neg_log_likelihood = outputs[0] * trg_len
+            outputs = self.model(input_ids, labels=target_ids)
+            logits = outputs.logits
+            shift_logits = logits[..., :-1, :].contiguous()
+            probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+            shift_labels = target_ids[..., 1:].contiguous()
+            labels_processed = shift_labels[0]
 
-            nlls.append(neg_log_likelihood)
+            for i, token_id in enumerate(labels_processed):
+                if token_id != -100:
+                    probability = probabilities[0, i, token_id].item()
+                    all_prob.append(probability)
+        # Should be equal to # of tokens - 1 to account for shift
+        assert len(all_prob) == labels.size(1) - 1
 
-        return torch.stack(nlls).sum().item() / end_loc
+        return all_prob
+    
+    @torch.no_grad()
+    def get_ll(self, text: str, tokens=None, probs=None):
+        """
+            Get the log likelihood of each text under the base_model
+        """
+        all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
+        return -np.mean(all_prob)
     
     def load_base_model_and_tokenizer(self, model_kwargs):
         if self.device is None or self.name is None:
@@ -94,9 +120,18 @@ class Model(nn.Module):
 
         if self.config.openai_config is None:
             print(f'Loading BASE model {self.name}...')
-            device_map = self.device_map if self.device_map else 'cpu' 
-            model = transformers.AutoModelForCausalLM.from_pretrained(
-                self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
+            device_map = self.device_map if self.device_map else 'cpu'
+            if "silo" in self.name or "balanced" in self.name:
+                model = OpenLMforCausalLM.from_pretrained(
+                    self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
+                # Extract the model from the model wrapper so we dont need to call model.model
+            elif "llama" in self.name or "alpaca" in self.name:
+                # llama is too big, gotta use device map
+                model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map="balanced_low_0", cache_dir=self.cache_dir)
+                self.device = 'cuda:1'
+            else:
+                model = transformers.AutoModelForCausalLM.from_pretrained(
+                    self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
         else:
             model = None
 
@@ -106,15 +141,31 @@ class Model(nn.Module):
             optional_tok_kwargs['fast'] = False
         if self.config.dataset_member in ['pubmed'] or self.config.dataset_nonmember in ['pubmed']:
             optional_tok_kwargs['padding_side'] = 'left'
-        tokenizer = transformers.AutoTokenizer.from_pretrained(
-            self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+            self.pad_token = self.tokenizer.eos_token_id
+        if "silo" in self.name or "balanced" in self.name:
+            tokenizer = transformers.GPTNeoXTokenizerFast.from_pretrained(
+                "EleutherAI/gpt-neox-20b", **optional_tok_kwargs, cache_dir=self.cache_dir)
+        elif "datablations" in self.name:
+            tokenizer = transformers.AutoTokenizer.from_pretrained(
+                "gpt2", **optional_tok_kwargs, cache_dir=self.cache_dir)
+        elif "llama" in self.name or "alpaca" in self.name:
+            tokenizer = transformers.LlamaTokenizer.from_pretrained(
+                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+        elif "pubmedgpt" in self.name:
+            tokenizer = transformers.AutoTokenizer.from_pretrained(
+                "stanford-crfm/BioMedLM", **optional_tok_kwargs, cache_dir=self.cache_dir)
+        else:
+            tokenizer = transformers.AutoTokenizer.from_pretrained(
+                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
         return model, tokenizer
     
     def load_model_properties(self):
          # TODO: getting max_length of input could be more generic
-        if hasattr(self.model.config, 'max_position_embeddings'):
+        if "silo" in self.name or "balanced" in self.name:
+            self.max_length = self.model.model.seq_len
+        elif hasattr(self.model.config, 'max_position_embeddings'):
             self.max_length = self.model.config.max_position_embeddings
         elif hasattr(self.model.config, 'n_positions'):
             self.max_length = self.model.config.n_positions
@@ -133,10 +184,16 @@ class ReferenceModel(Model):
         self.device = self.config.env_config.device_aux
         self.name = name
         base_model_kwargs = {'revision': 'main'}
-        if 'gpt-j' in self.name or 'neox' in self.name:
+        if 'gpt-j' in self.name or 'neox' in self.name or 'llama' in self.name or 'alpaca' in self.name:
             base_model_kwargs.update(dict(torch_dtype=torch.float16))
         if 'gpt-j' in self.name:
             base_model_kwargs.update(dict(revision='float16'))
+        if ':' in self.name:
+            print("Applying ref model revision")
+            # Allow them to provide revisions as part of model name, then parse accordingly
+            split = self.name.split(':')
+            self.name = split[0]
+            base_model_kwargs.update(dict(revision=split[-1]))
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
         self.load_model_properties()
@@ -189,24 +246,14 @@ class LanguageModel(Model):
         
     
     @torch.no_grad()
-    def get_lira(self, text: str, ref_model: ReferenceModel):
+    def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None):
         """
-            Get the  likelihood ratio of each text under the base_model -- MIA baseline
+            Compute the loss of a given text calibrated against the text's loss under a reference model -- MIA baseline
         """
-        lls = self.get_ll(text)
+        lls = self.get_ll(text, tokens=tokens, probs=probs)
         lls_ref = ref_model.get_ll(text)
 
         return lls - lls_ref
-    
-    @torch.no_grad()
-    def get_contrastive(self, text: str, ref_model: ReferenceModel):
-        """
-            Get the contrastrive ratio of each text under the base_model -- MIA baseline
-        """
-        lls = self.get_ll(text)
-        lls_ref = ref_model.get_ll(text)
-
-        return lls / lls_ref
 
     @torch.no_grad()
     def get_rank(self, text: str, log: bool=False):
@@ -236,25 +283,39 @@ class LanguageModel(Model):
 
         return ranks.float().mean().item()
 
+    # TODO extend for longer sequences
+    @torch.no_grad()
     def get_lls(self, texts: str):
         # return [self.get_ll(text) for text in texts]
         tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
         labels = tokenized.input_ids
         batch_size = 25
         losses = []
-        with torch.no_grad():
-            for i in range(0, labels.shape[0], batch_size):
-                label_batch = labels[i:i+batch_size].to(self.device)
-                output = self.model(label_batch, labels=label_batch)
-                logits = output.logits
-                # Shift so that tokens < n predict n
-                shift_logits = logits[..., :-1, :].contiguous()
-                shift_logits = torch.transpose(shift_logits, 1, 2)
-                shift_labels = label_batch[..., 1:].contiguous()
-                loss = F.cross_entropy(input=shift_logits, target=shift_labels, reduction='none').mean(dim=1)
-                losses.extend(loss.tolist())
-            return losses
+        for i in range(0, labels.shape[0], batch_size):
+            label_batch = labels[i:i+batch_size].to(self.device)
+            output = self.model(label_batch, labels=label_batch)
+            logits = output.logits
+            # Shift so that tokens < n predict n
+            shift_logits = logits[..., :-1, :].contiguous()
+            shift_logits = torch.transpose(shift_logits, 1, 2)
+            shift_labels = label_batch[..., 1:].contiguous()
+            loss = F.cross_entropy(input=shift_logits, target=shift_labels, reduction='none').mean(dim=1)
+            losses.extend(loss.tolist())
+        return losses
     
+    @torch.no_grad()
+    def get_min_k_prob(self, text: str, tokens=None, probs=None, k=.2, window=1, stride=1):
+        all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
+        # iterate through probabilities by ngram defined by window size at given stride
+        ngram_probs = []
+        for i in range(0, len(all_prob) - window + 1, stride):
+            ngram_prob = all_prob[i:i+window]
+            ngram_probs.append(np.mean(ngram_prob))
+        min_k_probs = sorted(ngram_probs)[:int(len(ngram_probs) * k)]
+
+        return -np.mean(min_k_probs)
+    
+
     def sample_from_model(self, texts: List[str], **kwargs):
         """
             Sample from base_model using ****only**** the first 30 tokens in each example as context
@@ -308,6 +369,53 @@ class LanguageModel(Model):
         neg_entropy = F.softmax(logits, dim=-1) * F.log_softmax(logits, dim=-1)
         return -neg_entropy.sum(-1).mean().item()
 
+    @torch.no_grad()
+    def get_zlib_entropy(self, text: str, tokens=None, probs=None):
+        zlib_entropy = len(zlib.compress(bytes(text, 'utf-8')))
+        return self.get_ll(text, tokens=tokens, probs=probs) / zlib_entropy
+    
+    @torch.no_grad()
+    def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
+        # TODO: update like oher attacks
+        tokenized = self.tokenizer(
+            text, return_tensors="pt").to(self.device)
+        labels = tokenized.input_ids
+
+        max_length = context_len if context_len is not None else self.max_length
+        stride = max_length // 2 #self.stride
+        all_prob = []
+        for i in range(0, labels.size(1), stride):
+            begin_loc = max(i + stride - max_length, 0)
+            end_loc = min(i + stride, labels.size(1))
+            trg_len = end_loc - i  # may be different from stride on last loop
+            input_ids = labels[:, begin_loc:end_loc]
+            target_ids = input_ids.clone()
+            target_ids[:, :-trg_len] = -100
+
+            outputs = self.model(input_ids, labels=target_ids)
+            logits = outputs.logits
+            # Shift so that tokens < n predict n
+            # print(logits.shape)
+            shift_logits = logits[..., :-1, :].contiguous()
+            # shift_logits = torch.transpose(shift_logits, 1, 2)
+            probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+            shift_labels = target_ids[..., 1:].contiguous()
+            labels_processed = shift_labels[0]
+
+            for i, token_id in enumerate(labels_processed):
+                if token_id != -100:
+                    probability = probabilities[0, i, token_id].item()
+                    max_tk_prob = torch.max(probabilities[0, i]).item()
+                    tk_weight = max(tk_freq_map[token_id.item()], 1) / sum(tk_freq_map.values()) if tk_freq_map is not None else 1
+                    if tk_weight == 0:
+                        print("0 count token", token_id.item())
+                    tk_norm = tk_weight
+                    all_prob.append((1 - (max_tk_prob - probability)) / tk_norm)
+
+        # Should be equal to # of tokens - 1 to account for shift
+        assert len(all_prob) == labels.size(1) - 1
+        return -np.mean(all_prob)
+
 
 class OpenAI_APIModel(LanguageModel):
     """
@@ -340,7 +448,7 @@ class OpenAI_APIModel(LanguageModel):
         return np.mean(logprobs)
 
     @torch.no_grad()
-    def get_lira(self, text: str, ref_model: ReferenceModel):
+    def get_ref(self, text: str, ref_model: ReferenceModel):
         """
             Get the  likelihood ratio of each text under the base_model -- MIA baseline
         """

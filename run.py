@@ -5,7 +5,10 @@ import random
 import datetime
 import os
 import json
+import pickle 
+import math
 from collections import defaultdict
+from functools import partial
 from typing import List
 
 from simple_parsing import ArgumentParser
@@ -22,7 +25,7 @@ from mimir.config import (
 import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
 from mimir.models import EvalModel, LanguageModel, ReferenceModel, OpenAI_APIModel
-from mimir.attacks import T5Model, BertModel
+from mimir.attacks import T5Model, BertModel, BlackBoxAttacks
 from mimir.attack_utils import f1_score, get_roc_metrics, get_precision_recall_metrics
 
 
@@ -169,60 +172,137 @@ def run_perturbation_experiment(results, criterion, n_samples: int, span_length:
         'loss': 1 - pr_auc,
     }
 
-
-def run_baseline_threshold_experiment(criterion_fn, name, n_samples: int):
+def run_blackbox_attacks(data, target_model, ref_models, config, n_samples=None, batch_size=50):
     torch.manual_seed(0)
     np.random.seed(0)
-    batch_size = config.batch_size
 
-    results = []
-    for batch in tqdm(range((n_samples // batch_size) + 1), desc=f"Computing {name} criterion"):
-        original_text = data["member"][batch * batch_size:(batch + 1) * batch_size]
-        sampled_text = data["nonmember"][batch * batch_size:(batch + 1) * batch_size]
+    n_samples = len(data["member"]) if n_samples is None else n_samples
 
-        for idx in range(len(original_text)):
-            results.append({
-                "member": original_text[idx],
-                "member_crit": criterion_fn(original_text[idx]),
-                "nonmember": sampled_text[idx],
-                "nonmember_crit": criterion_fn(sampled_text[idx]),
-            })
+    # Structure: attack -> member scores/nonmember scores
+    # For both members and nonmembers, we compute all attacks
+    # listed in config all together for each sample
+    attacks = config.blackbox_attacks.split("+")
+    implemented_blackbox_attacks = [a.value for a in BlackBoxAttacks]
+    # check for unimplemented attacks
+    runnable_attacks = []
+    for a in attacks:
+        if a not in implemented_blackbox_attacks:
+            print(f"Attack {attack} not implemented, will be ignored")
+            pass
 
-    # compute prediction scores for real/sampled passages
-    predictions = {
-        'members': [x["member_crit"] for x in results], # TODO: change class here
-        'nonmembers': [x["nonmember_crit"] for x in results],
-    }
+        runnable_attacks.append(a)
+    attacks = runnable_attacks
+    
+    results = defaultdict(list)
+    for classification in data.keys():
+        print(f"Running for classification {classification}")
+        for batch in tqdm(range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"):
+            texts = data[classification][batch * batch_size:(batch + 1) * batch_size]
 
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=predictions['members'],
-                                                     preds_nonmember=predictions['nonmembers'],
-                                                     perform_bootstrap=True)
-    tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
-    p, r, pr_auc = get_precision_recall_metrics(preds_member=predictions['members'],
-                                                preds_nonmember=predictions['nonmembers'])
-    print(f"{name}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}, tpr_at_low_fpr: {tpr_at_low_fpr}")
-    return {
-        'name': f'{name}_threshold',
-        'predictions': predictions,
-        'info': {
-            'n_samples': n_samples,
-        },
-        'raw_results': results,
-        'metrics': {
-            'roc_auc': roc_auc,
-            'fpr': fpr,
-            'tpr': tpr,
-            'bootstrap_roc_auc_mean': np.mean(roc_auc_res.bootstrap_distribution),
-            'bootstrap_roc_auc_std': roc_auc_res.standard_error,
-            'tpr_at_low_fpr': tpr_at_low_fpr,
-        },
-        'pr_metrics': {
-            'pr_auc': pr_auc,
-            'precision': p,
-            'recall': r,
-        },
-        'loss': 1 - pr_auc,
-    }
+            for idx in tqdm(range(len(texts))):
+                substr_scores = defaultdict(list)
+                sample = texts[idx][:config.max_substrs] if config.full_doc else [texts[idx]]
+                # This will be a list of integers if pretokenized
+                substr_scores["sample"] = sample
+                if config.pretokenized:
+                    detokenized_sample = [target_model.tokenizer.decode(s) for s in sample]
+                    substr_scores["detokenized"] = detokenized_sample
+                for i, substr in enumerate(sample):
+                    # compute token probabilities for sample
+                    s_tk_probs = target_model.get_probabilities(substr) if not config.pretokenized else \
+                                 target_model.get_probabilities(detokenized_sample[i], tokens=substr)
+                    
+                    # always compute loss score
+                    loss = target_model.get_ll(substr, probs=s_tk_probs) if not config.pretokenized else \
+                           target_model.get_ll(detokenized_sample[i], tokens=substr, probs=s_tk_probs)
+                    substr_scores[BlackBoxAttacks.LOSS].append(loss)
+
+                    for attack in attacks:
+                        if attack == BlackBoxAttacks.ZLIB:
+                            score = target_model.get_zlib_entropy(substr, probs=s_tk_probs) if not config.pretokenized else \
+                                    target_model.get_zlib_entropy(detokenized_sample[i], tokens=substr, probs=s_tk_probs)
+                            substr_scores[attack].append(score)
+                        elif attack == BlackBoxAttacks.MIN_K:
+                            score = target_model.get_min_k_prob(substr, probs=s_tk_probs) if not config.pretokenized else \
+                                    target_model.get_min_k_prob(detokenized_sample[i], tokens=substr, probs=s_tk_probs)
+                            substr_scores[attack].append(score)
+                        elif attack == BlackBoxAttacks.NEIGHBOR:
+                            pass
+                    
+                # Add the scores we collected for each sample for each
+                # attack into to respective list for its classification
+                results[classification].append(substr_scores)
+
+
+    # Perform reference-based attacks
+    if BlackBoxAttacks.REFERENCE_BASED in attacks and ref_models is None:
+        print("No reference models specified, skipping Reference-based attacks")
+    elif BlackBoxAttacks.REFERENCE_BASED in attacks:
+        for name, ref_model in ref_models.items():
+            if "llama" not in name and "alpaca" not in name: 
+                ref_model.load()
+            
+            # Update collected scores for each sample with ref-based attack scores
+            for classification, result in results.items():
+                for r in tqdm(result, desc="Ref scores"):
+                    ref_model_scores = []
+                    for i, s in enumerate(r['sample']):
+                        if config.pretokenized:
+                            s = r['detokenized'][i]
+                        ref_score = r[BlackBoxAttacks.LOSS][i] - ref_model.get_ll(s)
+                        ref_model_scores.append(ref_score)
+                    r[f"{BlackBoxAttacks.REFERENCE_BASED}-{name}"].extend(ref_model_scores)
+
+            if "llama" not in name and "alpaca" not in name: 
+                ref_model.unload()
+
+    # Rearrange the nesting of the results dict and calculated aggregated score for sample
+    # attack -> member/nonmember -> list of scores
+    samples = defaultdict(list)
+    predictions = defaultdict(lambda: defaultdict(list))
+    for classification, result in results.items():
+        for r in result:
+            print(r.keys())
+            samples[classification].append(r["sample"])
+            for attack, scores in r.items():
+                if attack != "sample" and attack != "detokenized":
+                    predictions[attack][classification].append(np.min(scores))
+
+    # Collect outputs for each attack
+    blackbox_attack_outputs = {}
+    for attack, prediction in tqdm(predictions.items()):
+        fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(preds_member=prediction['member'],
+                                                         preds_nonmember=prediction['nonmember'],
+                                                         perform_bootstrap=True)
+        tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in config.fpr_list}
+        p, r, pr_auc = get_precision_recall_metrics(preds_member=prediction['member'],
+                                                    preds_nonmember=prediction['nonmember'])
+
+        print(f"{attack}_threshold ROC AUC: {roc_auc}, PR AUC: {pr_auc}, tpr_at_low_fpr: {tpr_at_low_fpr}")
+        blackbox_attack_outputs[attack] = {
+            'name': f'{attack}_threshold',
+            'predictions': prediction,
+            'info': {
+                'n_samples': n_samples,
+            },
+            'raw_results': samples if not config.pretokenized else [],
+            'metrics': {
+                'roc_auc': roc_auc,
+                'fpr': fpr,
+                'tpr': tpr,
+                'bootstrap_roc_auc_mean': np.mean(roc_auc_res.bootstrap_distribution),
+                'bootstrap_roc_auc_std': roc_auc_res.standard_error,
+                'tpr_at_low_fpr': tpr_at_low_fpr,
+            },
+            'pr_metrics': {
+                'pr_auc': pr_auc,
+                'precision': p,
+                'recall': r,
+            },
+            'loss': 1 - pr_auc,
+        }
+
+    return blackbox_attack_outputs
 
 
 def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: List[str] = None):
@@ -253,7 +333,8 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
 
             # # add to the data
             # assert len(o.split(' ')) == len(s.split(' '))
-            seq_lens.append((len(s.split(' ')),len(o.split())))
+            if not config.full_doc:
+                seq_lens.append((len(s.split(' ')),len(o.split())))
 
             if config.tok_by_tok:
                 for tok_cnt in range(len(o.split(' '))):
@@ -263,6 +344,7 @@ def generate_data_processed(raw_data_member, batch_size, raw_data_non_member: Li
             else:
                 data["nonmember"].append(o)
                 data["member"].append(s)
+            
     # if config.tok_by_tok:
     n_samples = len(data["nonmember"])
     # else:
@@ -377,12 +459,6 @@ if __name__ == '__main__':
     else:
         base_model_name = "openai-" + openai_config.model.replace('/', '_')
     scoring_model_string = (f"-{config.scoring_model_name}" if config.scoring_model_name else "").replace('/', '_')
-#    SAVE_FOLDER = f"tmp_results/{output_subfolder}{base_model_name}{scoring_model_string}-{neigh_config.model}-{sampling_string}/{START_DATE}-{START_TIME}-{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{config.dataset_member}-{config.n_samples}"
-    # if ref_config is not None:
-    #     ref_s=ref_config.model.replace('/', '_')
-    #     ref_model_string = f'--ref_{ref_s}'
-    # else:
-    #     ref_model_string = ""
 
     if config.tok_by_tok:
         tok_by_tok_string = '--tok_true'
@@ -437,9 +513,10 @@ if __name__ == '__main__':
     # generic generative model
     base_model = LanguageModel(config)
 
-    #reference model if we are doing the lr baseline
+    #reference model if we are doing the ref-based attack
+    ref_models = None
     if ref_config is not None :
-        ref_models = [ReferenceModel(config, model) for model in ref_config.models]
+        ref_models = {model: ReferenceModel(config, model) for model in ref_config.models}
         # print('MOVING ref MODEL TO GPU...', end='', flush=True)
 
 
@@ -490,13 +567,32 @@ if __name__ == '__main__':
         if config.dump_cache and not config.load_from_cache:
             print("Data dumped! Please re-run with load_from_cache set to True")
             exit(0)
-
-        data, seq_lens, n_samples = generate_data_processed(
-            data_member, batch_size=config.batch_size, raw_data_non_member=data_nonmember)
+        
+        if config.pretokenized:
+            assert data_member.shape == data_nonmember.shape
+            data = {
+                "nonmember": data_nonmember,
+                "member": data_member,
+            }
+            n_samples, seq_lens = data_nonmember.shape
+        else:
+            data, seq_lens, n_samples = generate_data_processed(
+                data_member, batch_size=config.batch_size, raw_data_non_member=data_nonmember)
 
     print("NEW N_SAMPLES IS ", n_samples)
+    # # TODO: config for random sampling
+    # if config.full_doc and True:
+    #     # Perform seeded sampling
+    #     sampled_data = {}
+    #     random.seed(42)
+    #     for m in data.keys():
+    #         sampled_data[m] = [random.sample(d, min(len(d), config.max_substrs)) for d in data[m]]
+    #     data = sampled_data
+
     if neigh_config.random_fills and config.neighborhood_config and "t5" in config.neighborhood_config and config.neighborhood_config.model:
-        mask_model.create_fill_dictionary(data)
+        if not config.pretokenized:
+            # TODO: maybe can be done if detokenized, but currently not supported
+            mask_model.create_fill_dictionary(data)
 
     if config.scoring_model_name:
         print(f'Loading SCORING model {config.scoring_model_name}...')
@@ -508,7 +604,7 @@ if __name__ == '__main__':
         print('MOVING BASE MODEL TO GPU...', end='', flush=True)
         base_model.load()
 
-    if extraction_config is not None:
+    if extraction_config is not None and not config.pretokenized:
         f1_scores = []
         precisions = []
         recalls = []
@@ -538,41 +634,37 @@ if __name__ == '__main__':
         plot_utils.save_f1_histogram(f1_scores, save_folder=SAVE_FOLDER)
 
     # write the data to a json file in the save folder
-    with open(os.path.join(SAVE_FOLDER, "raw_data.json"), "w") as f:
-        print(f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data.json')}")
-        json.dump(data, f)
+    if not config.pretokenized:
+        with open(os.path.join(SAVE_FOLDER, "raw_data.json"), "w") as f:
+            print(f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data.json')}")
+            json.dump(data, f)
 
-    with open(os.path.join(SAVE_FOLDER, "raw_data_lens.json"), "w") as f:
-        print(f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data_lens.json')}")
-        json.dump(seq_lens, f)
+        with open(os.path.join(SAVE_FOLDER, "raw_data_lens.json"), "w") as f:
+            print(f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data_lens.json')}")
+            json.dump(seq_lens, f)
 
-    if not config.skip_baselines:
-        baseline_outputs = defaultdict(dict)
-        baseline_outputs["ll"] = run_baseline_threshold_experiment(base_model.get_ll, "likelihood", n_samples=n_samples)
+    tk_freq_map = None
+    if config.token_frequency_map is not None:
+        print("loading tk freq map")
+        tk_freq_map = pickle.load(open(config.token_frequency_map, 'rb'))    
 
-        if openai_config is None:
-            # rank_criterion = lambda text: -base_model.get_rank(text, log=False)
-            # baseline_outputs["rank"] = run_baseline_threshold_experiment(rank_criterion, "rank", n_samples=n_samples)
-            # logrank_criterion = lambda text: -base_model.get_rank(text, log=True)
-            # baseline_outputs["logrank"] = run_baseline_threshold_experiment(logrank_criterion, "log_rank", n_samples=n_samples)
-            # entropy_criterion = lambda text: base_model.get_entropy(text)
-            # baseline_outputs["entropy"] = run_baseline_threshold_experiment(entropy_criterion, "entropy", n_samples=n_samples)
-            if ref_config is not None:
-                for ref_model in ref_models:
-                    ref_model.load()
-                    get_lira = lambda text: base_model.get_lira(text, ref_model)
-                    baseline_outputs["lira"][ref_model.name] = run_baseline_threshold_experiment(get_lira, f"{ref_model.name}_lr_ratio", n_samples=n_samples)
-                    ref_model.unload()
+    outputs = []
+    if config.blackbox_attacks is not None:
+        # perform blackbox attacks
+        blackbox_outputs = run_blackbox_attacks(data, target_model=base_model, ref_models=ref_models, config=config, n_samples=n_samples)
 
-        # Skipping openai-detector (for now)
-        # TODO: update to baseline results dict
+        # TODO: Skipping openai-detector (for now)
         # if config.max_tokens < 512:
         #     baseline_outputs.append(eval_supervised(data, model='roberta-base-openai-detector'))
         #     baseline_outputs.append(eval_supervised(data, model='roberta-large-openai-detector'))
 
-    outputs = []
+        for attack, output in blackbox_outputs.items():
+            outputs.append(output)
+            with open(os.path.join(SAVE_FOLDER, f"{attack}_results.json"), "w") as f:
+                json.dump(output, f)
 
     if not config.baselines_only:
+        # TODO: incorporate into blackbox attack flow
         # run perturbation experiments
         for n_perturbations in n_perturbation_list:
             perturbation_results = get_perturbation_results(neigh_config.span_length, n_perturbations)
@@ -583,38 +675,6 @@ if __name__ == '__main__':
                 outputs.append(output)
                 with open(os.path.join(SAVE_FOLDER, f"perturbation_{n_perturbations}_{perturbation_mode}_results.json"), "w") as f:
                     json.dump(output, f)
-
-    if not config.skip_baselines:
-        # write likelihood threshold results to a file
-        with open(os.path.join(SAVE_FOLDER, f"likelihood_threshold_results.json"), "w") as f:
-            outputs.append(baseline_outputs["ll"])
-            json.dump(baseline_outputs["ll"], f)
-
-        if openai_config is None:
-            # write rank threshold results to a file
-            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
-            #     outputs.append(baseline_outputs["rank"])
-            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
-            #     outputs.append(baseline_outputs["rank"])
-            # with open(os.path.join(SAVE_FOLDER, f"rank_threshold_results.json"), "w") as f:
-            #     outputs.append(baseline_outputs["rank"])
-            #     json.dump(baseline_outputs["rank"], f)
-            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
-            # # write log rank threshold results to a file
-            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
-            #     outputs.append(baseline_outputs["logrank"])
-            #     json.dump(baseline_outputs["logrank"], f)
-            # with open(os.path.join(SAVE_FOLDER, f"logrank_threshold_results.json"), "w") as f:
-            # # write entropy threshold results to a file
-            # with open(os.path.join(SAVE_FOLDER, f"entropy_threshold_results.json"), "w") as f:
-            #     outputs.append(baseline_outputs["entropy"])
-            #     json.dump(baseline_outputs["entropy"], f)
-            
-            if ref_config is not None:
-                for ref_model in ref_models:
-                    with open(os.path.join(SAVE_FOLDER, f"ref_model_{ref_model.name.replace('/', '_')}_lira_ratio_threshold_results.json"), "w") as f:
-                        outputs.append(baseline_outputs["lira"][ref_model.name])
-                        json.dump(baseline_outputs["lira"][ref_model.name], f)
 
         # Skipping openai-detector (for now)
         # write supervised results to a file

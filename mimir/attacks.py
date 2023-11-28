@@ -9,6 +9,7 @@ from tqdm import tqdm
 import random
 import transformers
 from typing import List
+from enum import Enum
 
 from mimir.config import ExperimentConfig
 from mimir.attack_utils import count_masks, apply_extracted_fills
@@ -271,3 +272,15 @@ class BertModel(MaskFillingModel):
 
         # return texts
         return neighbors
+    
+# Attack definitions
+class BlackBoxAttacks(str, Enum):
+    LOSS = "loss"
+    REFERENCE_BASED = "ref"
+    ZLIB = "zlib"
+    MIN_K = "min_k"
+    NEIGHBOR = "ne"
+
+# TODO: Move attacks in models into this file as functions
+
+
