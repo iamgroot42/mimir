@@ -1,3 +1,6 @@
+"""
+    Helper functions for processing of data (ultimately used for membership inference evaluation)
+"""
 import random
 import datasets
 import os
@@ -6,7 +9,6 @@ from typing import List
 
 
 SEPARATOR = '<<<SEP>>>'
-
 
 DATASETS = ['writing', 'english', 'german', 'pubmed']
 

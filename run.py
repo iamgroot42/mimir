@@ -183,7 +183,7 @@ def run_blackbox_attacks(data, target_model, ref_models, config, n_samples=None,
     # Structure: attack -> member scores/nonmember scores
     # For both members and nonmembers, we compute all attacks
     # listed in config all together for each sample
-    attacks = config.blackbox_attacks.split("+")
+    attacks = config.blackbox_attacks
     implemented_blackbox_attacks = [a.value for a in BlackBoxAttacks]
     # check for unimplemented attacks
     runnable_attacks = []
@@ -696,7 +696,7 @@ if __name__ == '__main__':
             
         #     nonmember_data_other = load_dataset("imdb", split="test")["text"] # use split "unsupervised" for 2x data
 
-        #     quantile_attacker.attack_prepare(nonmember_data_other, base_model)
+        #     quantile_attacker.prepare(nonmember_data_other, base_model)
         #     def quantile_attack_wrapper(text): return quantile_attacker.attack(base_model, text)
         #     output = run_baseline_threshold_experiment(data, quantile_attack_wrapper, "quantile_attack", n_samples=n_samples)
         #     outputs.append(output)

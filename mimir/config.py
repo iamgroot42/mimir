@@ -148,8 +148,8 @@ class ExperimentConfig(Serializable):
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
-    blackbox_attacks: Optional[str] = None
-    """List of attacks to evaluate, concatenated by + signs""" 
+    blackbox_attacks: Optional[List[str]] = field(default_factory=lambda: None) # Can replace with "default" attacks if we want
+    """List of attacks to evaluate""" 
     baselines_only: Optional[bool] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
     """Evaluate only baselines?"""
     tokenization_attack: Optional[bool] = False

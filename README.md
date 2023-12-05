@@ -30,7 +30,7 @@ MIMIR_DATA_SOURCE: Path to data directory
 
 # Using cached data
 
-To use the exact same member/non-member records, unzip `cache_100_200_1000_512.zip` (at least 100, at most 200 words, 1000 samples) into your `cache_dir`. For thie scenario, make sure you use the `--load_from_cache` flag.
+To use the exact same member/non-member records, unzip `cache_100_200_1000_512.zip` (at least 100, at most 200 words, 1000 samples) into your `cache_dir`. For this scenario, make sure you use the `--load_from_cache` flag.
 
 # MIA experiments how to run
 

@@ -1,3 +1,7 @@
+"""
+    Enum class for attacks.
+"""
+
 from enum import Enum
 
 # Attack definitions

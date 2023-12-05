@@ -1,3 +1,6 @@
+"""
+    Model definitions, with basic helper functions. Supports any model as long as it supports the functions specified in Model.
+"""
 import torch
 import torch.nn as nn
 import openai
@@ -15,12 +18,10 @@ from mimir.config import ExperimentConfig
 from mimir.custom_datasets import SEPARATOR
 from mimir.data_utils import drop_last_word
 
-from utils.transformers.model import OpenLMforCausalLM
-
 
 class Model(nn.Module):
     """
-        Base class (for LLMs)
+        Base class (for LLMs).
     """
     def __init__(self, config: ExperimentConfig, **kwargs):
         super().__init__()
@@ -34,11 +35,14 @@ class Model(nn.Module):
         self.cache_dir = self.config.env_config.cache_dir
     
     def to(self, device):
+        """
+            Shift model to a particular device.
+        """
         self.model.to(device)
     
     def load(self):
         """
-            Load model onto GPU (and compile, if requested) if not already loaded with device map
+            Load model onto GPU (and compile, if requested) if not already loaded with device map.
         """
         if not self.device_map:
             start = time.time()
@@ -116,6 +120,9 @@ class Model(nn.Module):
         return -np.mean(all_prob)
     
     def load_base_model_and_tokenizer(self, model_kwargs):
+        """
+            Load the base model and tokenizer for a given model name.
+        """
         if self.device is None or self.name is None:
             raise ValueError("Please set self.device and self.name in child class")
 
@@ -123,6 +130,7 @@ class Model(nn.Module):
             print(f'Loading BASE model {self.name}...')
             device_map = self.device_map if self.device_map else 'cpu'
             if "silo" in self.name or "balanced" in self.name:
+                from utils.transformers.model import OpenLMforCausalLM
                 model = OpenLMforCausalLM.from_pretrained(
                     self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
                 # Extract the model from the model wrapper so we dont need to call model.model
@@ -163,6 +171,9 @@ class Model(nn.Module):
         return model, tokenizer
     
     def load_model_properties(self):
+        """
+            Load model properties, such as max length and stride.
+        """
          # TODO: getting max_length of input could be more generic
         if "silo" in self.name or "balanced" in self.name:
             self.max_length = self.model.model.seq_len
