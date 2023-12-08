@@ -264,7 +264,6 @@ def run_blackbox_attacks(data, target_model, ref_models, config, n_samples=None,
     predictions = defaultdict(lambda: defaultdict(list))
     for classification, result in results.items():
         for r in result:
-            print(r.keys())
             samples[classification].append(r["sample"])
             for attack, scores in r.items():
                 if attack != "sample" and attack != "detokenized":
