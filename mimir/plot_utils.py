@@ -1,6 +1,7 @@
 """
-    Utilities related to plotting
+    Utilities related to plotting.
 """
+
 import matplotlib.pyplot as plt
 # Set high DPI
 plt.rcParams['figure.dpi'] = 300
@@ -14,7 +15,7 @@ COLORS = ["#0072B2", "#009E73", "#D55E00", "#CC79A7", "#F0E442",
 
 def save_roc_curves(experiments, save_folder, model_name, neighbor_model_name: str = None):
     """
-        Save the ROC curve for each experiment, given a list of output dictionaries, one for each experiment, using colorblind-friendly colors
+        Save the ROC curve for each experiment, given a list of output dictionaries, one for each experiment, using colorblind-friendly colors.
     """
     # first, clear plt
     plt.clf()
@@ -57,6 +58,9 @@ def save_roc_curves(experiments, save_folder, model_name, neighbor_model_name: s
 
 
 def save_f1_histogram(f1_scores, save_folder):
+    """
+        Function for saving F1-score histograms.
+    """
     plt.hist(f1_scores, bins=20, edgecolor='black', alpha=0.7)
     plt.xlabel('F1 Score')
     plt.ylabel('Frequency')
@@ -67,7 +71,7 @@ def save_f1_histogram(f1_scores, save_folder):
 
 def save_ll_histograms(experiments, save_folder):
     """
-        Save the histogram of log likelihoods in two side-by-side plots, one for real and real perturbed, and one for sampled and sampled perturbed
+        Save the histogram of log likelihoods in two side-by-side plots, one for real and real perturbed, and one for sampled and sampled perturbed.
     """
     # first, clear plt
     plt.clf()
@@ -97,7 +101,7 @@ def save_ll_histograms(experiments, save_folder):
 
 def save_llr_histograms(experiments, save_folder):
     """
-        Save the histograms of log likelihood ratios in two side-by-side plots, one for real and real perturbed, and one for sampled and sampled perturbed
+        Save the histograms of log likelihood ratios in two side-by-side plots, one for real and real perturbed, and one for sampled and sampled perturbed.
     """
     # first, clear plt
     plt.clf()
