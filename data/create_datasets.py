@@ -59,6 +59,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
 
+    n_samples = args.n_samples * 10 if args.tokenize else args.n_samples
+
     output_dir = args.benchmark_dir
     if args.ngram_metadata:
         output_dir = os.path.join(output_dir, f"{args.min_ngram_overlap}-{args.max_ngram_overlap}")
@@ -80,8 +82,11 @@ if __name__ == "__main__":
         ngram_inclusion = [np.array(in0[:200]) | np.array(in1[:200]) for in0, in1 in tqdm(zip(shard_0["ngram_inclusion"], shard_1["ngram_inclusion"]))]
         ngram_inclusion_full = [np.array(in0) | np.array(in1) for in0, in1 in tqdm(zip(shard_0["ngram_inclusion"], shard_1["ngram_inclusion"]))]
         data = [
+            {"text": text, "overlap": np.mean(d), "full_overlap": np.mean(d_full)} for text, d, d_full in tqdm(zip(shard_0["original"], ngram_inclusion, ngram_inclusion_full)) if np.mean(d) < args.max_ngram_overlap and np.mean(d) >= args.min_ngram_overlap
+        ] if args.provided_subset else [
             {"text": text, "meta": meta, "overlap": np.mean(d), "full_overlap": np.mean(d_full)} for text, meta, d, d_full in tqdm(zip(shard_0["original"], shard_0["meta"], ngram_inclusion, ngram_inclusion_full)) if np.mean(d) < args.max_ngram_overlap and np.mean(d) >= args.min_ngram_overlap
         ]
+        
     else:
         for path in args.data_paths:
             data += read_jsonl(path)
@@ -120,7 +125,7 @@ if __name__ == "__main__":
                         sample["text"] = trunc_text
                         truncated_text_samples.append(sample)
                         unique_texts.add(trunc_text)
-                        if len(truncated_raw_samples) == args.n_samples:
+                        if len(truncated_raw_samples) == n_samples:
                             break
             else:
                 # Get docs that have at least max_len * 2 words
@@ -152,7 +157,7 @@ if __name__ == "__main__":
                     if len(substr_samples) > 0:
                         truncated_raw_samples.append({"text": text})
                         truncated_text_samples.append({"substr_samples": substr_samples})
-                        if len(truncated_raw_samples) == args.n_samples:
+                        if len(truncated_raw_samples) == n_samples:
                             break
         print(f"subset: {subset}, number selected: {len(truncated_raw_samples)}")
         if args.tokenize and not args.full_doc:
@@ -162,10 +167,14 @@ if __name__ == "__main__":
             sample_tokens = []
             for sample in tqdm(truncated_raw_samples, desc="Tokenizing samples"):
                 tokens = tokenizer(sample["text"]).input_ids
-                assert len(tokens) >= 300
-                sample_tokens.append(tokens[:300])
+                if len(tokens) >= 300:
+                    sample_tokens.append(tokens[:300])
 
+            print(len(sample_tokens))
+            assert len(sample_tokens) >= args.n_samples
             sample_tokens_np = np.array(sample_tokens)
+            sample_indices = np.random.choice(sample_tokens_np.shape[0], args.n_samples, replace=False)
+            sample_tokens_np = sample_tokens_np[sample_indices,:]
             print(sample_tokens_np.shape)
             np.save(os.path.join(subset_output_dir, f"{args.split}_tk.npy"), sample_tokens_np)
 
