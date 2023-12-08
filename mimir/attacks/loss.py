@@ -1,7 +1,7 @@
 """
     Straight-forward LOSS attack
 """
-from mimir.attacks.base import Attack
+from mimir.attacks.blackbox_attacks import Attack
 
 
 class LOSSAttack(Attack):

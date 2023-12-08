@@ -14,6 +14,89 @@ from typing import List
 from mimir.config import ExperimentConfig
 from mimir.attacks.attack_utils import count_masks, apply_extracted_fills
 from mimir.models import Model
+from mimir.attacks.blackbox_attacks import Attack
+
+
+class NeighborhoodAttack(Attack):
+    def __init__(
+        self,
+        config: ExperimentConfig,
+        target_model: Model,
+        ref_model: Model = None,
+        **kwargs,
+    ):
+        super().__init__(config, target_model, ref_model=None)
+        self.ref_model = self._pick_neighbor_model()
+        assert issubclass(type(self.ref_model), MaskFillingModel), "ref_model must be MaskFillingModel for neighborhood attack"
+
+    def _pick_neighbor_model(self):
+        # mask filling t5 model
+        mask_model = None
+        neigh_config = self.config.neighborhood_config
+        env_config = self.config.env_config
+        if neigh_config:
+            model_kwargs = dict()
+            if not self.config.baselines_only and not neigh_config.random_fills:
+                if env_config.int8:
+                    model_kwargs = dict(
+                        load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
+                    )
+                elif env_config.half:
+                    model_kwargs = dict(torch_dtype=torch.bfloat16)
+                try:
+                    n_positions = (
+                        512  # Should fix later, but for T-5 this is 512 indeed
+                    )
+                    # mask_model.config.n_positions
+                except AttributeError:
+                    n_positions = self.config.max_tokens
+            else:
+                n_positions = self.config.max_tokens
+            tokenizer_kwargs = {
+                "model_max_length": n_positions,
+            }
+
+        if "t5" in self.config.neighborhood_config.model:
+            mask_model = T5Model(
+                self.config,
+                model_kwargs=model_kwargs,
+                tokenizer_kwargs=tokenizer_kwargs,
+            )
+        elif "bert" in self.config.neighborhood_config.model:
+            mask_model = BertModel(self.config)
+        else:
+            raise ValueError(f"Unknown model {self.config.neighborhood_config.model}")
+        return mask_model
+
+    def prepare(self, **kwargs):
+        """
+        Any attack-specific steps (one-time) preparation
+        """
+        print("MOVING MASK MODEL TO GPU...", end="", flush=True)
+        self.ref_model.load()
+
+    def get_neighbors(self, documents, **kwargs):
+        n_perturbations = kwargs.get("n_perturbations", 1)
+        span_length = kwargs.get("span_length", 10)
+        neigh_config = self.config.neighborhood_config
+        ceil_pct = neigh_config.ceil_pct
+        kwargs = {}
+        if type(self.ref_model) == T5Model:
+            kwargs = {
+                "span_length": span_length,
+                "pct": neigh_config.pct_words_masked,
+                "chunk_size": self.config.chunk_size,
+                "ceil_pct": ceil_pct,
+            }
+        kwargs["n_perturbations"] = n_perturbations
+
+        # Generate neighbors
+        neighbors = self.ref_model.generate_neighbors(documents, **kwargs)
+        return neighbors
+
+    def attack(self, documents, **kwargs):
+        # documents here are actually neighbors
+        raise NotImplementedError("attack not implemented")
 
 
 class MaskFillingModel(Model):

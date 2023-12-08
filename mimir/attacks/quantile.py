@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 from transformers import TrainingArguments, Trainer
 from datasets import Dataset
 
-from mimir.attacks.base import Attack
+from mimir.attacks.blackbox_attacks import Attack
 
 
 class CustomTrainer(Trainer):
@@ -45,10 +45,10 @@ class QuantileAttack(Attack):
         """
         alpha (float): Desired FPR
         """
-        super().__init__(self, config, model, None)
-        self.ref_model = QuantileReferenceModel(
+        ref_model = QuantileReferenceModel(
             config, name="Sreevishnu/funnel-transformer-small-imdb"
         )
+        super().__init__(self, config, model, ref_model)
         self.alpha = alpha
 
     def _train_quantile_model(self, dataset):

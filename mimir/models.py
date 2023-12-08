@@ -128,7 +128,7 @@ class Model(nn.Module):
 
         if self.config.openai_config is None:
             print(f'Loading BASE model {self.name}...')
-            device_map = self.device_map if self.device_map else 'cpu'
+            device_map = self.device_map # if self.device_map else 'cpu'
             if "silo" in self.name or "balanced" in self.name:
                 from utils.transformers.model import OpenLMforCausalLM
                 model = OpenLMforCausalLM.from_pretrained(
