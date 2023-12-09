@@ -240,6 +240,7 @@ def run_perturbation_experiment(
 # For instance, makes it easy to know exact source of data
 def run_blackbox_attacks(
     data,
+    ds_objects,
     target_model,
     ref_models,
     config: ExperimentConfig,
@@ -271,45 +272,61 @@ def run_blackbox_attacks(
     neighborhood_attacker.prepare()
 
     results = defaultdict(list)
-    keys_care_about = ['nonmember', 'member']
+    keys_care_about = ["nonmember", "member"]
     for classification in keys_care_about:
         print(f"Running for classification {classification}")
 
         neighbors = None
         if BlackBoxAttacks.NEIGHBOR in attacks and neigh_config.load_from_cache:
             neighbors = data[f"{classification}_neighbors"]
-        collected_neighbors = {n_perturbation:[] for n_perturbation in n_perturbation_list}
+        collected_neighbors = {
+            n_perturbation: [] for n_perturbation in n_perturbation_list
+        }
 
         # For each batch of data
-        for batch in tqdm(range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"):
+        for batch in tqdm(
+            range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"
+        ):
             texts = data[classification][batch * batch_size : (batch + 1) * batch_size]
 
             # For each entry in batch
             for idx in tqdm(range(len(texts))):
                 sample_information = defaultdict(list)
-                sample = (texts[idx][: config.max_substrs] if config.full_doc else [texts[idx]])
+                sample = (
+                    texts[idx][: config.max_substrs]
+                    if config.full_doc
+                    else [texts[idx]]
+                )
 
                 # This will be a list of integers if pretokenized
                 sample_information["sample"] = sample
                 if config.pretokenized:
-                    detokenized_sample = [target_model.tokenizer.decode(s) for s in sample]
+                    detokenized_sample = [
+                        target_model.tokenizer.decode(s) for s in sample
+                    ]
                     sample_information["detokenized"] = detokenized_sample
 
                 # For each substring
-                neighbors_within = {n_perturbation:[] for n_perturbation in n_perturbation_list}
+                neighbors_within = {
+                    n_perturbation: [] for n_perturbation in n_perturbation_list
+                }
                 for i, substr in enumerate(sample):
                     # compute token probabilities for sample
                     s_tk_probs = (
                         target_model.get_probabilities(substr)
                         if not config.pretokenized
-                        else target_model.get_probabilities(detokenized_sample[i], tokens=substr)
+                        else target_model.get_probabilities(
+                            detokenized_sample[i], tokens=substr
+                        )
                     )
 
                     # always compute loss score
                     loss = (
                         target_model.get_ll(substr, probs=s_tk_probs)
                         if not config.pretokenized
-                        else target_model.get_ll(detokenized_sample[i], tokens=substr, probs=s_tk_probs)
+                        else target_model.get_ll(
+                            detokenized_sample[i], tokens=substr, probs=s_tk_probs
+                        )
                     )
                     # TODO: Instead of doing this outside, set config default to always include LOSS
                     sample_information[BlackBoxAttacks.LOSS].append(loss)
@@ -321,14 +338,22 @@ def run_blackbox_attacks(
                             score = (
                                 target_model.get_zlib_entropy(substr, probs=s_tk_probs)
                                 if not config.pretokenized
-                                else target_model.get_zlib_entropy(detokenized_sample[i], tokens=substr, probs=s_tk_probs)
+                                else target_model.get_zlib_entropy(
+                                    detokenized_sample[i],
+                                    tokens=substr,
+                                    probs=s_tk_probs,
+                                )
                             )
                             sample_information[attack].append(score)
                         elif attack == BlackBoxAttacks.MIN_K:
                             score = (
                                 target_model.get_min_k_prob(substr, probs=s_tk_probs)
                                 if not config.pretokenized
-                                else target_model.get_min_k_prob(detokenized_sample[i], tokens=substr, probs=s_tk_probs,)
+                                else target_model.get_min_k_prob(
+                                    detokenized_sample[i],
+                                    tokens=substr,
+                                    probs=s_tk_probs,
+                                )
                             )
                             sample_information[attack].append(score)
                         elif attack == BlackBoxAttacks.NEIGHBOR:
@@ -336,32 +361,57 @@ def run_blackbox_attacks(
                             for n_perturbation in n_perturbation_list:
                                 # Use neighbors if available
                                 if neighbors:
-                                    substr_neighbors = neighbors[n_perturbation][batch * batch_size + idx][i]
+                                    substr_neighbors = neighbors[n_perturbation][
+                                        batch * batch_size + idx
+                                    ][i]
                                 else:
-                                    substr_neighbors = neighborhood_attacker.get_neighbors([substr], n_perturbations=n_perturbation)
+                                    substr_neighbors = (
+                                        neighborhood_attacker.get_neighbors(
+                                            [substr], n_perturbations=n_perturbation
+                                        )
+                                    )
                                     # Collect this neighbor information if neigh_config.dump_cache is True
                                     if neigh_config.dump_cache:
-                                        neighbors_within[n_perturbation].append(substr_neighbors)
+                                        neighbors_within[n_perturbation].append(
+                                            substr_neighbors
+                                        )
 
-                                mean_substr_score = np.mean(target_model.get_lls(substr_neighbors))
+                                mean_substr_score = np.mean(
+                                    target_model.get_lls(substr_neighbors)
+                                )
                                 d_based_score = loss - mean_substr_score
 
-                                sample_information[f"{attack}-{n_perturbation}"].append(d_based_score)
-                        
-                if neigh_config.dump_cache:
+                                sample_information[f"{attack}-{n_perturbation}"].append(
+                                    d_based_score
+                                )
+
+                if neigh_config and neigh_config.dump_cache:
                     for n_perturbation in n_perturbation_list:
-                        collected_neighbors[n_perturbation].append(neighbors_within[n_perturbation])
+                        collected_neighbors[n_perturbation].append(
+                            neighbors_within[n_perturbation]
+                        )
 
                 # Add the scores we collected for each sample for each
                 # attack into to respective list for its classification
                 results[classification].append(sample_information)
-        
-        if neigh_config.dump_cache:
-            # Should ideally use data-obj to know where to dump
-            # TODO : Save (currently implemented using ds object)
-            # collected_neighbors is what we care about (for saving)
-            # and should correspond to neighbors when loaded
-            exit(0)
+
+        if neigh_config and neigh_config.dump_cache:
+            ds_obj_use = ds_objects[classification]
+
+            # Save p_member_text and p_nonmember_text (Lists of strings) to cache
+            ds_obj_use.dump_neighbors(
+                results[classification],
+                train=True if classification == "member" else False,
+                num_neighbors=n_perturbations,
+                model=neigh_config.model,
+                in_place_swap=in_place_swap,
+            )
+
+    if neigh_config and neigh_config.dump_cache:
+        print(
+            "Data dumped! Please re-run with load_from_cache set to True in neigh_config"
+        )
+        exit(0)
 
     # Perform reference-based attacks
     if BlackBoxAttacks.REFERENCE_BASED in attacks:
@@ -872,16 +922,19 @@ if __name__ == "__main__":
     if config.token_frequency_map is not None:
         print("loading tk freq map")
         tk_freq_map = pickle.load(open(config.token_frequency_map, "rb"))
-    
+
     # Add neighborhood-related data entries to 'data'
     data["nonmember_neighbors"] = neighbors_nonmember
     data["member_neighbors"] = neighbors_member
+
+    ds_objects = {"nonmember": data_obj_nonmem, "member": data_obj_mem}
 
     outputs = []
     if config.blackbox_attacks is not None:
         # perform blackbox attacks
         blackbox_outputs = run_blackbox_attacks(
             data,
+            ds_objects=ds_objects,
             target_model=base_model,
             ref_models=ref_models,
             config=config,
