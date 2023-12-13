@@ -399,13 +399,15 @@ def run_blackbox_attacks(
             ds_obj_use = ds_objects[classification]
 
             # Save p_member_text and p_nonmember_text (Lists of strings) to cache
-            ds_obj_use.dump_neighbors(
-                results[classification],
-                train=True if classification == "member" else False,
-                num_neighbors=n_perturbations,
-                model=neigh_config.model,
-                in_place_swap=in_place_swap,
-            )
+            # For each perturbation
+            for n_perturbation in n_perturbation_list:
+                ds_obj_use.dump_neighbors(
+                    collected_neighbors[n_perturbation],
+                    train=True if classification == "member" else False,
+                    num_neighbors=n_perturbation,
+                    model=neigh_config.model,
+                    in_place_swap=in_place_swap,
+                )
 
     if neigh_config and neigh_config.dump_cache:
         print(

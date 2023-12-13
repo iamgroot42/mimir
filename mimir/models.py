@@ -240,7 +240,7 @@ class EvalModel(Model):
         self.name = 'roberta-base-openai-detector'
         self.model = transformers.AutoModelForSequenceClassification.from_pretrained(self.name, cache_dir=self.cache_dir).to(self.device)
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(self.name, cache_dir=self.cache_dir)
- 
+
     @torch.no_grad()
     def get_preds(self, data):
         batch_size = self.config.batch_size
@@ -259,7 +259,7 @@ class LanguageModel(Model):
     def __init__(self, config: ExperimentConfig, **kwargs):
         super().__init__(config, **kwargs)
         self.device = self.config.env_config.device
-        self.device_map = self.config.env_config.device_map        
+        self.device_map = self.config.env_config.device_map
         # Use provided name (if provided)
         # Relevant for scoring-model scenario
         self.name = self.kwargs.get('name', self.config.base_model)
@@ -274,8 +274,7 @@ class LanguageModel(Model):
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
         self.load_model_properties()
-        
-    
+
     @torch.no_grad()
     def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None):
         """

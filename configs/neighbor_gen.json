@@ -9,8 +9,9 @@
     "output_name": "neighbor_gen",
     "specific_source": "ArXiv",
     "n_samples": 1000,
-    "baselines_only": false,
-    "skip_baselines": true,
+    "blackbox_attacks": [
+        "ne"
+    ],
     "ref_config": {
         "models": [
             "EleutherAI/pythia-70m",
