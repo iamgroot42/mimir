@@ -376,14 +376,17 @@ def run_blackbox_attacks(
                                             substr_neighbors
                                         )
 
-                                mean_substr_score = np.mean(
-                                    target_model.get_lls(substr_neighbors)
-                                )
-                                d_based_score = loss - mean_substr_score
+                                if not neigh_config.dump_cache:
+                                    # Only evaluate neighborhood attack when not caching neighbors
+                                    mean_substr_score = target_model.get_lls(substr_neighbors)
+                                    # np.mean(
+                                    #     target_model.get_lls(substr_neighbors)
+                                    # )
+                                    d_based_score = loss - mean_substr_score
 
-                                sample_information[f"{attack}-{n_perturbation}"].append(
-                                    d_based_score
-                                )
+                                    sample_information[f"{attack}-{n_perturbation}"].append(
+                                        d_based_score
+                                    )
 
                 if neigh_config and neigh_config.dump_cache:
                     for n_perturbation in n_perturbation_list:

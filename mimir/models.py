@@ -319,19 +319,25 @@ class LanguageModel(Model):
         # return [self.get_ll(text) for text in texts]
         tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
         labels = tokenized.input_ids
-        batch_size = 25
+        total_size = labels.shape[0]
+        batch_size = 15
         losses = []
-        for i in range(0, labels.shape[0], batch_size):
+        for i in range(0, total_size, batch_size):
             label_batch = labels[i:i+batch_size].to(self.device)
-            output = self.model(label_batch, labels=label_batch)
-            logits = output.logits
-            # Shift so that tokens < n predict n
-            shift_logits = logits[..., :-1, :].contiguous()
-            shift_logits = torch.transpose(shift_logits, 1, 2)
-            shift_labels = label_batch[..., 1:].contiguous()
-            loss = F.cross_entropy(input=shift_logits, target=shift_labels, reduction='none').mean(dim=1)
-            losses.extend(loss.tolist())
-        return losses
+            output = self.model(label_batch, labels=label_batch, return_dict=False)
+            loss = output[0]
+            # logits = output.logits
+            # # Shift so that tokens < n predict n
+            # shift_logits = logits[..., :-1, :].contiguous()
+            # shift_logits = torch.transpose(shift_logits, 1, 2)
+            # shift_labels = label_batch[..., 1:].contiguous()
+            # loss = F.cross_entropy(input=shift_logits, target=shift_labels)#, reduction='none').mean(dim=1)
+            losses.append(loss.item() * batch_size)
+            # del label_batch
+            # del shift_logits
+            del label_batch
+            del output
+        return np.sum(losses) / total_size
     
     @torch.no_grad()
     def get_min_k_prob(self, text: str, tokens=None, probs=None, k=.2, window=1, stride=1):
