@@ -1,5 +1,8 @@
 # MIMIR
 
+<img src="https://github.com/iamgroot42/mimir/blob/master/assets/logo.png?raw=true" alt="mimir logo">
+
+
 MIMIR- Python package for measuring memorization in LLMs. 
 
 ## Instructions
