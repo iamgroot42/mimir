@@ -1,0 +1,365 @@
+{
+    "19900_20000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5459632678845763,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.53077990267575,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5479541429541787,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5498362988491218,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "29900_30000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5477245610872523,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5473948005704861,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5620211308062854,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5675293623483089,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.018
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "39900_40000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5430217434069473,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5348663992168227,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5503417752792945,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.558338319551843,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "49900_50000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5511489553120699,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.015
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5403183405103688,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5413520776819171,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5531409644362653,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.007
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "59900_60000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5533968471205931,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.014
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5425901485906527,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5742884389680885,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.018
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5793868477406188,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.028
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "69900_70000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5518892270740889,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.017
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5664813378436604,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5778835820738969,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.007
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5862563218166311,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.006
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "79900_80000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5447772078979385,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5588459189632292,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5703465499973452,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.581381005125618,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "89900_90000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5686970849759224,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5533485896323487,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5677590294397391,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5772482676092014,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "900_1000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5324340805422274,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5386525406375366,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5503201501567958,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.553577345624424,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "98900_99000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6143125091078897,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.026
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5937626034484377,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.008
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5960107257303732,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6084531105400931,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ],
+    "9900_10000_pile": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5448744811311819,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5213171177957372,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.008
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5525322655848786,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.005
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5571899668635197,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.007
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        }
+    ]
+}

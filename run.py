@@ -262,7 +262,7 @@ def run_blackbox_attacks(
     runnable_attacks = []
     for a in attacks:
         if a not in implemented_blackbox_attacks:
-            print(f"Attack {attack} not implemented, will be ignored")
+            print(f"Attack {a} not implemented, will be ignored")
             pass
 
         runnable_attacks.append(a)

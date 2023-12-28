@@ -1,0 +1,1710 @@
+{
+    "arxiv_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5573450649773137,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.016
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5574396884859023,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5515768138389814,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5710471660950781,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.02
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5729292817665314,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5647113202767537,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5486360946967531,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5436665334702675,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.006
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5403564204879429,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.008
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5605763210438545,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.014
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5616708423655139,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5554347902368222,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.565402909460162,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.018
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.565913135856217,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5591246160943946,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "arxiv_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7247613202547641,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.012,
+                    "0.01": 0.03
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.772718818946593,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.048
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7696683161694332,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.052
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7328852477061857,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.01,
+                    "0.01": 0.032
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7860965084270237,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.068
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7799764450995421,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.062
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7136942352501944,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.03
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.748887917457245,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.028
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7456874363818004,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008,
+                    "0.01": 0.046
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7254154765539353,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008,
+                    "0.01": 0.028
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7771514307391105,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.058
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7721621154729928,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.04
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7286844373889828,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.01,
+                    "0.01": 0.03
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7800638099711141,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.062
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7760775030342193,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.052
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "dm_mathematics_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5063120840992132,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.011583011583011582
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6754729251338601,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002574002574002574,
+                    "0.01": 0.028314028314028315
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6462958558152879,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.010296010296010296
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5014995731144098,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.015444015444015444
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6746495272188942,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006435006435006435,
+                    "0.01": 0.032175032175032175
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6470700761569657,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.009009009009009009
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.51650416122976,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002574002574002574,
+                    "0.01": 0.018018018018018018
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6795876336540443,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002574002574002574,
+                    "0.01": 0.03088803088803089
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.646365718877179,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009009009009009009
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5025849724940042,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.01287001287001287
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6740030257940628,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.009009009009009009,
+                    "0.01": 0.03346203346203346
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6467162451364838,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.011583011583011582
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5017059016627329,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.010296010296010296
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6741649583776131,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007722007722007722,
+                    "0.01": 0.03088803088803089
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6465837208583703,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001287001287001287,
+                    "0.01": 0.010296010296010296
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "dm_mathematics_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7905747020585627,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011235955056179775,
+                    "0.01": 0.011235955056179775
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.9267065805332254,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.1797752808988764,
+                    "0.01": 0.1797752808988764
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8084236345284453,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.16853932584269662,
+                    "0.01": 0.16853932584269662
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7732946387685067,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011235955056179775,
+                    "0.01": 0.011235955056179775
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.9191165703435584,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.15730337078651685,
+                    "0.01": 0.15730337078651685
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8111621383097191,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.15730337078651685,
+                    "0.01": 0.15730337078651685
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.8009535951570254,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011235955056179775,
+                    "0.01": 0.011235955056179775
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.941799860302614,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0449438202247191,
+                    "0.01": 0.0449438202247191
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8160735897718201,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.11235955056179775,
+                    "0.01": 0.11235955056179775
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7781386678329435,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011235955056179775,
+                    "0.01": 0.011235955056179775
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.9199453412737862,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.1797752808988764,
+                    "0.01": 0.1797752808988764
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8106935218662027,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.16853932584269662,
+                    "0.01": 0.16853932584269662
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7796293563946604,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011235955056179775,
+                    "0.01": 0.011235955056179775
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.9218393740766244,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.15730337078651685,
+                    "0.01": 0.15730337078651685
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8100168121122753,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.15730337078651685,
+                    "0.01": 0.15730337078651685
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "github_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6431920974844344,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.010810810810810811,
+                    "0.01": 0.032432432432432434
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7759645509164579,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.04054054054054054
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8055580345170654,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.00945945945945946,
+                    "0.01": 0.04594594594594595
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6403830953765963,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004054054054054054,
+                    "0.01": 0.04594594594594595
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8015720267200306,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0013513513513513514,
+                    "0.01": 0.05810810810810811
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8286517235113923,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008108108108108109,
+                    "0.01": 0.05
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6703282269074577,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002702702702702703,
+                    "0.01": 0.033783783783783786
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7507891624110087,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.03783783783783784
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7842466229561234,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.012162162162162163,
+                    "0.01": 0.04594594594594595
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6560846845285939,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.010810810810810811,
+                    "0.01": 0.041891891891891894
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8094789624180676,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0013513513513513514,
+                    "0.01": 0.05675675675675676
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8348513475561214,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.012162162162162163,
+                    "0.01": 0.05810810810810811
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6414321944225653,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005405405405405406,
+                    "0.01": 0.0472972972972973
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7946468309538529,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0013513513513513514,
+                    "0.01": 0.05540540540540541
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8218575985586956,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008108108108108109,
+                    "0.01": 0.04864864864864865
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "github_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.700435715953529,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.029850746268656716,
+                    "0.01": 0.07462686567164178
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8583708701614442,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0037313432835820895,
+                    "0.01": 0.17537313432835822
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.8914016781406856,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.014925373134328358,
+                    "0.01": 0.055970149253731345
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6922422762139963,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011194029850746268,
+                    "0.01": 0.08208955223880597
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.877825215797209,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.029850746268656716,
+                    "0.01": 0.22761194029850745
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.9077401872537577,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011194029850746268,
+                    "0.01": 0.05970149253731343
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7234735587500631,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007462686567164179,
+                    "0.01": 0.06343283582089553
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8348938840105933,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011194029850746268,
+                    "0.01": 0.1417910447761194
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.872190315169745,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.022388059701492536,
+                    "0.01": 0.06716417910447761
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.7074079526448639,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.022388059701492536,
+                    "0.01": 0.06716417910447761
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8767881478489905,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0037313432835820895,
+                    "0.01": 0.22014925373134328
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.9039646560676765,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.014925373134328358,
+                    "0.01": 0.05970149253731343
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6940948119599089,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.014925373134328358,
+                    "0.01": 0.07835820895522388
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.8726417262086537,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.018656716417910446,
+                    "0.01": 0.19776119402985073
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.9029518861515855,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.011194029850746268,
+                    "0.01": 0.055970149253731345
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "hackernews_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5044589344602693,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004188481675392671,
+                    "0.01": 0.007329842931937173
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5159249454000285,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0020942408376963353,
+                    "0.01": 0.015706806282722512
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5181042325679893,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0020942408376963353,
+                    "0.01": 0.01780104712041885
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5264638891616937,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0062827225130890054,
+                    "0.01": 0.009424083769633508
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5327200223023818,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004188481675392671,
+                    "0.01": 0.014659685863874346
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5285340502597897,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0031413612565445027,
+                    "0.01": 0.020942408376963352
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.49336701431460633,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012565445026178011
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5033957105963542,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0031413612565445027,
+                    "0.01": 0.01780104712041885
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5112818420773974,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0010471204188481676,
+                    "0.01": 0.018848167539267015
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5152131324644295,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0031413612565445027,
+                    "0.01": 0.008376963350785341
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5227715382978302,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0020942408376963353,
+                    "0.01": 0.012565445026178011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5231835703685273,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0020942408376963353,
+                    "0.01": 0.011518324607329843
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5186708286960134,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005235602094240838,
+                    "0.01": 0.008376963350785341
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5264568937521835,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0031413612565445027,
+                    "0.01": 0.015706806282722512
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5243605359574143,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0020942408376963353,
+                    "0.01": 0.02198952879581152
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "hackernews_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5185446119221652,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0015479876160990713,
+                    "0.01": 0.009287925696594427
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5927026942328878,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0030959752321981426,
+                    "0.01": 0.021671826625386997
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5843263093410068,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0030959752321981426,
+                    "0.01": 0.02321981424148607
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5389969713407282,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0046439628482972135,
+                    "0.01": 0.01238390092879257
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.610222585665008,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006191950464396285,
+                    "0.01": 0.018575851393188854
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5970772436721133,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0046439628482972135,
+                    "0.01": 0.02321981424148607
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5165424781102333,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0015479876160990713,
+                    "0.01": 0.015479876160990712
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5821508726944497,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0046439628482972135,
+                    "0.01": 0.02631578947368421
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.577425706497137,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0015479876160990713,
+                    "0.01": 0.02476780185758514
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5300641245002383,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0015479876160990713,
+                    "0.01": 0.01238390092879257
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6023128121836021,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0030959752321981426,
+                    "0.01": 0.01238390092879257
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5926609680745479,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0030959752321981426,
+                    "0.01": 0.01393188854489164
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5310148092375421,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0046439628482972135,
+                    "0.01": 0.01238390092879257
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6028424461723926,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0046439628482972135,
+                    "0.01": 0.020123839009287926
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5930475560617277,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0030959752321981426,
+                    "0.01": 0.02476780185758514
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pile_cc_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5424485214615906,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5105334162823878,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.022
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5232093824800043,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.007
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5705129526422262,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5335711630527997,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.023
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5423932527522793,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5310861331401718,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5012254553619878,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5136204160664016,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.008
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.541767137662993,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5101132847899147,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.019
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5215474910050996,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5595823006765891,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5257068649007073,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.018
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5354812159662368,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pile_cc_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.537029277389985,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5488596210529826,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5371931019071137,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5701894678187021,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5748807100689725,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5602036260941927,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5322127508559559,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5383744325024286,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5217402594441687,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5365357430806927,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5479753031664647,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5359977945308381,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5608802551102043,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5679989271508864,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5541037761900434,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pubmed_central_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5326647407992404,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5207488644313562,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.01,
+                    "0.01": 0.017
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5253156636923744,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.019
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5432604490057098,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.009
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5338518820037539,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008,
+                    "0.01": 0.014
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.537143073930462,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.024
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5210984478801377,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.014
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5103462089274797,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.516018503871968,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.019
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5342969707419668,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.006
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5247892819314616,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.009,
+                    "0.01": 0.015
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5293349166375155,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.018
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.539263730037982,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5298251778858382,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008,
+                    "0.01": 0.015
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5335187842168528,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.022
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pubmed_central_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5943456397860504,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002036659877800407,
+                    "0.01": 0.014256619144602852
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7838494874261478,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.059063136456211814,
+                    "0.01": 0.08961303462321792
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7728363472014332,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.026476578411405296,
+                    "0.01": 0.09775967413441955
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5691625973988812,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002036659877800407,
+                    "0.01": 0.014256619144602852
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.780335598259292,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.05702647657841141,
+                    "0.01": 0.0814663951120163
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7715717131734929,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.02240325865580448,
+                    "0.01": 0.0814663951120163
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.650795809161385,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.05295315682281059
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7927084832086062,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004073319755600814,
+                    "0.01": 0.07128309572301425
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7802739402868281,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.032586558044806514,
+                    "0.01": 0.05702647657841141
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5818282793398698,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012219959266802444
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7819402797676746,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.06720977596741344,
+                    "0.01": 0.08757637474541752
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7717619681807122,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.02240325865580448,
+                    "0.01": 0.0855397148676171
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.574967267484358,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004073319755600814,
+                    "0.01": 0.012219959266802444
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.7817499861724415,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.06924643584521385,
+                    "0.01": 0.0855397148676171
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.7715453704009569,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.02240325865580448,
+                    "0.01": 0.08961303462321792
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "wikipedia_(en)_ngram_13_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5329973083493986,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5278076876940019,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5241221816531721,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5464416646383075,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.018
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5447424985460136,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5427688292212011,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5200669224880373,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5116417327405007,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5006776476549666,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5407429481875988,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5364863932561276,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.535153023975193,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5409341408834312,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5383545531657881,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.009
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5365554230818729,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.013
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "wikipedia_(en)_ngram_7_<0.2_truncated": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5921731334184749,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.017
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6478556981790343,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6076192724437132,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.603450040347238,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.021
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6657753710939033,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6311572842074106,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.018
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5788480030952184,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.002
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6243137495681635,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5677365428396629,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.016
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.6013114371426548,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6588675597536371,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.02
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6241694583408467,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5996680492229102,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.015
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.6609472236986371,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.6246652805096624,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.02
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ]
+}

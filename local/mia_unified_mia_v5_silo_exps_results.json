@@ -1,0 +1,1310 @@
+{
+    "dm_mathematics_ngram_13_<0.8_truncated": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49292567695168865,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48719984611150574,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.001
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4929810874876139,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.4978993923857672,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_100B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49344313220213065,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.006
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4903203995723673,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4951302092438392,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.49987695772801954,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.018
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4944082923994656,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4868904474751314,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.49313158968088455,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.49951372706815184,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49244507097317164,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4880661804185572,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.004
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.494672898809211,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.014
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.4977620919543997,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.016
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4941454744808909,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4865161019433974,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4925665260299304,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.4962532541804649,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4957511681895445,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.014
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48917923835403526,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.014
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.497734131398254,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.008,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5045027741585757,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49677251598337135,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.49532420978364083,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5050442787281165,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5113125960690379,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.005
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_90B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49489933039456524,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48887215313118804,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.0
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4973003339713219,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.005
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5014803699526486,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.001
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4872118847530696,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.006
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48071320496861714,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.48727622953077365,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.49118418016335724,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.004
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4969134122375577,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.006
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4874821436224584,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.49495255822856005,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5000950289386953,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.002
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4968741637104249,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4855552708812137,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.0
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.49277916665803656,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5000571557190732,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.002
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_300B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.4965598682205353,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48841350674283024,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.003
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4955014918193056,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5027245752094459,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.006
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_350B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.48980115519483425,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.004
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.4834254141276731,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.003
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.4890872127263311,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.015
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.49554175293570574,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.004
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.49010428109033183,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.48327744799796735,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.001
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.48979836953947975,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.4930722119973508,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_unbalanced--bert-temp"
+        }
+    ],
+    "hackernews_ngram_13_<0.8_truncated": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5244697442767277,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.011
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5118957997731267,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5162245961158732,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5214276267893928,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_100B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6124022802215107,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.021
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5610871008419431,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.018
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.59378380636299,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.02
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6377706011506246,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.021
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5420395974631981,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5201553096275076,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5305189878220351,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.013
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5449982168878946,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.64742938492859,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.025
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5824657101592133,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.019
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6256768024989775,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.023
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6704800174426697,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005,
+                    "0.01": 0.025
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6558903513100998,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.022
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5991644155189242,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.022
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6388294920390598,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.015
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6682955458242122,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.023
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5493162838891031,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.017
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5238302230367976,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.017
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5365096139271658,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.015
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5549381573743268,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.015
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.579588117608585,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.018
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.540462384293509,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.014
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5639506343702854,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.013
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5976896793722951,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.022
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_90B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5415827003703996,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.019
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5203746323155584,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.009
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5299647836445308,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.013
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5478238514640342,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.507836064595179,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.006
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5022827518390007,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5034637834898555,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5131255662301619,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5464491674913502,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.017
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5231773374950315,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.013
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5350472593194816,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.016
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5536049476836965,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.54672238869381,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005,
+                    "0.01": 0.018
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5224210988966611,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5335674557892289,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5532220383560521,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.01
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_300B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5535695925634503,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.015
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5251393108199395,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.015
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5370341008121218,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.012
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5572894637774162,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.016
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_350B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5430446078174241,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.016
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5196211598295668,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.014
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5302267899709808,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.021
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5520738779569326,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.021
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5096860664525016,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5030691629233985,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.013
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.501407258992858,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5078507288532359,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.01
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_unbalanced--bert-temp"
+        }
+    ],
+    "sw_github": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5984928424736606,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.053
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6420720736905191,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.051
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6358774672024291,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.036
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6477264808869372,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.037
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_100B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5916536622399987,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.048
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6329465098370531,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.06
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6264291614343898,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.035
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6378179680025592,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.051
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6045530955664513,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.05
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6535884592532851,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.052
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6480196382824579,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.033
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6596127431832911,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.029
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5970804309873095,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.048
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6400325913685958,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.058
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6334255397047566,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.044
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6459629636213725,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.052
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5967678735280204,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.045
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6369503554907865,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.055
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6302349833882258,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.034
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6416981687615786,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.048
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6065127662000945,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.058
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6576834998125547,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.055
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6523464330311567,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.032
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6648255007281206,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.045
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_400B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5938607521885287,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005,
+                    "0.01": 0.054
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.633433263615607,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.058
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6253580046503252,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.042
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6394132482174939,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.045
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v1_1.3B_90B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5770499172894554,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.043
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6160882766944625,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.044
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6076150910589326,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.037
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6193460796116664,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.039
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5773570508490814,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.042
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6164491886398968,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.046
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6083482836085917,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.029
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6195057087724445,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.032
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_200B_unbalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5759894016703133,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.041
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6149541208338276,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.045
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6065216344376998,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.037
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6182309577999987,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.033
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_250B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5750374467103154,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.041
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6150241829913613,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.052
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6071866743935912,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.039
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.617614747486371,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.034
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_300B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5760615835994278,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.04
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6175220808020122,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.046
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6098045988174822,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.038
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.620151247052205,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.039
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_350B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5743097720672325,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.037
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6144044965699168,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.044
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6070224276522797,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.032
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6173334501078891,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.032
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_semibalanced--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5790008506738183,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.039
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6217084906716718,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.049
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6139526476302308,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.03
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6258893106915843,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.049
+                }
+            },
+            "target": "_gscratch_h2lab_sewon_nplm-inference_ckpt_ours-v2_1.3B_400B_unbalanced--bert-temp"
+        }
+    ]
+}
