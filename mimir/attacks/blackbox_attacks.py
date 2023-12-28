@@ -13,6 +13,7 @@ class BlackBoxAttacks(str, Enum):
     ZLIB = "zlib"
     MIN_K = "min_k"
     NEIGHBOR = "ne"
+    QUANTILE = "quantile"
 
 
 # TODO: Move attacks in models into this file as functions

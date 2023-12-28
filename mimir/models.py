@@ -315,12 +315,11 @@ class LanguageModel(Model):
 
     # TODO extend for longer sequences
     @torch.no_grad()
-    def get_lls(self, texts: str):
+    def get_lls(self, texts: str, batch_size: int = 6):
         # return [self.get_ll(text) for text in texts]
         tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
         labels = tokenized.input_ids
         total_size = labels.shape[0]
-        batch_size = 15
         losses = []
         for i in range(0, total_size, batch_size):
             label_batch = labels[i:i+batch_size].to(self.device)
