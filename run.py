@@ -244,8 +244,8 @@ def run_blackbox_attacks(
     target_model,
     ref_models,
     config: ExperimentConfig,
-    n_samples=None,
-    batch_size=50,
+    n_samples: int=None,
+    batch_size: int=50,
 ):
     torch.manual_seed(0)
     np.random.seed(0)
@@ -279,18 +279,21 @@ def run_blackbox_attacks(
         neighbors = None
         if BlackBoxAttacks.NEIGHBOR in attacks and neigh_config.load_from_cache:
             neighbors = data[f"{classification}_neighbors"]
+            print("Loaded neighbors from cache!")
+
         collected_neighbors = {
             n_perturbation: [] for n_perturbation in n_perturbation_list
         }
 
         # For each batch of data
+        # TODO: Batch-size isn't really "batching" data - change later
         for batch in tqdm(
             range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"
         ):
             texts = data[classification][batch * batch_size : (batch + 1) * batch_size]
 
             # For each entry in batch
-            for idx in tqdm(range(len(texts))):
+            for idx in range(len(texts)):
                 sample_information = defaultdict(list)
                 sample = (
                     texts[idx][: config.max_substrs]
@@ -378,10 +381,7 @@ def run_blackbox_attacks(
 
                                 if not neigh_config.dump_cache:
                                     # Only evaluate neighborhood attack when not caching neighbors
-                                    mean_substr_score = target_model.get_lls(substr_neighbors)
-                                    # np.mean(
-                                    #     target_model.get_lls(substr_neighbors)
-                                    # )
+                                    mean_substr_score = target_model.get_lls(substr_neighbors, batch_size=4)
                                     d_based_score = loss - mean_substr_score
 
                                     sample_information[f"{attack}-{n_perturbation}"].append(
@@ -960,7 +960,7 @@ if __name__ == "__main__":
         pass
         # # TODO: incorporate all attacks below into blackbox attack flow (or separate white box attack flow if necessary)
         # # run perturbation experiments
-        # """
+        """
         if (
             neigh_config and not config.pretokenized
         ):  # TODO: not supported for pretokenized text
@@ -985,7 +985,7 @@ if __name__ == "__main__":
                         "w",
                     ) as f:
                         json.dump(output, f)
-        # """
+        """
 
         # # run tokenization attack, if requested
         # if config.tokenization_attack:

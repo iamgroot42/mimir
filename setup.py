@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name="mimir",
-    description='Python package for measuring memorization in LLMs',
-    author='Niloofar Mireshghallah, Anshuman Suri, Michael Duan',
-    author_email='niloofar@cs.washington.edu',
-    version="0.4",
+    description="Python package for measuring memorization in LLMs",
+    author="Anshuman Suri, Michael Duan, Niloofar Mireshghallah",
+    author_email="as9rw@virginia.edu",
+    version="0.5",
     url="https://github.com/iamgroot42/mimir",
     license="MIT",
-    python_requires='>=3.9',
-    packages=['mimir']
+    python_requires=">=3.9",
+    packages=["mimir"],
 )

@@ -40,15 +40,15 @@ To use the exact same member/non-member records, unzip `cache_100_200_1000_512.z
 python run.py --config configs/mi_readme.json
 ```
 
-# Attack implementations
+# Attacks
 
 We include and implement the following attacks, as described in our paper.
-- [Likelihood](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8429311), available as `loss`. Works by simply using the likelihood of the target datapoint as score.
-- [Reference-based](https://arxiv.org/abs/2004.15011), available as `ref`. Normalizes likelihood score with score obtained from a reference model.
-- [Zlib Entropy](https://www.usenix.org/system/files/sec21-carlini-extracting.pdf), available as `zlib`. Uses the zlib compression size of a sample to approximate local difficulty of sample.
-- [Min-k% Prob](https://swj0419.github.io/detect-pretrain.github.io/), available as `min_k`. Uses k% of tokens with minimum likelihood for score computation.
-- [Neighborhood](https://aclanthology.org/2023.findings-acl.719/), available as `ne`. Generates neighbors using auxiliary model and measures change in likelihood.
-- [Quantile](https://neurips.cc/virtual/2023/poster/70232), available as `quantile`. Trains meta-classifier for predicting quantile of loss.
+- [Likelihood](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8429311) (`loss`). Works by simply using the likelihood of the target datapoint as score.
+- [Reference-based](https://arxiv.org/abs/2004.15011) (`ref`). Normalizes likelihood score with score obtained from a reference model.
+- [Zlib Entropy](https://www.usenix.org/system/files/sec21-carlini-extracting.pdf) (`zlib`). Uses the zlib compression size of a sample to approximate local difficulty of sample.
+- [Min-k% Prob](https://swj0419.github.io/detect-pretrain.github.io/) (`min_k`). Uses k% of tokens with minimum likelihood for score computation.
+- [Neighborhood](https://aclanthology.org/2023.findings-acl.719/) (`ne`). Generates neighbors using auxiliary model and measures change in likelihood.
+- [Quantile](https://neurips.cc/virtual/2023/poster/70232) (`quantile`). Trains meta-classifier for predicting quantile of loss.
 
 ## Adding your own attack
 
