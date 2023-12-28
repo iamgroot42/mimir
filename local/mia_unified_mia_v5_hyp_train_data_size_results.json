@@ -1,0 +1,100 @@
+{
+    "c4": [
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5189354629939035,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5255319642983716,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5213563275974152,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "target": "datablations_lm1-1b1-21b-c4seeds_1b121b21bc4seed1_transformers--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.522123269129793,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5245619566780713,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5189927862662725,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "target": "datablations_lm1-2b8-55b-c4-repetitions_2b855b55bc4_transformers--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5255367810995073,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.014
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5287798142988354,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.01
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5232377942246338,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.003,
+                    "0.01": 0.021
+                }
+            },
+            "target": "datablations_lm1-4b2-84b-c4-repetitions_4b284b84bc4_transformers--bert-temp"
+        },
+        {
+            "ref_model_gpt2_lira_ratio_threshold_results.json": {
+                "roc_auc": 0.5202110791959312,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "likelihood_threshold_results.json": {
+                "roc_auc": 0.5250998496529043,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.009
+                }
+            },
+            "zlib_entropy_threshold_results.json": {
+                "roc_auc": 0.5205419485203503,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.008
+                }
+            },
+            "target": "datablations_lm1-8b7-178b-c4-repetitions_8b7178b178b_transformers--bert-temp"
+        }
+    ]
+}

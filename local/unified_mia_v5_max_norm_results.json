@@ -1,0 +1,210 @@
+{
+    "github": [
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5198004305790048,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5222169176791323,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.017
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5192362030567672,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.014
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5271079503479227,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5209691691430647,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.017
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pile_cc": [
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.50096469930413,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5176980815205023,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.4941524139515445,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.005
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5015845723774806,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5106534014234239,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "pubmed_central": [
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.504845201808894,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.022
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5212779060214211,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.019
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5032221759138564,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.011
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5098611661389909,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.019
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5162135958541945,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.007,
+                    "0.01": 0.022
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ],
+    "wikipedia_(en)": [
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5139932739834361,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.013
+                }
+            },
+            "target": "EleutherAI_pythia-1.4b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5230301877630578,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "target": "EleutherAI_pythia-12b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5057494294856476,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.008
+                }
+            },
+            "target": "EleutherAI_pythia-160m-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5232137273108403,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.02
+                }
+            },
+            "target": "EleutherAI_pythia-2.8b-deduped--bert-temp"
+        },
+        {
+            "max_norm_results.json": {
+                "roc_auc": 0.5208667280142748,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "target": "EleutherAI_pythia-6.9b-deduped--bert-temp"
+        }
+    ]
+}

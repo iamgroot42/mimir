@@ -1,0 +1,159 @@
+{
+    "c4": [
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5713491344965405,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.032
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5409664958684822,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5510667818357299,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.013
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.560082358394698,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.008
+                }
+            },
+            "target": "_gscratch_h2lab_micdun_datablations_lm1-2b8-55b-c4-repetitions_2b855b14bc4_transformers--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5356203768508394,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.015
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.525365482270398,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.01
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5322267238323668,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.01
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5374479518970736,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.003
+                }
+            },
+            "target": "_gscratch_h2lab_micdun_datablations_lm1-2b8-55b-c4-repetitions_2b855b28bc4_transformers--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.7517083330018337,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.069,
+                    "0.01": 0.173
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.6273324612955428,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.02
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.6602271225857762,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.004,
+                    "0.01": 0.022
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.6883875826100581,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.006,
+                    "0.01": 0.033
+                }
+            },
+            "target": "_gscratch_h2lab_micdun_datablations_lm1-2b8-55b-c4-repetitions_2b855b4bc4_transformers--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.5207451672631266,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.007
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5189794952236796,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.009
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5245619566780713,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.007
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.5309273493371996,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.0,
+                    "0.01": 0.002
+                }
+            },
+            "target": "_gscratch_h2lab_micdun_datablations_lm1-2b8-55b-c4-repetitions_2b855b55bc4_transformers--bert-temp"
+        },
+        {
+            "ref-gpt2_results.json": {
+                "roc_auc": 0.6088218511377524,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.005,
+                    "0.01": 0.042
+                }
+            },
+            "zlib_results.json": {
+                "roc_auc": 0.5557319321476316,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.001,
+                    "0.01": 0.011
+                }
+            },
+            "loss_results.json": {
+                "roc_auc": 0.5708788975218747,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.015
+                }
+            },
+            "min_k_results.json": {
+                "roc_auc": 0.587850321869943,
+                "tpr_at_low_fpr": {
+                    "0.001": 0.002,
+                    "0.01": 0.012
+                }
+            },
+            "target": "_gscratch_h2lab_micdun_datablations_lm1-2b8-55b-c4-repetitions_2b855b9bc4_transformers--bert-temp"
+        }
+    ]
+}

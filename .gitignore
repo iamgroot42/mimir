@@ -16,7 +16,7 @@ models/*
 data/*/
 
 # Ignore local helper scripts
-local/
+# local/
 
 # Logs (from cluster runs)
 logs/*
