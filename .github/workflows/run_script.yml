@@ -1,0 +1,19 @@
+name: Regenerate documentation on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Script
+        run: |
+          chmod +x pre_push_script.sh
+          pre_push_script.sh
