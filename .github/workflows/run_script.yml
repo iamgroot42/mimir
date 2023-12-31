@@ -15,5 +15,5 @@ jobs:
 
       - name: Run Script
         run: |
-          chmod +x pre_push_script.sh
-          pre_push_script.sh
+          chmod +x .scripts/documentation.sh
+          ./.scripts/documentation.sh
