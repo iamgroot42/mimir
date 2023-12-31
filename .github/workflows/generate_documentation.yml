@@ -1,19 +1,36 @@
-name: Regenerate documentation on push
+name: Generate and Deploy Documentation
 
 on:
   push:
     branches:
-      - main
+      - main  # or your default branch
 
 jobs:
-  run-script:
+  build-documentation:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Run Script
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'  # Specify your Python version
+
+      - name: Install pdoc
+        run: pip install pdoc3  # Install pdoc or pdoc3
+
+      - name: Generate Documentation
         run: |
-          chmod +x .scripts/documentation.sh
-          ./.scripts/documentation.sh
+          pdoc --force --template-dir templates -o docs --html mimir
+          mv docs/mimir/* docs/
+          rm -r docs/mimir
+
+      - name: Commit and Push Documentation
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Actions"
+          git add docs/
+          git commit -m "Update documentation" -a || exit 0  # Exit if nothing to commit
+          git push
