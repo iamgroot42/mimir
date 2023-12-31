@@ -20,6 +20,9 @@ jobs:
 
       - name: Install pdoc
         run: pip install pdoc3  # Install pdoc or pdoc3
+      
+      - name: List directory structure
+        run: ls -lR
 
       - name: Generate Documentation
         run: |
