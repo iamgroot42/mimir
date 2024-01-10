@@ -9,8 +9,9 @@ jobs:
   setup-environment:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/setup_env.yml
+    - uses: actions/checkout@v3
+    - name: Set up environment
+      uses: ./.github/workflows/setup_env.yml
 
   build-documentation:
     runs-on: ubuntu-latest
