@@ -4,6 +4,9 @@
 
 MIMIR - Python package for measuring memorization in LLMs. 
 
+[![Tests](https://github.com/iamgroot42/mimir/actions/workflows/test.yml/badge.svg)](https://github.com/iamgroot42/mimir/actions/workflows/test.yml)
+[![Documentation](https://github.com/iamgroot42/mimir/actions/workflows/documentation.yml/badge.svg)](https://github.com/iamgroot42/mimir/actions/workflows/documentation.yml)
+
 ## Instructions
 
 First install the python dependencies
