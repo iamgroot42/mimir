@@ -6,18 +6,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [3.9, 3.10]
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.9'  # Specify your Python version
 
       - name: Install pdoc
         run: pip install pdoc3  # Install pdoc or pdoc3

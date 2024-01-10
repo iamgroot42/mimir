@@ -5,14 +5,15 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from simple_parsing.helpers import Serializable, field
-from mimir.utils import CACHE_PATH, DATA_SOURCE
+from mimir.utils import get_cache_path, get_data_source
 
 
 @dataclass
 class ReferenceConfig(Serializable):
     """
-        Config for attacks that use reference models.
+    Config for attacks that use reference models.
     """
+
     models: List[str]
     """Reference model names"""
 
@@ -20,8 +21,9 @@ class ReferenceConfig(Serializable):
 @dataclass
 class NeighborhoodConfig(Serializable):
     """
-        Config for neighborhood attack
+    Config for neighborhood attack
     """
+
     model: str
     """Mask-filling model"""
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -35,7 +37,7 @@ class NeighborhoodConfig(Serializable):
     """Swap out token in original text with neighbor token, instead of re-generating text"""
     pct_swap_bert: Optional[float] = 0.05
     """Percentage of tokens per neighbor that are different from the original text"""
-    neighbor_strategy: Optional[str] = 'deterministic'
+    neighbor_strategy: Optional[str] = "deterministic"
     """Strategy for generating neighbors. One of ['deterministic', 'random']. Deterministic uses only one-word neighbors"""
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
@@ -65,17 +67,18 @@ class NeighborhoodConfig(Serializable):
 @dataclass
 class EnvironmentConfig(Serializable):
     """
-        Config for environment-specific parameters
+    Config for environment-specific parameters
     """
+
     cache_dir: Optional[str] = None
     """Path to cache directory"""
     data_source: Optional[str] = None
     """Path where data is stored"""
-    device: Optional[str] = 'cuda:1'
+    device: Optional[str] = "cuda:1"
     """Device (GPU) to load main model on"""
     device_map: Optional[str] = None
     """Configuration for device map if needing to split model across gpus"""
-    device_aux: Optional[str] = 'cuda:0'
+    device_aux: Optional[str] = "cuda:0"
     """Device (GPU) to load any auxiliary model(s) on"""
     compile: Optional[bool] = True
     """Compile models?"""
@@ -83,21 +86,23 @@ class EnvironmentConfig(Serializable):
     """Use int8 quantization?"""
     half: Optional[bool] = False
     """Use half precision?"""
-    results: Optional[str] = 'results'
+    results: Optional[str] = "results"
     """Path for saving final results"""
-    tmp_results: Optional[str] = 'tmp_results'
+    tmp_results: Optional[str] = "tmp_results"
 
     def __post_init__(self):
         if self.cache_dir is None:
-            self.cache_dir = CACHE_PATH
+            self.cache_dir = get_cache_path()
         if self.data_source is None:
-            self.data_source = DATA_SOURCE
+            self.data_source = get_data_source()
+
 
 @dataclass
 class OpenAIConfig(Serializable):
     """
-        Config for OpenAI calls
+    Config for OpenAI calls
     """
+
     key: str
     """OpenAI API key"""
     model: str
@@ -107,8 +112,9 @@ class OpenAIConfig(Serializable):
 @dataclass
 class ExtractionConfig(Serializable):
     """
-        Config for model-extraction
+    Config for model-extraction
     """
+
     prompt_len: Optional[int] = 30
     """Prompt length"""
 
@@ -116,8 +122,9 @@ class ExtractionConfig(Serializable):
 @dataclass
 class ExperimentConfig(Serializable):
     """
-        Config for attacks
+    Config for attacks
     """
+
     base_model: str
     """Base model name"""
     dataset_member: str
@@ -132,7 +139,9 @@ class ExperimentConfig(Serializable):
     """Path to presampled dataset source for members"""
     presampled_dataset_nonmember: Optional[str] = None
     """Path to presampled dataset source for mpmmembers"""
-    token_frequency_map: Optional[str] = None # TODO: Handling auxiliary data structures
+    token_frequency_map: Optional[
+        str
+    ] = None  # TODO: Handling auxiliary data structures
     """Path to a pre-computed token frequency map"""
     dataset_key: Optional[str] = None
     """Dataset key"""
@@ -140,7 +149,7 @@ class ExperimentConfig(Serializable):
     """Output name for sub-directory. Defaults to nothing"""
     specific_source: Optional[str] = None
     """Specific sub-source to focus on. Only valid for the_pile"""
-    full_doc: Optional[bool] = False # TODO: refactor full_doc design?
+    full_doc: Optional[bool] = False  # TODO: refactor full_doc design?
     """Determines whether MIA will be performed over entire doc or not"""
     max_substrs: Optional[int] = 20
     """If full_doc, determines the maximum number of sample substrs to evaluate on"""
@@ -148,9 +157,13 @@ class ExperimentConfig(Serializable):
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
-    blackbox_attacks: Optional[List[str]] = field(default_factory=lambda: None) # Can replace with "default" attacks if we want
-    """List of attacks to evaluate""" 
-    baselines_only: Optional[bool] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
+    blackbox_attacks: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )  # Can replace with "default" attacks if we want
+    """List of attacks to evaluate"""
+    baselines_only: Optional[
+        bool
+    ] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
     """Evaluate only baselines?"""
     tokenization_attack: Optional[bool] = False
     """Run tokenization attack?"""
@@ -204,7 +217,12 @@ class ExperimentConfig(Serializable):
     def __post_init__(self):
         if self.dump_cache and self.load_from_cache:
             raise ValueError("Cannot dump and load cache at the same time")
-        
+
         if self.neighborhood_config:
-            if (self.neighborhood_config.dump_cache or self.neighborhood_config.load_from_cache) and not (self.load_from_cache or self.dump_cache):
-                raise ValueError("Using dump/load for neighborhood cache without dumping/loading main cache does not make sense")
+            if (
+                self.neighborhood_config.dump_cache
+                or self.neighborhood_config.load_from_cache
+            ) and not (self.load_from_cache or self.dump_cache):
+                raise ValueError(
+                    "Using dump/load for neighborhood cache without dumping/loading main cache does not make sense"
+                )
