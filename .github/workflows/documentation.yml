@@ -6,9 +6,13 @@ on:
       - main  # or your default branch
 
 jobs:
-  build-documentation:
+  setup-environment:
     runs-on: ubuntu-latest
     uses: ./.github/workflows/setup_env.yml
+
+  build-documentation:
+    runs-on: ubuntu-latest
+    needs: setup-environment
 
     steps:
       - name: Generate Documentation

@@ -3,10 +3,15 @@ name: Tests
 on: [push, pull_request]
 
 jobs:
-  test:
+  setup-environment:
     runs-on: ubuntu-latest
     uses: ./.github/workflows/setup_env.yml
 
+  test:
+    runs-on: ubuntu-latest
+    needs: setup-environment
+  
+    steps:
       - name: Run tests
         run: |
           pytest
