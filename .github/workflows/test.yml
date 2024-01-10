@@ -4,17 +4,14 @@ on: [push, pull_request]
 
 jobs:
   setup-environment:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up environment
-      uses: ./.github/workflows/setup_env.yml
+    uses: ./.github/workflows/setup_env.yml
+    with:
+      python-version: '3.9'
 
   test:
     runs-on: ubuntu-latest
     needs: setup-environment
-  
+
     steps:
       - name: Run tests
-        run: |
-          pytest
+        run: pytest
