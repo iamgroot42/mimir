@@ -1,0 +1,12 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    uses: ./.github/workflows/setup_env.yml
+
+      - name: Run tests
+        run: |
+          pytest

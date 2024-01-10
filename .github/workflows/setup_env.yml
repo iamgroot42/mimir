@@ -1,9 +1,10 @@
-name: Python Tests
+name: Setup environment
 
-on: [push, pull_request]
+on:
+  workflow_call:
 
 jobs:
-  test:
+  env_setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +24,3 @@ jobs:
           python -m pip install --upgrade pip
           pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
           if [ -f requirements_workflow.txt ]; then pip install -r requirements_workflow.txt; fi
-
-      - name: Run tests
-        run: |
-          pytest
