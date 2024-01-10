@@ -29,6 +29,7 @@ jobs:
 
       - name: Generate Documentation
         run: |
+          rm -r docs/
           pdoc --force --template-dir templates -o docs --html mimir
           mv docs/mimir/* docs/
           rm -r docs/mimir

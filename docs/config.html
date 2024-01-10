@@ -34,14 +34,15 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from simple_parsing.helpers import Serializable, field
-from mimir.utils import CACHE_PATH, DATA_SOURCE
+from mimir.utils import get_cache_path, get_data_source
 
 
 @dataclass
 class ReferenceConfig(Serializable):
     &#34;&#34;&#34;
-        Config for attacks that use reference models.
+    Config for attacks that use reference models.
     &#34;&#34;&#34;
+
     models: List[str]
     &#34;&#34;&#34;Reference model names&#34;&#34;&#34;
 
@@ -49,8 +50,9 @@ class ReferenceConfig(Serializable):
 @dataclass
 class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;
-        Config for neighborhood attack
+    Config for neighborhood attack
     &#34;&#34;&#34;
+
     model: str
     &#34;&#34;&#34;Mask-filling model&#34;&#34;&#34;
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -64,7 +66,7 @@ class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;Swap out token in original text with neighbor token, instead of re-generating text&#34;&#34;&#34;
     pct_swap_bert: Optional[float] = 0.05
     &#34;&#34;&#34;Percentage of tokens per neighbor that are different from the original text&#34;&#34;&#34;
-    neighbor_strategy: Optional[str] = &#39;deterministic&#39;
+    neighbor_strategy: Optional[str] = &#34;deterministic&#34;
     &#34;&#34;&#34;Strategy for generating neighbors. One of [&#39;deterministic&#39;, &#39;random&#39;]. Deterministic uses only one-word neighbors&#34;&#34;&#34;
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
@@ -94,17 +96,18 @@ class NeighborhoodConfig(Serializable):
 @dataclass
 class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;
-        Config for environment-specific parameters
+    Config for environment-specific parameters
     &#34;&#34;&#34;
+
     cache_dir: Optional[str] = None
     &#34;&#34;&#34;Path to cache directory&#34;&#34;&#34;
     data_source: Optional[str] = None
     &#34;&#34;&#34;Path where data is stored&#34;&#34;&#34;
-    device: Optional[str] = &#39;cuda:1&#39;
+    device: Optional[str] = &#34;cuda:1&#34;
     &#34;&#34;&#34;Device (GPU) to load main model on&#34;&#34;&#34;
     device_map: Optional[str] = None
     &#34;&#34;&#34;Configuration for device map if needing to split model across gpus&#34;&#34;&#34;
-    device_aux: Optional[str] = &#39;cuda:0&#39;
+    device_aux: Optional[str] = &#34;cuda:0&#34;
     &#34;&#34;&#34;Device (GPU) to load any auxiliary model(s) on&#34;&#34;&#34;
     compile: Optional[bool] = True
     &#34;&#34;&#34;Compile models?&#34;&#34;&#34;
@@ -112,21 +115,23 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;Use int8 quantization?&#34;&#34;&#34;
     half: Optional[bool] = False
     &#34;&#34;&#34;Use half precision?&#34;&#34;&#34;
-    results: Optional[str] = &#39;results&#39;
+    results: Optional[str] = &#34;results&#34;
     &#34;&#34;&#34;Path for saving final results&#34;&#34;&#34;
-    tmp_results: Optional[str] = &#39;tmp_results&#39;
+    tmp_results: Optional[str] = &#34;tmp_results&#34;
 
     def __post_init__(self):
         if self.cache_dir is None:
-            self.cache_dir = CACHE_PATH
+            self.cache_dir = get_cache_path()
         if self.data_source is None:
-            self.data_source = DATA_SOURCE
+            self.data_source = get_data_source()
+
 
 @dataclass
 class OpenAIConfig(Serializable):
     &#34;&#34;&#34;
-        Config for OpenAI calls
+    Config for OpenAI calls
     &#34;&#34;&#34;
+
     key: str
     &#34;&#34;&#34;OpenAI API key&#34;&#34;&#34;
     model: str
@@ -136,8 +141,9 @@ class OpenAIConfig(Serializable):
 @dataclass
 class ExtractionConfig(Serializable):
     &#34;&#34;&#34;
-        Config for model-extraction
+    Config for model-extraction
     &#34;&#34;&#34;
+
     prompt_len: Optional[int] = 30
     &#34;&#34;&#34;Prompt length&#34;&#34;&#34;
 
@@ -145,8 +151,9 @@ class ExtractionConfig(Serializable):
 @dataclass
 class ExperimentConfig(Serializable):
     &#34;&#34;&#34;
-        Config for attacks
+    Config for attacks
     &#34;&#34;&#34;
+
     base_model: str
     &#34;&#34;&#34;Base model name&#34;&#34;&#34;
     dataset_member: str
@@ -161,7 +168,9 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;Path to presampled dataset source for members&#34;&#34;&#34;
     presampled_dataset_nonmember: Optional[str] = None
     &#34;&#34;&#34;Path to presampled dataset source for mpmmembers&#34;&#34;&#34;
-    token_frequency_map: Optional[str] = None # TODO: Handling auxiliary data structures
+    token_frequency_map: Optional[
+        str
+    ] = None  # TODO: Handling auxiliary data structures
     &#34;&#34;&#34;Path to a pre-computed token frequency map&#34;&#34;&#34;
     dataset_key: Optional[str] = None
     &#34;&#34;&#34;Dataset key&#34;&#34;&#34;
@@ -169,7 +178,7 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;Output name for sub-directory. Defaults to nothing&#34;&#34;&#34;
     specific_source: Optional[str] = None
     &#34;&#34;&#34;Specific sub-source to focus on. Only valid for the_pile&#34;&#34;&#34;
-    full_doc: Optional[bool] = False # TODO: refactor full_doc design?
+    full_doc: Optional[bool] = False  # TODO: refactor full_doc design?
     &#34;&#34;&#34;Determines whether MIA will be performed over entire doc or not&#34;&#34;&#34;
     max_substrs: Optional[int] = 20
     &#34;&#34;&#34;If full_doc, determines the maximum number of sample substrs to evaluate on&#34;&#34;&#34;
@@ -177,9 +186,13 @@ class ExperimentConfig(Serializable):
     &#34;Dump data to cache? Exits program after dumping&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
-    blackbox_attacks: Optional[List[str]] = field(default_factory=lambda: None) # Can replace with &#34;default&#34; attacks if we want
-    &#34;&#34;&#34;List of attacks to evaluate&#34;&#34;&#34; 
-    baselines_only: Optional[bool] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
+    blackbox_attacks: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )  # Can replace with &#34;default&#34; attacks if we want
+    &#34;&#34;&#34;List of attacks to evaluate&#34;&#34;&#34;
+    baselines_only: Optional[
+        bool
+    ] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
     &#34;&#34;&#34;Evaluate only baselines?&#34;&#34;&#34;
     tokenization_attack: Optional[bool] = False
     &#34;&#34;&#34;Run tokenization attack?&#34;&#34;&#34;
@@ -233,10 +246,15 @@ class ExperimentConfig(Serializable):
     def __post_init__(self):
         if self.dump_cache and self.load_from_cache:
             raise ValueError(&#34;Cannot dump and load cache at the same time&#34;)
-        
+
         if self.neighborhood_config:
-            if (self.neighborhood_config.dump_cache or self.neighborhood_config.load_from_cache) and not (self.load_from_cache or self.dump_cache):
-                raise ValueError(&#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;)</code></pre>
+            if (
+                self.neighborhood_config.dump_cache
+                or self.neighborhood_config.load_from_cache
+            ) and not (self.load_from_cache or self.dump_cache):
+                raise ValueError(
+                    &#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;
+                )</code></pre>
 </details>
 </section>
 <section>
@@ -261,17 +279,18 @@ class ExperimentConfig(Serializable):
 <pre><code class="python">@dataclass
 class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;
-        Config for environment-specific parameters
+    Config for environment-specific parameters
     &#34;&#34;&#34;
+
     cache_dir: Optional[str] = None
     &#34;&#34;&#34;Path to cache directory&#34;&#34;&#34;
     data_source: Optional[str] = None
     &#34;&#34;&#34;Path where data is stored&#34;&#34;&#34;
-    device: Optional[str] = &#39;cuda:1&#39;
+    device: Optional[str] = &#34;cuda:1&#34;
     &#34;&#34;&#34;Device (GPU) to load main model on&#34;&#34;&#34;
     device_map: Optional[str] = None
     &#34;&#34;&#34;Configuration for device map if needing to split model across gpus&#34;&#34;&#34;
-    device_aux: Optional[str] = &#39;cuda:0&#39;
+    device_aux: Optional[str] = &#34;cuda:0&#34;
     &#34;&#34;&#34;Device (GPU) to load any auxiliary model(s) on&#34;&#34;&#34;
     compile: Optional[bool] = True
     &#34;&#34;&#34;Compile models?&#34;&#34;&#34;
@@ -279,15 +298,15 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;Use int8 quantization?&#34;&#34;&#34;
     half: Optional[bool] = False
     &#34;&#34;&#34;Use half precision?&#34;&#34;&#34;
-    results: Optional[str] = &#39;results&#39;
+    results: Optional[str] = &#34;results&#34;
     &#34;&#34;&#34;Path for saving final results&#34;&#34;&#34;
-    tmp_results: Optional[str] = &#39;tmp_results&#39;
+    tmp_results: Optional[str] = &#34;tmp_results&#34;
 
     def __post_init__(self):
         if self.cache_dir is None:
-            self.cache_dir = CACHE_PATH
+            self.cache_dir = get_cache_path()
         if self.data_source is None:
-            self.data_source = DATA_SOURCE</code></pre>
+            self.data_source = get_data_source()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -355,8 +374,9 @@ class EnvironmentConfig(Serializable):
 <pre><code class="python">@dataclass
 class ExperimentConfig(Serializable):
     &#34;&#34;&#34;
-        Config for attacks
+    Config for attacks
     &#34;&#34;&#34;
+
     base_model: str
     &#34;&#34;&#34;Base model name&#34;&#34;&#34;
     dataset_member: str
@@ -371,7 +391,9 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;Path to presampled dataset source for members&#34;&#34;&#34;
     presampled_dataset_nonmember: Optional[str] = None
     &#34;&#34;&#34;Path to presampled dataset source for mpmmembers&#34;&#34;&#34;
-    token_frequency_map: Optional[str] = None # TODO: Handling auxiliary data structures
+    token_frequency_map: Optional[
+        str
+    ] = None  # TODO: Handling auxiliary data structures
     &#34;&#34;&#34;Path to a pre-computed token frequency map&#34;&#34;&#34;
     dataset_key: Optional[str] = None
     &#34;&#34;&#34;Dataset key&#34;&#34;&#34;
@@ -379,7 +401,7 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;Output name for sub-directory. Defaults to nothing&#34;&#34;&#34;
     specific_source: Optional[str] = None
     &#34;&#34;&#34;Specific sub-source to focus on. Only valid for the_pile&#34;&#34;&#34;
-    full_doc: Optional[bool] = False # TODO: refactor full_doc design?
+    full_doc: Optional[bool] = False  # TODO: refactor full_doc design?
     &#34;&#34;&#34;Determines whether MIA will be performed over entire doc or not&#34;&#34;&#34;
     max_substrs: Optional[int] = 20
     &#34;&#34;&#34;If full_doc, determines the maximum number of sample substrs to evaluate on&#34;&#34;&#34;
@@ -387,9 +409,13 @@ class ExperimentConfig(Serializable):
     &#34;Dump data to cache? Exits program after dumping&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
-    blackbox_attacks: Optional[List[str]] = field(default_factory=lambda: None) # Can replace with &#34;default&#34; attacks if we want
-    &#34;&#34;&#34;List of attacks to evaluate&#34;&#34;&#34; 
-    baselines_only: Optional[bool] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
+    blackbox_attacks: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )  # Can replace with &#34;default&#34; attacks if we want
+    &#34;&#34;&#34;List of attacks to evaluate&#34;&#34;&#34;
+    baselines_only: Optional[
+        bool
+    ] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
     &#34;&#34;&#34;Evaluate only baselines?&#34;&#34;&#34;
     tokenization_attack: Optional[bool] = False
     &#34;&#34;&#34;Run tokenization attack?&#34;&#34;&#34;
@@ -443,10 +469,15 @@ class ExperimentConfig(Serializable):
     def __post_init__(self):
         if self.dump_cache and self.load_from_cache:
             raise ValueError(&#34;Cannot dump and load cache at the same time&#34;)
-        
+
         if self.neighborhood_config:
-            if (self.neighborhood_config.dump_cache or self.neighborhood_config.load_from_cache) and not (self.load_from_cache or self.dump_cache):
-                raise ValueError(&#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;)</code></pre>
+            if (
+                self.neighborhood_config.dump_cache
+                or self.neighborhood_config.load_from_cache
+            ) and not (self.load_from_cache or self.dump_cache):
+                raise ValueError(
+                    &#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;
+                )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -638,8 +669,9 @@ class ExperimentConfig(Serializable):
 <pre><code class="python">@dataclass
 class ExtractionConfig(Serializable):
     &#34;&#34;&#34;
-        Config for model-extraction
+    Config for model-extraction
     &#34;&#34;&#34;
+
     prompt_len: Optional[int] = 30
     &#34;&#34;&#34;Prompt length&#34;&#34;&#34;</code></pre>
 </details>
@@ -673,8 +705,9 @@ class ExtractionConfig(Serializable):
 <pre><code class="python">@dataclass
 class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;
-        Config for neighborhood attack
+    Config for neighborhood attack
     &#34;&#34;&#34;
+
     model: str
     &#34;&#34;&#34;Mask-filling model&#34;&#34;&#34;
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -688,7 +721,7 @@ class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;Swap out token in original text with neighbor token, instead of re-generating text&#34;&#34;&#34;
     pct_swap_bert: Optional[float] = 0.05
     &#34;&#34;&#34;Percentage of tokens per neighbor that are different from the original text&#34;&#34;&#34;
-    neighbor_strategy: Optional[str] = &#39;deterministic&#39;
+    neighbor_strategy: Optional[str] = &#34;deterministic&#34;
     &#34;&#34;&#34;Strategy for generating neighbors. One of [&#39;deterministic&#39;, &#39;random&#39;]. Deterministic uses only one-word neighbors&#34;&#34;&#34;
     # T-5 specific hyper-parameters
     span_length: Optional[int] = 2
@@ -804,8 +837,9 @@ class NeighborhoodConfig(Serializable):
 <pre><code class="python">@dataclass
 class OpenAIConfig(Serializable):
     &#34;&#34;&#34;
-        Config for OpenAI calls
+    Config for OpenAI calls
     &#34;&#34;&#34;
+
     key: str
     &#34;&#34;&#34;OpenAI API key&#34;&#34;&#34;
     model: str
@@ -845,8 +879,9 @@ class OpenAIConfig(Serializable):
 <pre><code class="python">@dataclass
 class ReferenceConfig(Serializable):
     &#34;&#34;&#34;
-        Config for attacks that use reference models.
+    Config for attacks that use reference models.
     &#34;&#34;&#34;
+
     models: List[str]
     &#34;&#34;&#34;Reference model names&#34;&#34;&#34;</code></pre>
 </details>
