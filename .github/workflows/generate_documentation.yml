@@ -40,4 +40,4 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add docs/
           git commit -m "Update documentation" -a || exit 0  # Exit if nothing to commit
-          git push
+          git push https://${{ secrets.MIMIR_PAT }}@github.com/${{ github.repository }}.git
