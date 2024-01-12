@@ -109,7 +109,7 @@ class Data:
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None):
         data_split = &#34;train&#34; if train else &#34;test&#34;
         n_samples = self.config.n_samples
 
@@ -219,8 +219,8 @@ class Data:
 
             # If there is mask tokenizer, keep only examples with &lt;= 512 tokens according to mask_tokenizer
             # this step has the extra effect of removing examples with low-quality/garbage content
-            if tokenizer:
-                tokenized_data = tokenizer(data)
+            if mask_tokenizer:
+                tokenized_data = mask_tokenizer(data)
                 new_data = []
                 for i, (x, y) in enumerate(zip(data, tokenized_data[&#34;input_ids&#34;])):
                     if len(y) &lt;= self.config.max_tokens:
@@ -241,7 +241,7 @@ class Data:
                         second_last_span = token_truncated_word_spans[-2]
                         x = x[: second_last_span[1]]
 
-                        new_len = len(tokenizer(x)[&#34;input_ids&#34;])
+                        new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                         assert new_len &lt;= self.config.max_tokens
                         new_data.append(x)
             data = new_data
@@ -535,7 +535,7 @@ def drop_last_word(text):
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None):
         data_split = &#34;train&#34; if train else &#34;test&#34;
         n_samples = self.config.n_samples
 
@@ -645,8 +645,8 @@ def drop_last_word(text):
 
             # If there is mask tokenizer, keep only examples with &lt;= 512 tokens according to mask_tokenizer
             # this step has the extra effect of removing examples with low-quality/garbage content
-            if tokenizer:
-                tokenized_data = tokenizer(data)
+            if mask_tokenizer:
+                tokenized_data = mask_tokenizer(data)
                 new_data = []
                 for i, (x, y) in enumerate(zip(data, tokenized_data[&#34;input_ids&#34;])):
                     if len(y) &lt;= self.config.max_tokens:
@@ -667,7 +667,7 @@ def drop_last_word(text):
                         second_last_span = token_truncated_word_spans[-2]
                         x = x[: second_last_span[1]]
 
-                        new_len = len(tokenizer(x)[&#34;input_ids&#34;])
+                        new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                         assert new_len &lt;= self.config.max_tokens
                         new_data.append(x)
             data = new_data
@@ -771,7 +771,7 @@ def drop_last_word(text):
 </details>
 </dd>
 <dt id="mimir.data_utils.Data.load"><code class="name flex">
-<span>def <span class="ident">load</span></span>(<span>self, train: bool, tokenizer=None)</span>
+<span>def <span class="ident">load</span></span>(<span>self, train: bool, mask_tokenizer=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -779,7 +779,7 @@ def drop_last_word(text):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load(self, train: bool, tokenizer=None):
+<pre><code class="python">def load(self, train: bool, mask_tokenizer=None):
     data_split = &#34;train&#34; if train else &#34;test&#34;
     n_samples = self.config.n_samples
 
@@ -889,8 +889,8 @@ def drop_last_word(text):
 
         # If there is mask tokenizer, keep only examples with &lt;= 512 tokens according to mask_tokenizer
         # this step has the extra effect of removing examples with low-quality/garbage content
-        if tokenizer:
-            tokenized_data = tokenizer(data)
+        if mask_tokenizer:
+            tokenized_data = mask_tokenizer(data)
             new_data = []
             for i, (x, y) in enumerate(zip(data, tokenized_data[&#34;input_ids&#34;])):
                 if len(y) &lt;= self.config.max_tokens:
@@ -911,7 +911,7 @@ def drop_last_word(text):
                     second_last_span = token_truncated_word_spans[-2]
                     x = x[: second_last_span[1]]
 
-                    new_len = len(tokenizer(x)[&#34;input_ids&#34;])
+                    new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                     assert new_len &lt;= self.config.max_tokens
                     new_data.append(x)
         data = new_data
