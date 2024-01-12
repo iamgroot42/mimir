@@ -1,5 +1,5 @@
 #!/bin/bash
-version=unified_mia_v5_hyp_num_epochs
+version=unified_mia_v5_hyp_num_epochs_ne
 
 for model in "2b855b55bc4" "2b855b28bc4" "2b855b14bc4" "2b855b9bc4" "2b855b4bc4"
 do
@@ -10,7 +10,6 @@ do
             --base_model "/gscratch/h2lab/micdun/datablations/lm1-2b8-55b-c4-repetitions/$model/transformers" \
             --specific_source $subset \
             --output_name $version \
-            --blackbox_attacks loss+ref+zlib+min_k \
             --baselines_only true
     done
 done

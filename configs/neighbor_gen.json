@@ -14,7 +14,6 @@
     ],
     "ref_config": {
         "models": [
-            "EleutherAI/pythia-70m",
             "gpt2"
         ]
     },

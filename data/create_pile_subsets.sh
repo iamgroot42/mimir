@@ -1,16 +1,15 @@
 #!/bin/bash
-declare -A split_to_data=( [val]=/data/pile/val.jsonl [test]=/data/pile/test.jsonl [train]="/data/pile/train/00.jsonl /data/pile/train/01.jsonl" )
+declare -A split_to_data=( [test]=/data/pile/test.jsonl [train]="/data/pile/train/00.jsonl /data/pile/train/01.jsonl" ) #[val]=/data/pile/val.jsonl
 
 for split in ${!split_to_data[@]};
 do 
     echo "creating $split subsets"
     python create_datasets.py \
         ${split_to_data[$split]} \
-        --benchmark_dir doc_level_mia_pile_subsets/ \
+        --benchmark_dir full_pile/ \
+        --provided_subset full_pile_10000 \
         --split $split \
-        --n_samples 100 \
-        --full_doc
-
+        --n_samples 10000
 done
 
 
@@ -39,18 +38,30 @@ done
 #     --split test
 
 # python create_datasets.py \
-#     /gscratch/h2lab/micdun/mimir/data/temporal_arxiv/arxiv_by_ts/arxiv_2021-02.jsonl \
-#     --benchmark_dir temporal_arxiv/arxiv_2021-02/ \
-#     --provided_subset arxiv_2021-02 \
-#     --split train
+#     /gscratch/h2lab/micdun/mimir/data/temporal_arxiv/processed_arxiv/arxiv_20210101000000_to_20210201000000.jsonl \
+#     --benchmark_dir temporal_arxiv/arxiv_2021-01/ \
+#     --provided_subset arxiv_2021-01 \
+#     --split test
 
 # python create_datasets.py \
 #     /gscratch/h2lab/micdun/bff/deduped/full_pile/ngram_13/0/test.jsonl.gz \
 #     /gscratch/h2lab/micdun/bff/deduped/full_pile/ngram_13/1/test.jsonl.gz \
 #     --benchmark_dir tokenized_test/ \
 #     --ngram_metadata \
+#     --n_samples 10000 \
 #     --min_len 200 \
 #     --max_ngram_overlap 0.8 \
-#     --provided_subset full_pile \
+#     --provided_subset full_pile_10000 \
 #     --tokenize \
+#     --split test
+
+
+# python create_datasets.py \
+#     /gscratch/h2lab/micdun/bff/deduped/temporal_arxiv/ngram_13/arxiv_2020-06/0/test_raw.jsonl.gz \
+#     /gscratch/h2lab/micdun/bff/deduped/temporal_arxiv/ngram_13/arxiv_2020-06/1/test_raw.jsonl.gz \
+#     --benchmark_dir temporal_arxiv/sampled/ \
+#     --ngram_metadata \
+#     --n_samples 1000 \
+#     --max_ngram_overlap 0.8 \
+#     --provided_subset arxiv_2020-06 \
 #     --split test

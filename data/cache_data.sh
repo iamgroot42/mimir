@@ -1,16 +1,15 @@
 #!/bin/bash
 ngram=7
-for subset in "pile_cc" "github" "wikipedia_(en)" "hackernews" "pubmed_central" "arxiv" "dm_mathematics" "books3"
+for subset in "full_pile"
 do
     echo caching data for $subset
     python run.py \
         --config configs/cache_data.json \
-        --presampled_dataset_member "/gscratch/h2lab/micdun/mimir/data/doc_level_mia_pile_subsets/$subset/train_text.jsonl" \
-        --presampled_dataset_nonmember "/gscratch/h2lab/micdun/mimir/data/doc_level_mia_pile_subsets/0.0-0.8/$subset/test_text.jsonl" \
-        --dataset_key substr_samples \
-        --specific_source ${subset}_sampled_substr \
-        --n_samples 100 \
-        --full_doc true
+        --presampled_dataset_member "/gscratch/h2lab/micdun/mimir/data/full_pile/full_pile_10000/train_raw.jsonl" \
+        --presampled_dataset_nonmember "/gscratch/h2lab/micdun/mimir/data/full_pile/0.0-0.8/full_pile_10000/test_raw.jsonl" \
+        --specific_source $subset \
+        --max_data 10000 \
+        --n_samples 10000
 done
  #"/gscratch/h2lab/micdun/mimir/data/ngram_overlap_thresholded_pile_subsets/truncated+ngram_$ngram/0.0-0.2/$subset/test_raw.jsonl"
 

@@ -135,9 +135,14 @@ class Model(nn.Module):
                     self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
                 # Extract the model from the model wrapper so we dont need to call model.model
             elif "llama" in self.name or "alpaca" in self.name:
+                # TODO: This should be smth specified in config in case user has 
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map="balanced_low_0", cache_dir=self.cache_dir)
                 self.device = 'cuda:1'
+            elif "stablelm" in self.name:
+                # stablelm requires confirmation of running custom code
+                model = transformers.AutoModelForCausalLM.from_pretrained(
+                    self.name, **model_kwargs, trust_remote_code=True, device_map=device_map, cache_dir=self.cache_dir)
             else:
                 model = transformers.AutoModelForCausalLM.from_pretrained(
                     self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)

@@ -74,7 +74,7 @@ class EnvironmentConfig(Serializable):
     """Path to cache directory"""
     data_source: Optional[str] = None
     """Path where data is stored"""
-    device: Optional[str] = "cuda:1"
+    device: Optional[str] = 'cuda:0'
     """Device (GPU) to load main model on"""
     device_map: Optional[str] = None
     """Configuration for device map if needing to split model across gpus"""
