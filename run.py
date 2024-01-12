@@ -244,8 +244,8 @@ def run_blackbox_attacks(
     target_model,
     ref_models,
     config: ExperimentConfig,
-    n_samples: int=None,
-    batch_size: int=50,
+    n_samples: int = None,
+    batch_size: int = 50,
 ):
     torch.manual_seed(0)
     np.random.seed(0)
@@ -381,12 +381,14 @@ def run_blackbox_attacks(
 
                                 if not neigh_config.dump_cache:
                                     # Only evaluate neighborhood attack when not caching neighbors
-                                    mean_substr_score = target_model.get_lls(substr_neighbors, batch_size=15)
+                                    mean_substr_score = target_model.get_lls(
+                                        substr_neighbors, batch_size=15
+                                    )
                                     d_based_score = loss - mean_substr_score
 
-                                    sample_information[f"{attack}-{n_perturbation}"].append(
-                                        d_based_score
-                                    )
+                                    sample_information[
+                                        f"{attack}-{n_perturbation}"
+                                    ].append(d_based_score)
 
                 if neigh_config and neigh_config.dump_cache:
                     for n_perturbation in n_perturbation_list:
@@ -436,9 +438,9 @@ def run_blackbox_attacks(
                                 s = r["detokenized"][i]
                             ref_score = r[BlackBoxAttacks.LOSS][i] - ref_model.get_ll(s)
                             ref_model_scores.append(ref_score)
-                        r[f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"].extend(
-                            ref_model_scores
-                        )
+                        r[
+                            f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
+                        ].extend(ref_model_scores)
 
                 # if "llama" not in name and "alpaca" not in name:
                 ref_model.unload()
@@ -570,7 +572,7 @@ def generate_data_processed(
 
 def generate_data(dataset: str, train: bool = True, presampled: str = None):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
-    data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
+    data = data_obj.load(train=train, mask_tokenizer=mask_model.tokenizer if mask_model else None)
     return data_obj, data
     # return generate_samples(data[:n_samples], batch_size=batch_size)
 
@@ -756,9 +758,9 @@ if __name__ == "__main__":
         }
         # print('MOVING ref MODEL TO GPU...', end='', flush=True)
 
-    # mask filling t5 model
+    # Load neighborhood attack model, only if we are doing the neighborhood attack
     mask_model = None
-    if neigh_config:
+    if neigh_config and BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks:
         model_kwargs = dict()
         if not config.baselines_only and not neigh_config.random_fills:
             if env_config.int8:

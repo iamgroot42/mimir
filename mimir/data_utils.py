@@ -80,7 +80,7 @@ class Data:
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None):
         data_split = "train" if train else "test"
         n_samples = self.config.n_samples
 
@@ -190,8 +190,8 @@ class Data:
 
             # If there is mask tokenizer, keep only examples with <= 512 tokens according to mask_tokenizer
             # this step has the extra effect of removing examples with low-quality/garbage content
-            if tokenizer:
-                tokenized_data = tokenizer(data)
+            if mask_tokenizer:
+                tokenized_data = mask_tokenizer(data)
                 new_data = []
                 for i, (x, y) in enumerate(zip(data, tokenized_data["input_ids"])):
                     if len(y) <= self.config.max_tokens:
@@ -212,7 +212,7 @@ class Data:
                         second_last_span = token_truncated_word_spans[-2]
                         x = x[: second_last_span[1]]
 
-                        new_len = len(tokenizer(x)["input_ids"])
+                        new_len = len(mask_tokenizer(x)["input_ids"])
                         assert new_len <= self.config.max_tokens
                         new_data.append(x)
             data = new_data
