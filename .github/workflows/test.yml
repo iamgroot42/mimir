@@ -5,8 +5,6 @@ on: [push, pull_request]
 jobs:
   setup-environment:
     uses: ./.github/workflows/setup_env.yml
-    with:
-      python-version: '3.9'
 
   test:
     runs-on: ubuntu-latest
