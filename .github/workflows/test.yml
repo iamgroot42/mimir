@@ -3,13 +3,23 @@ name: Tests
 on: [push, pull_request]
 
 jobs:
-  setup-environment:
-    uses: ./.github/workflows/setup_env.yml
-
   test:
     runs-on: ubuntu-latest
-    needs: setup-environment
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'  # Specify your Python version
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          if [ -f requirements_workflow.txt ]; then pip install -r requirements_workflow.txt; fi
+
       - name: Run tests
-        run: pytest
+        run: python -m pytest
