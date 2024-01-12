@@ -17,6 +17,7 @@ def get_cache_path():
     """
     if CACHE_PATH is None:
         raise ValueError('MIMIR_CACHE_PATH environment variable not set')
+    return CACHE_PATH
 
 
 def get_data_source():
