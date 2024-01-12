@@ -212,9 +212,9 @@ A list of callbacks to customize the training loop. Will add those to the list o
 detailed in <a href="callback">here</a>.</p>
 <pre><code>If you want to remove one of the default callbacks used, use the [`Trainer.remove_callback`] method.
 </code></pre>
-<p>optimizers (<code>Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR]</code>, <em>optional</em>): A tuple
-containing the optimizer and the scheduler to use. Will default to an instance of [<code>AdamW</code>] on your model
-and a scheduler given by [<code>get_linear_schedule_with_warmup</code>] controlled by <code>args</code>.
+<p>optimizers (<code>Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR]</code>, <em>optional</em>, defaults to <code>(None, None)</code>):
+A tuple containing the optimizer and the scheduler to use. Will default to an instance of [<code>AdamW</code>] on your
+model and a scheduler given by [<code>get_linear_schedule_with_warmup</code>] controlled by <code>args</code>.
 preprocess_logits_for_metrics (<code>Callable[[torch.Tensor, torch.Tensor], torch.Tensor]</code>, <em>optional</em>):
 A function that preprocess the logits right before caching them at each evaluation step. Must take two
 tensors, the logits and the labels, and return the logits once processed as desired. The modifications made
