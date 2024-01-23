@@ -13,7 +13,6 @@ class ReferenceConfig(Serializable):
     """
     Config for attacks that use reference models.
     """
-
     models: List[str]
     """Reference model names"""
 
@@ -23,7 +22,6 @@ class NeighborhoodConfig(Serializable):
     """
     Config for neighborhood attack
     """
-
     model: str
     """Mask-filling model"""
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -69,7 +67,6 @@ class EnvironmentConfig(Serializable):
     """
     Config for environment-specific parameters
     """
-
     cache_dir: Optional[str] = None
     """Path to cache directory"""
     data_source: Optional[str] = None
@@ -78,7 +75,7 @@ class EnvironmentConfig(Serializable):
     """Device (GPU) to load main model on"""
     device_map: Optional[str] = None
     """Configuration for device map if needing to split model across gpus"""
-    device_aux: Optional[str] = "cuda:0"
+    device_aux: Optional[str] = "cuda:1"
     """Device (GPU) to load any auxiliary model(s) on"""
     compile: Optional[bool] = True
     """Compile models?"""
@@ -102,7 +99,6 @@ class OpenAIConfig(Serializable):
     """
     Config for OpenAI calls
     """
-
     key: str
     """OpenAI API key"""
     model: str
@@ -114,7 +110,6 @@ class ExtractionConfig(Serializable):
     """
     Config for model-extraction
     """
-
     prompt_len: Optional[int] = 30
     """Prompt length"""
 
@@ -124,13 +119,16 @@ class ExperimentConfig(Serializable):
     """
     Config for attacks
     """
-
     base_model: str
     """Base model name"""
     dataset_member: str
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
+    dataset_nonmember_other_sources: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )
+    """Dataset sources for nonmembers for which metrics will be computed, using the thresholds derived from the main member/nonmember datasets"""
     pretokenized: Optional[bool] = False
     """Is the data already pretokenized"""
     revision: Optional[str] = None
@@ -138,7 +136,7 @@ class ExperimentConfig(Serializable):
     presampled_dataset_member: Optional[str] = None
     """Path to presampled dataset source for members"""
     presampled_dataset_nonmember: Optional[str] = None
-    """Path to presampled dataset source for mpmmembers"""
+    """Path to presampled dataset source for non-members"""
     token_frequency_map: Optional[
         str
     ] = None  # TODO: Handling auxiliary data structures

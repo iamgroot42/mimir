@@ -40,12 +40,14 @@ from scipy.stats import bootstrap
 
 
 def count_masks(texts):
-    return [len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts]
+    return [
+        len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts
+    ]
 
 
 def apply_extracted_fills(masked_texts: List[str], extracted_fills):
     # split masked text into tokens, only splitting on spaces (not newlines)
-    tokens = [x.split(&#39; &#39;) for x in masked_texts]
+    tokens = [x.split(&#34; &#34;) for x in masked_texts]
 
     n_expected = count_masks(masked_texts)
 
@@ -85,43 +87,91 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(preds_member, preds_nonmember, perform_bootstrap: bool=False): # fpr_list,
-    preds_member_    = filter_out_nan(preds_member)
+def get_auc_from_thresholds(preds_member, preds_nonmember, thresholds):
+    &#34;&#34;&#34;
+    Compute FPRs and TPRs corresponding to given thresholds
+    &#34;&#34;&#34;
+    tpr, fpr = [], []
+    for threshold in thresholds:
+        tp = np.sum(preds_nonmember &gt;= threshold)
+        fn = np.sum(preds_nonmember &lt; threshold)
+        fp = np.sum(preds_member &gt;= threshold)
+        tn = np.sum(preds_member &lt; threshold)
+
+        tpr.append(tp / (tp + fn))
+        fpr.append(fp / (fp + tn))
+    
+    tpr = np.array(tpr)
+    fpr = np.array(fpr)
+    roc_auc = auc(fpr, tpr)
+    return roc_auc
+
+
+def get_roc_metrics(
+    preds_member,
+    preds_nonmember,
+    perform_bootstrap: bool = False,
+    return_thresholds: bool = False,
+):  # fpr_list,
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
     # Assign label &#39;0&#39; to members for computation, since sklearn
     # expectes label &#39;0&#39; data to have lower values to get assigned that label
     # which is true for our attacks (lower loss for members, e.g.)
     total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
-    fpr, tpr, _ = roc_curve(total_labels, total_preds)
+    fpr, tpr, thresholds = roc_curve(total_labels, total_preds)
+
     roc_auc = auc(fpr, tpr)
     # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) &lt; upper_bound)[0][-1]] for upper_bound in fpr_list}
 
     if perform_bootstrap:
+
         def roc_auc_statistic(preds, labels):
-            in_preds  = [pred for pred, label in zip(preds, labels) if label == 0]
+            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
             out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
 
-        auc_roc_res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
-        
-        # tpr_at_low_fpr_res = {}    
+        auc_roc_res = bootstrap(
+            (total_preds, total_labels),
+            roc_auc_statistic,
+            n_resamples=1000,
+            paired=True,
+        )
+
+        # tpr_at_low_fpr_res = {}
         # for ub in fpr_list:
         #     def tpr_at_fpr_statistic(preds, labels):
         #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
         #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
         #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
         #         return tpr_at_low_fpr[ub]
-            
+
         #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), auc_roc_res #tpr_at_low_fpr, tpr_at_low_fpr_res
-    
-    return fpr.tolist(), tpr.tolist(), float(roc_auc) #, tpr_at_low_fpr
+
+        if return_thresholds:
+            return (
+                fpr.tolist(),
+                tpr.tolist(),
+                float(roc_auc),
+                auc_roc_res,
+                thresholds.tolist(),
+            )
+        return (
+            fpr.tolist(),
+            tpr.tolist(),
+            float(roc_auc),
+            auc_roc_res,
+        )  # tpr_at_low_fpr, tpr_at_low_fpr_res
+
+    if return_thresholds:
+        return fpr.tolist(), tpr.tolist(), float(roc_auc), thresholds.tolist()
+    return fpr.tolist(), tpr.tolist(), float(roc_auc)  # , tpr_at_low_fpr
 
 
 def get_precision_recall_metrics(preds_member, preds_nonmember):
-    preds_member_    =  filter_out_nan(preds_member)
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
 
@@ -154,7 +204,7 @@ def filter_out_nan(x):
 </summary>
 <pre><code class="python">def apply_extracted_fills(masked_texts: List[str], extracted_fills):
     # split masked text into tokens, only splitting on spaces (not newlines)
-    tokens = [x.split(&#39; &#39;) for x in masked_texts]
+    tokens = [x.split(&#34; &#34;) for x in masked_texts]
 
     n_expected = count_masks(masked_texts)
 
@@ -181,7 +231,9 @@ def filter_out_nan(x):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def count_masks(texts):
-    return [len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts]</code></pre>
+    return [
+        len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts
+    ]</code></pre>
 </details>
 </dd>
 <dt id="mimir.attacks.attack_utils.f1_score"><code class="name flex">
@@ -218,6 +270,35 @@ def filter_out_nan(x):
     return [element for element in x if not math.isnan(element)]</code></pre>
 </details>
 </dd>
+<dt id="mimir.attacks.attack_utils.get_auc_from_thresholds"><code class="name flex">
+<span>def <span class="ident">get_auc_from_thresholds</span></span>(<span>preds_member, preds_nonmember, thresholds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute FPRs and TPRs corresponding to given thresholds</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_auc_from_thresholds(preds_member, preds_nonmember, thresholds):
+    &#34;&#34;&#34;
+    Compute FPRs and TPRs corresponding to given thresholds
+    &#34;&#34;&#34;
+    tpr, fpr = [], []
+    for threshold in thresholds:
+        tp = np.sum(preds_nonmember &gt;= threshold)
+        fn = np.sum(preds_nonmember &lt; threshold)
+        fp = np.sum(preds_member &gt;= threshold)
+        tn = np.sum(preds_member &lt; threshold)
+
+        tpr.append(tp / (tp + fn))
+        fpr.append(fp / (fp + tn))
+    
+    tpr = np.array(tpr)
+    fpr = np.array(fpr)
+    roc_auc = auc(fpr, tpr)
+    return roc_auc</code></pre>
+</details>
+</dd>
 <dt id="mimir.attacks.attack_utils.get_likelihood"><code class="name flex">
 <span>def <span class="ident">get_likelihood</span></span>(<span>logits, labels)</span>
 </code></dt>
@@ -248,7 +329,7 @@ def filter_out_nan(x):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_precision_recall_metrics(preds_member, preds_nonmember):
-    preds_member_    =  filter_out_nan(preds_member)
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
 
@@ -260,7 +341,7 @@ def filter_out_nan(x):
 </details>
 </dd>
 <dt id="mimir.attacks.attack_utils.get_roc_metrics"><code class="name flex">
-<span>def <span class="ident">get_roc_metrics</span></span>(<span>preds_member, preds_nonmember, perform_bootstrap: bool = False)</span>
+<span>def <span class="ident">get_roc_metrics</span></span>(<span>preds_member, preds_nonmember, perform_bootstrap: bool = False, return_thresholds: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -268,39 +349,67 @@ def filter_out_nan(x):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_roc_metrics(preds_member, preds_nonmember, perform_bootstrap: bool=False): # fpr_list,
-    preds_member_    = filter_out_nan(preds_member)
+<pre><code class="python">def get_roc_metrics(
+    preds_member,
+    preds_nonmember,
+    perform_bootstrap: bool = False,
+    return_thresholds: bool = False,
+):  # fpr_list,
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
     # Assign label &#39;0&#39; to members for computation, since sklearn
     # expectes label &#39;0&#39; data to have lower values to get assigned that label
     # which is true for our attacks (lower loss for members, e.g.)
     total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
-    fpr, tpr, _ = roc_curve(total_labels, total_preds)
+    fpr, tpr, thresholds = roc_curve(total_labels, total_preds)
+
     roc_auc = auc(fpr, tpr)
     # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) &lt; upper_bound)[0][-1]] for upper_bound in fpr_list}
 
     if perform_bootstrap:
+
         def roc_auc_statistic(preds, labels):
-            in_preds  = [pred for pred, label in zip(preds, labels) if label == 0]
+            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
             out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
 
-        auc_roc_res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
-        
-        # tpr_at_low_fpr_res = {}    
+        auc_roc_res = bootstrap(
+            (total_preds, total_labels),
+            roc_auc_statistic,
+            n_resamples=1000,
+            paired=True,
+        )
+
+        # tpr_at_low_fpr_res = {}
         # for ub in fpr_list:
         #     def tpr_at_fpr_statistic(preds, labels):
         #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
         #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
         #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
         #         return tpr_at_low_fpr[ub]
-            
+
         #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), auc_roc_res #tpr_at_low_fpr, tpr_at_low_fpr_res
-    
-    return fpr.tolist(), tpr.tolist(), float(roc_auc) #, tpr_at_low_fpr</code></pre>
+
+        if return_thresholds:
+            return (
+                fpr.tolist(),
+                tpr.tolist(),
+                float(roc_auc),
+                auc_roc_res,
+                thresholds.tolist(),
+            )
+        return (
+            fpr.tolist(),
+            tpr.tolist(),
+            float(roc_auc),
+            auc_roc_res,
+        )  # tpr_at_low_fpr, tpr_at_low_fpr_res
+
+    if return_thresholds:
+        return fpr.tolist(), tpr.tolist(), float(roc_auc), thresholds.tolist()
+    return fpr.tolist(), tpr.tolist(), float(roc_auc)  # , tpr_at_low_fpr</code></pre>
 </details>
 </dd>
 </dl>
@@ -325,6 +434,7 @@ def filter_out_nan(x):
 <li><code><a title="mimir.attacks.attack_utils.count_masks" href="#mimir.attacks.attack_utils.count_masks">count_masks</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.f1_score" href="#mimir.attacks.attack_utils.f1_score">f1_score</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.filter_out_nan" href="#mimir.attacks.attack_utils.filter_out_nan">filter_out_nan</a></code></li>
+<li><code><a title="mimir.attacks.attack_utils.get_auc_from_thresholds" href="#mimir.attacks.attack_utils.get_auc_from_thresholds">get_auc_from_thresholds</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_likelihood" href="#mimir.attacks.attack_utils.get_likelihood">get_likelihood</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_precision_recall_metrics" href="#mimir.attacks.attack_utils.get_precision_recall_metrics">get_precision_recall_metrics</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_roc_metrics" href="#mimir.attacks.attack_utils.get_roc_metrics">get_roc_metrics</a></code></li>

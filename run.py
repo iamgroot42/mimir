@@ -31,209 +31,12 @@ from mimir.attacks.attack_utils import (
     f1_score,
     get_roc_metrics,
     get_precision_recall_metrics,
+    get_auc_from_thresholds
 )
 
 torch.manual_seed(0)
 np.random.seed(0)
 random.seed(0)
-
-
-def get_perturbation_results(span_length: int = 10, n_perturbations: int = 1):
-    print("MOVING MASK MODEL TO GPU...", end="", flush=True)
-    mask_model.load()
-
-    torch.manual_seed(0)
-    np.random.seed(0)
-
-    results = []
-    nonmember_text = data["nonmember"]
-    member_text = data["member"]
-
-    ceil_pct = neigh_config.ceil_pct
-    kwargs = {}
-    if "t5" in neigh_config.model:
-        kwargs = {
-            "span_length": span_length,
-            "pct": neigh_config.pct_words_masked,
-            "chunk_size": config.chunk_size,
-            "ceil_pct": ceil_pct,
-        }
-    kwargs["n_perturbations"] = n_perturbations
-
-    in_place_swap = neigh_config.original_tokenization_swap
-
-    if neigh_config.load_from_cache:
-        # Load from cache, if available (and requested)
-        p_member_text = data_obj_mem.load_neighbors(
-            train=True,
-            num_neighbors=n_perturbations,
-            model=neigh_config.model,
-            in_place_swap=in_place_swap,
-        )
-        p_nonmember_text = data_obj_nonmem.load_neighbors(
-            train=False,
-            num_neighbors=n_perturbations,
-            model=neigh_config.model,
-            in_place_swap=in_place_swap,
-        )
-    else:
-        p_member_text = mask_model.generate_neighbors(member_text, **kwargs)
-        p_nonmember_text = mask_model.generate_neighbors(nonmember_text, **kwargs)
-
-        for _ in range(n_perturbation_rounds - 1):
-            try:
-                p_member_text = mask_model.generate_neighbors(p_member_text, **kwargs)
-                p_nonmember_text = mask_model.generate_neighbors(
-                    p_nonmember_text, **kwargs
-                )
-            except AssertionError:
-                break
-
-    # assert len(p_member_text) == len(member_text) * n_perturbations, f"Expected {len(member_text) * n_perturbations} perturbed samples, got {len(p_member_text)}"
-    # assert len(p_nonmember_text) == len(nonmember_text) * n_perturbations, f"Expected {len(nonmember_text) * n_perturbations} perturbed samples, got {len(p_nonmember_text)}"
-
-    if neigh_config.dump_cache:
-        if extraction_config is not None:
-            raise NotImplementedError("Caching not implemented for extraction yet")
-
-        # Save p_member_text and p_nonmember_text (Lists of strings) to cache
-        data_obj_mem.dump_neighbors(
-            p_member_text,
-            train=True,
-            num_neighbors=n_perturbations,
-            model=neigh_config.model,
-            in_place_swap=in_place_swap,
-        )
-        data_obj_nonmem.dump_neighbors(
-            p_nonmember_text,
-            train=False,
-            num_neighbors=n_perturbations,
-            model=neigh_config.model,
-            in_place_swap=in_place_swap,
-        )
-
-        print(
-            "Data dumped! Please re-run with load_from_cache set to True in neigh_config"
-        )
-        exit(0)
-
-    for idx in range(len(nonmember_text)):
-        results.append(
-            {
-                "nonmember": nonmember_text[idx],
-                "member": member_text[idx],
-                "perturbed_member": p_member_text[
-                    idx * n_perturbations : (idx + 1) * n_perturbations
-                ],
-                "perturbed_nonmember": p_nonmember_text[
-                    idx * n_perturbations : (idx + 1) * n_perturbations
-                ],
-            }
-        )
-
-    print("MOVING BASE MODEL TO GPU...", end="", flush=True)
-    base_model.load()
-    # print('MOVING ref MODEL TO GPU...', end='', flush=True)
-    # load_model(ref_model, env_config.device_aux)
-
-    for res in tqdm(results, desc="Computing log likelihoods"):
-        # Get likelihoods for perturbed samples
-        p_member_ll = base_model.get_lls(res["perturbed_member"])
-        p_nonmember_ll = base_model.get_lls(res["perturbed_nonmember"])
-        res["all_perturbed_member_ll"] = p_member_ll
-        res["all_perturbed_nonmember_ll"] = p_nonmember_ll
-        # Get likelihoods for original samples
-        res["nonmember_ll"] = base_model.get_ll(res["nonmember"])
-        res["member_ll"] = base_model.get_ll(res["member"])
-        # Average neighbor likelihoods
-        res["perturbed_member_ll"] = np.mean(p_member_ll)
-        res["perturbed_nonmember_ll"] = np.mean(p_nonmember_ll)
-        # Standard deviation of neighbor likelihoods
-        res["perturbed_member_ll_std"] = (
-            np.std(p_member_ll) if len(p_member_ll) > 1 else 1
-        )
-        res["perturbed_nonmember_ll_std"] = (
-            np.std(p_nonmember_ll) if len(p_nonmember_ll) > 1 else 1
-        )
-
-    return results
-
-
-# TODO: change keys
-def run_perturbation_experiment(
-    results, criterion, n_samples: int, span_length: int = 10, n_perturbations: int = 1
-):
-    # compute diffs with perturbed
-    predictions = {"member": [], "nonmember": []}
-    for res in results:
-        if criterion == "d":
-            predictions["member"].append(res["member_ll"] - res["perturbed_member_ll"])
-            predictions["nonmember"].append(
-                res["nonmember_ll"] - res["perturbed_nonmember_ll"]
-            )
-        elif criterion == "z":
-            if res["perturbed_member_ll_std"] == 0:
-                res["perturbed_member_ll_std"] = 1
-                print("WARNING: std of perturbed original is 0, setting to 1")
-                print(
-                    f"Number of unique perturbed original texts: {len(set(res['perturbed_member']))}"
-                )
-                print(f"Member text: {res['member']}")
-            if res["perturbed_nonmember_ll_std"] == 0:
-                res["perturbed_nonmember_ll_std"] = 1
-                print("WARNING: std of perturbed sampled is 0, setting to 1")
-                print(
-                    f"Number of unique perturbed sampled texts: {len(set(res['perturbed_nonmember']))}"
-                )
-                print(f"Nonmember text: {res['nonmember']}")
-            predictions["member"].append(
-                (res["member_ll"] - res["perturbed_member_ll"])
-                / res["perturbed_member_ll_std"]
-            )
-            predictions["nonmember"].append(
-                (res["nonmember_ll"] - res["perturbed_nonmember_ll"])
-                / res["perturbed_nonmember_ll_std"]
-            )
-
-    fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(
-        preds_member=predictions["member"],
-        preds_nonmember=predictions["nonmember"],
-        perform_bootstrap=True,
-    )
-    tpr_at_low_fpr = {
-        upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]]
-        for upper_bound in config.fpr_list
-    }
-    p, r, pr_auc = get_precision_recall_metrics(
-        preds_member=predictions["member"], preds_nonmember=predictions["nonmember"]
-    )
-    name = f"perturbation_{n_perturbations}_{criterion}"
-    print(f"{name} ROC AUC: {roc_auc}, PR AUC: {pr_auc}")
-    return {
-        "name": name,
-        "predictions": predictions,
-        "info": {
-            "pct_words_masked": neigh_config.pct_words_masked,
-            "span_length": span_length,
-            "n_perturbations": n_perturbations,
-            "n_samples": n_samples,
-        },
-        "raw_results": results,
-        "metrics": {
-            "roc_auc": roc_auc,
-            "fpr": fpr,
-            "tpr": tpr,
-            "bootstrap_roc_auc_mean": np.mean(roc_auc_res.bootstrap_distribution),
-            "bootstrap_roc_auc_std": roc_auc_res.standard_error,
-            "tpr_at_low_fpr": tpr_at_low_fpr,
-        },
-        "pr_metrics": {
-            "pr_auc": pr_auc,
-            "precision": p,
-            "recall": r,
-        },
-        "loss": 1 - pr_auc,
-    }
 
 
 # TODO: Might make more sense to have this function called once each for mem and non-mem, instead of handling all of them in a loop inside here
@@ -244,13 +47,15 @@ def run_blackbox_attacks(
     target_model,
     ref_models,
     config: ExperimentConfig,
-    n_samples: int=None,
-    batch_size: int=50,
+    n_samples: int = None,
+    batch_size: int = 50,
+    keys_care_about: List[str] = ["nonmember", "member"],
+    scores_not_needed: bool = False,
 ):
     torch.manual_seed(0)
     np.random.seed(0)
 
-    n_samples = len(data["member"]) if n_samples is None else n_samples
+    n_samples = len(data["nonmember"]) if n_samples is None else n_samples
 
     # Structure: attack -> member scores/nonmember scores
     # For both members and nonmembers, we compute all attacks
@@ -272,7 +77,6 @@ def run_blackbox_attacks(
     neighborhood_attacker.prepare()
 
     results = defaultdict(list)
-    keys_care_about = ["nonmember", "member"]
     for classification in keys_care_about:
         print(f"Running for classification {classification}")
 
@@ -381,12 +185,14 @@ def run_blackbox_attacks(
 
                                 if not neigh_config.dump_cache:
                                     # Only evaluate neighborhood attack when not caching neighbors
-                                    mean_substr_score = target_model.get_lls(substr_neighbors, batch_size=15)
+                                    mean_substr_score = target_model.get_lls(
+                                        substr_neighbors, batch_size=15
+                                    )
                                     d_based_score = loss - mean_substr_score
 
-                                    sample_information[f"{attack}-{n_perturbation}"].append(
-                                        d_based_score
-                                    )
+                                    sample_information[
+                                        f"{attack}-{n_perturbation}"
+                                    ].append(d_based_score)
 
                 if neigh_config and neigh_config.dump_cache:
                     for n_perturbation in n_perturbation_list:
@@ -436,9 +242,9 @@ def run_blackbox_attacks(
                                 s = r["detokenized"][i]
                             ref_score = r[BlackBoxAttacks.LOSS][i] - ref_model.get_ll(s)
                             ref_model_scores.append(ref_score)
-                        r[f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"].extend(
-                            ref_model_scores
-                        )
+                        r[
+                            f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
+                        ].extend(ref_model_scores)
 
                 # if "llama" not in name and "alpaca" not in name:
                 ref_model.unload()
@@ -454,13 +260,17 @@ def run_blackbox_attacks(
                 if attack != "sample" and attack != "detokenized":
                     predictions[attack][classification].append(np.min(scores))
 
+    if scores_not_needed:
+        return predictions
+
     # Collect outputs for each attack
     blackbox_attack_outputs = {}
     for attack, prediction in tqdm(predictions.items()):
-        fpr, tpr, roc_auc, roc_auc_res = get_roc_metrics(
+        fpr, tpr, roc_auc, roc_auc_res, thresholds = get_roc_metrics(
             preds_member=prediction["member"],
             preds_nonmember=prediction["nonmember"],
             perform_bootstrap=True,
+            return_thresholds=True,
         )
         tpr_at_low_fpr = {
             upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]]
@@ -487,6 +297,7 @@ def run_blackbox_attacks(
                 "bootstrap_roc_auc_mean": np.mean(roc_auc_res.bootstrap_distribution),
                 "bootstrap_roc_auc_std": roc_auc_res.standard_error,
                 "tpr_at_low_fpr": tpr_at_low_fpr,
+                "thresholds": thresholds,
             },
             "pr_metrics": {
                 "pr_auc": pr_auc,
@@ -568,9 +379,12 @@ def generate_data_processed(
     return data, seq_lens, n_samples
 
 
-def generate_data(dataset: str, train: bool = True, presampled: str = None):
+def generate_data(dataset: str, train: bool = True, presampled: str = None, specific_source: str = None):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
-    data = data_obj.load(train=train, tokenizer=mask_model.tokenizer)
+    data = data_obj.load(
+        train=train, mask_tokenizer=mask_model.tokenizer if mask_model else None,
+        specific_source=specific_source
+    )
     return data_obj, data
     # return generate_samples(data[:n_samples], batch_size=batch_size)
 
@@ -697,8 +511,10 @@ if __name__ == "__main__":
         else:
             span_length_string = f"--{neigh_config.span_length}"
 
+    # Replace paths
     dataset_member_name = config.dataset_member.replace("/", "_")
     dataset_nonmember_name = config.dataset_nonmember.replace("/", "_")
+
     if extraction_config is not None:
         sf_ext = "extraction_"
     else:
@@ -710,6 +526,8 @@ if __name__ == "__main__":
     # suffix = "QUANTILE_TEST"
     # TODO - Either automate suffix construction, or use better names (e.g. save folder with results, and attack config in it)
     suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
+    if config.dataset_nonmember_other_sources is not None:
+        suffix += "-additional_nonmem_sources"
 
     # Add pile source to suffix, if provided
     # TODO: Shift dataset-specific processing to their corresponding classes
@@ -750,15 +568,19 @@ if __name__ == "__main__":
 
     # reference model if we are doing the ref-based attack
     ref_models = None
-    if ref_config is not None:
+    if ref_config is not None and BlackBoxAttacks.REFERENCE_BASED in config.blackbox_attacks:
         ref_models = {
             model: ReferenceModel(config, model) for model in ref_config.models
         }
         # print('MOVING ref MODEL TO GPU...', end='', flush=True)
 
-    # mask filling t5 model
+    # Load neighborhood attack model, only if we are doing the neighborhood attack AND generating neighbors
     mask_model = None
-    if neigh_config:
+    if (
+        neigh_config
+        and (not neigh_config.load_from_cache)
+        and (BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks)
+    ):
         model_kwargs = dict()
         if not config.baselines_only and not neigh_config.random_fills:
             if env_config.int8:
@@ -817,6 +639,18 @@ if __name__ == "__main__":
         data_obj_mem, data_member = generate_data(
             config.dataset_member, presampled=config.presampled_dataset_member
         )
+
+        other_objs, other_nonmembers = None, None
+        if config.dataset_nonmember_other_sources is not None:
+            other_objs, other_nonmembers = [], []
+            for other_name in config.dataset_nonmember_other_sources:
+                data_obj_nonmem_others, data_nonmember_others = generate_data(
+                    config.dataset_nonmember, train=False,
+                    specific_source=other_name
+                )
+                other_objs.append(data_obj_nonmem_others)
+                other_nonmembers.append(data_nonmember_others)
+
         if config.dump_cache and not config.load_from_cache:
             print("Data dumped! Please re-run with load_from_cache set to True")
             exit(0)
@@ -945,6 +779,36 @@ if __name__ == "__main__":
             config=config,
             n_samples=n_samples,
         )
+
+        # TODO: For now, AUCs for other sources of non-members are only printed (not saved)
+        # Will fix later!
+        if config.dataset_nonmember_other_sources is not None:
+            # Using thresholds returned in blackbox_outputs, compute AUCs and ROC curves for other non-member sources
+            for other_obj, other_nonmember, other_name in zip(other_objs, other_nonmembers, config.dataset_nonmember_other_sources):
+                # other_data, _, other_n_samples = generate_data_processed(
+                #     other_nonmember, batch_size=config.batch_size
+                # )
+                other_ds_objects = {"nonmember": other_obj}
+                other_blackbox_predictions = run_blackbox_attacks(
+                    data={"nonmember": other_nonmember},
+                    ds_objects=other_ds_objects,
+                    target_model=base_model,
+                    ref_models=ref_models,
+                    config=config,
+                    n_samples=n_samples,
+                    keys_care_about=["nonmember"],
+                    scores_not_needed=True,
+                )
+
+                for attack in blackbox_outputs.keys():
+                    member_scores = np.array(blackbox_outputs[attack]["predictions"]["member"])
+                    thresholds = blackbox_outputs[attack]["metrics"]["thresholds"]
+                    nonmember_scores = np.array(other_blackbox_predictions[attack]["nonmember"])
+                    auc = get_auc_from_thresholds(
+                        member_scores, nonmember_scores, thresholds
+                    )
+                    print(f"AUC using thresholds of original split on {other_name} using {attack}: {auc}")
+            exit(0)
 
         # TODO: Skipping openai-detector (for now)
         # if config.max_tokens < 512:
