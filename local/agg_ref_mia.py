@@ -16,8 +16,8 @@ if __name__ == '__main__':
     for ref in args.ref_files:
         f_ref_metrics = open(ref)
         ref_metrics_dict = json.load(f_ref_metrics)
-        ref_member_scores = np.array(ref_metrics_dict['predictions']["members"])
-        ref_nonmember_scores = np.array(ref_metrics_dict['predictions']["nonmembers"])
+        ref_member_scores = np.array(ref_metrics_dict['predictions']["member"])
+        ref_nonmember_scores = np.array(ref_metrics_dict['predictions']["nonmember"])
 
         if sum_member_scores is None:
             sum_member_scores = ref_member_scores

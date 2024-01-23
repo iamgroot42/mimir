@@ -1,5 +1,5 @@
 #!/bin/bash
-version=unified_mia_v5_silo_exps_ne
+version=unified_mia_v5_silo_exps_ref
 
 ckpt_dir="/gscratch/h2lab/sewon/nplm-inference/ckpt"
 # PDSW semi-balanced

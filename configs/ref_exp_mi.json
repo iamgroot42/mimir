@@ -12,18 +12,7 @@
     "blackbox_attacks": ["ref"],
     "ref_config": {
         "models": [
-            "EleutherAI/pythia-70m-deduped",
-            "EleutherAI/pythia-1.4b-deduped",
-            "EleutherAI/pythia-2.8b-deduped",
-            "gpt2",
-            "distilgpt2",
-            "EleutherAI/gpt-neo-2.7B",
-            "EleutherAI/gpt-neo-1.3B",
-            "EleutherAI/gpt-neo-125m",
-            "facebook/opt-350m",
-            "facebook/opt-1.3B",
-            "facebook/opt-125m",
-            "kernelmachine/silo-pdswby-1.3b"
+            "huggyllama/llama-7b"
         ]
     },
     "neighborhood_config": {
