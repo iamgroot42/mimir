@@ -1,0 +1,34 @@
+{
+    "base_model": "EleutherAI/pythia-160m-deduped",
+    "dataset_member": "the_pile",
+    "dataset_nonmember": "the_pile",
+    "dataset_nonmember_other_sources": ["arxiv"],
+    "min_words": 100,
+    "max_words": 200,
+    "max_tokens": 512,
+    "max_data": 100000,
+    "output_name": "unified_mia",
+    "specific_source": "arxiv_2021_01",
+    "n_samples": 1000,
+    "blackbox_attacks": ["ref"],
+    "ref_config": {
+        "models": [
+            "stabilityai/stablelm-base-alpha-3b-v2"
+        ]
+    },
+    "neighborhood_config": {
+        "model": "bert",
+        "n_perturbation_list": [
+            25
+        ],
+        "pct_words_masked": 0.3,
+        "span_length": 2,
+        "dump_cache": false,
+        "load_from_cache": true
+    },
+    "env_config": {
+        "results": "results_new"
+    },
+    "dump_cache": false,
+    "load_from_cache": true
+}

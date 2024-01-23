@@ -11,12 +11,14 @@ from scipy.stats import bootstrap
 
 
 def count_masks(texts):
-    return [len([x for x in text.split() if x.startswith("<extra_id_")]) for text in texts]
+    return [
+        len([x for x in text.split() if x.startswith("<extra_id_")]) for text in texts
+    ]
 
 
 def apply_extracted_fills(masked_texts: List[str], extracted_fills):
     # split masked text into tokens, only splitting on spaces (not newlines)
-    tokens = [x.split(' ') for x in masked_texts]
+    tokens = [x.split(" ") for x in masked_texts]
 
     n_expected = count_masks(masked_texts)
 
@@ -56,43 +58,91 @@ def f1_score(prediction, ground_truth):
     return f1, precision, recall
 
 
-def get_roc_metrics(preds_member, preds_nonmember, perform_bootstrap: bool=False): # fpr_list,
-    preds_member_    = filter_out_nan(preds_member)
+def get_auc_from_thresholds(preds_member, preds_nonmember, thresholds):
+    """
+    Compute FPRs and TPRs corresponding to given thresholds
+    """
+    tpr, fpr = [], []
+    for threshold in thresholds:
+        tp = np.sum(preds_nonmember >= threshold)
+        fn = np.sum(preds_nonmember < threshold)
+        fp = np.sum(preds_member >= threshold)
+        tn = np.sum(preds_member < threshold)
+
+        tpr.append(tp / (tp + fn))
+        fpr.append(fp / (fp + tn))
+    
+    tpr = np.array(tpr)
+    fpr = np.array(fpr)
+    roc_auc = auc(fpr, tpr)
+    return roc_auc
+
+
+def get_roc_metrics(
+    preds_member,
+    preds_nonmember,
+    perform_bootstrap: bool = False,
+    return_thresholds: bool = False,
+):  # fpr_list,
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
     # Assign label '0' to members for computation, since sklearn
     # expectes label '0' data to have lower values to get assigned that label
     # which is true for our attacks (lower loss for members, e.g.)
     total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
-    fpr, tpr, _ = roc_curve(total_labels, total_preds)
+    fpr, tpr, thresholds = roc_curve(total_labels, total_preds)
+
     roc_auc = auc(fpr, tpr)
     # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) < upper_bound)[0][-1]] for upper_bound in fpr_list}
 
     if perform_bootstrap:
+
         def roc_auc_statistic(preds, labels):
-            in_preds  = [pred for pred, label in zip(preds, labels) if label == 0]
+            in_preds = [pred for pred, label in zip(preds, labels) if label == 0]
             out_preds = [pred for pred, label in zip(preds, labels) if label == 1]
             _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
             return roc_auc
 
-        auc_roc_res = bootstrap((total_preds, total_labels), roc_auc_statistic, n_resamples=1000, paired=True)
-        
-        # tpr_at_low_fpr_res = {}    
+        auc_roc_res = bootstrap(
+            (total_preds, total_labels),
+            roc_auc_statistic,
+            n_resamples=1000,
+            paired=True,
+        )
+
+        # tpr_at_low_fpr_res = {}
         # for ub in fpr_list:
         #     def tpr_at_fpr_statistic(preds, labels):
         #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
         #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
         #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
         #         return tpr_at_low_fpr[ub]
-            
+
         #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), auc_roc_res #tpr_at_low_fpr, tpr_at_low_fpr_res
-    
-    return fpr.tolist(), tpr.tolist(), float(roc_auc) #, tpr_at_low_fpr
+
+        if return_thresholds:
+            return (
+                fpr.tolist(),
+                tpr.tolist(),
+                float(roc_auc),
+                auc_roc_res,
+                thresholds.tolist(),
+            )
+        return (
+            fpr.tolist(),
+            tpr.tolist(),
+            float(roc_auc),
+            auc_roc_res,
+        )  # tpr_at_low_fpr, tpr_at_low_fpr_res
+
+    if return_thresholds:
+        return fpr.tolist(), tpr.tolist(), float(roc_auc), thresholds.tolist()
+    return fpr.tolist(), tpr.tolist(), float(roc_auc)  # , tpr_at_low_fpr
 
 
 def get_precision_recall_metrics(preds_member, preds_nonmember):
-    preds_member_    =  filter_out_nan(preds_member)
+    preds_member_ = filter_out_nan(preds_member)
     preds_nonmember_ = filter_out_nan(preds_nonmember)
     total_preds = preds_member_ + preds_nonmember_
 

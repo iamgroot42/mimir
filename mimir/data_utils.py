@@ -80,7 +80,7 @@ class Data:
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, mask_tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
         data_split = "train" if train else "test"
         n_samples = self.config.n_samples
 
@@ -126,8 +126,9 @@ class Data:
                     cache_dir=self.cache_dir,
                     split=f"train[:{min_load}]",
                 )
+                specific_source_use = self.config.specific_source if specific_source is None else specific_source
                 data = pile_selection_utility(
-                    data, self.key, wanted_source=self.config.specific_source
+                    data, self.key, wanted_source=specific_source_use
                 )
             elif "human" in self.name:
                 data = datasets.load_dataset(
