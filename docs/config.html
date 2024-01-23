@@ -42,7 +42,6 @@ class ReferenceConfig(Serializable):
     &#34;&#34;&#34;
     Config for attacks that use reference models.
     &#34;&#34;&#34;
-
     models: List[str]
     &#34;&#34;&#34;Reference model names&#34;&#34;&#34;
 
@@ -52,7 +51,6 @@ class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;
     Config for neighborhood attack
     &#34;&#34;&#34;
-
     model: str
     &#34;&#34;&#34;Mask-filling model&#34;&#34;&#34;
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -98,7 +96,6 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;
     Config for environment-specific parameters
     &#34;&#34;&#34;
-
     cache_dir: Optional[str] = None
     &#34;&#34;&#34;Path to cache directory&#34;&#34;&#34;
     data_source: Optional[str] = None
@@ -107,7 +104,7 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;Device (GPU) to load main model on&#34;&#34;&#34;
     device_map: Optional[str] = None
     &#34;&#34;&#34;Configuration for device map if needing to split model across gpus&#34;&#34;&#34;
-    device_aux: Optional[str] = &#34;cuda:0&#34;
+    device_aux: Optional[str] = &#34;cuda:1&#34;
     &#34;&#34;&#34;Device (GPU) to load any auxiliary model(s) on&#34;&#34;&#34;
     compile: Optional[bool] = True
     &#34;&#34;&#34;Compile models?&#34;&#34;&#34;
@@ -131,7 +128,6 @@ class OpenAIConfig(Serializable):
     &#34;&#34;&#34;
     Config for OpenAI calls
     &#34;&#34;&#34;
-
     key: str
     &#34;&#34;&#34;OpenAI API key&#34;&#34;&#34;
     model: str
@@ -143,7 +139,6 @@ class ExtractionConfig(Serializable):
     &#34;&#34;&#34;
     Config for model-extraction
     &#34;&#34;&#34;
-
     prompt_len: Optional[int] = 30
     &#34;&#34;&#34;Prompt length&#34;&#34;&#34;
 
@@ -153,13 +148,16 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;
     Config for attacks
     &#34;&#34;&#34;
-
     base_model: str
     &#34;&#34;&#34;Base model name&#34;&#34;&#34;
     dataset_member: str
     &#34;&#34;&#34;Dataset source for members&#34;&#34;&#34;
     dataset_nonmember: str
     &#34;&#34;&#34;Dataset source for nonmembers&#34;&#34;&#34;
+    dataset_nonmember_other_sources: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )
+    &#34;&#34;&#34;Dataset sources for nonmembers for which metrics will be computed, using the thresholds derived from the main member/nonmember datasets&#34;&#34;&#34;
     pretokenized: Optional[bool] = False
     &#34;&#34;&#34;Is the data already pretokenized&#34;&#34;&#34;
     revision: Optional[str] = None
@@ -167,7 +165,7 @@ class ExperimentConfig(Serializable):
     presampled_dataset_member: Optional[str] = None
     &#34;&#34;&#34;Path to presampled dataset source for members&#34;&#34;&#34;
     presampled_dataset_nonmember: Optional[str] = None
-    &#34;&#34;&#34;Path to presampled dataset source for mpmmembers&#34;&#34;&#34;
+    &#34;&#34;&#34;Path to presampled dataset source for non-members&#34;&#34;&#34;
     token_frequency_map: Optional[
         str
     ] = None  # TODO: Handling auxiliary data structures
@@ -268,7 +266,7 @@ class ExperimentConfig(Serializable):
 <dl>
 <dt id="mimir.config.EnvironmentConfig"><code class="flex name class">
 <span>class <span class="ident">EnvironmentConfig</span></span>
-<span>(</span><span>cache_dir: Optional[str] = None, data_source: Optional[str] = None, device: Optional[str] = 'cuda:0', device_map: Optional[str] = None, device_aux: Optional[str] = 'cuda:0', compile: Optional[bool] = True, int8: Optional[bool] = False, half: Optional[bool] = False, results: Optional[str] = 'results', tmp_results: Optional[str] = 'tmp_results')</span>
+<span>(</span><span>cache_dir: Optional[str] = None, data_source: Optional[str] = None, device: Optional[str] = 'cuda:0', device_map: Optional[str] = None, device_aux: Optional[str] = 'cuda:1', compile: Optional[bool] = True, int8: Optional[bool] = False, half: Optional[bool] = False, results: Optional[str] = 'results', tmp_results: Optional[str] = 'tmp_results')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Config for environment-specific parameters</p></div>
@@ -281,7 +279,6 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;
     Config for environment-specific parameters
     &#34;&#34;&#34;
-
     cache_dir: Optional[str] = None
     &#34;&#34;&#34;Path to cache directory&#34;&#34;&#34;
     data_source: Optional[str] = None
@@ -290,7 +287,7 @@ class EnvironmentConfig(Serializable):
     &#34;&#34;&#34;Device (GPU) to load main model on&#34;&#34;&#34;
     device_map: Optional[str] = None
     &#34;&#34;&#34;Configuration for device map if needing to split model across gpus&#34;&#34;&#34;
-    device_aux: Optional[str] = &#34;cuda:0&#34;
+    device_aux: Optional[str] = &#34;cuda:1&#34;
     &#34;&#34;&#34;Device (GPU) to load any auxiliary model(s) on&#34;&#34;&#34;
     compile: Optional[bool] = True
     &#34;&#34;&#34;Compile models?&#34;&#34;&#34;
@@ -363,7 +360,7 @@ class EnvironmentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig"><code class="flex name class">
 <span>class <span class="ident">ExperimentConfig</span></span>
-<span>(</span><span>base_model: str, dataset_member: str, dataset_nonmember: str, pretokenized: Optional[bool] = False, revision: Optional[str] = None, presampled_dataset_member: Optional[str] = None, presampled_dataset_nonmember: Optional[str] = None, token_frequency_map: Optional[str] = None, dataset_key: Optional[str] = None, output_name: Optional[str] = None, specific_source: Optional[str] = None, full_doc: Optional[bool] = False, max_substrs: Optional[int] = 20, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, blackbox_attacks: Optional[List[str]] = &lt;factory&gt;, baselines_only: Optional[bool] = False, tokenization_attack: Optional[bool] = False, quantile_attack: Optional[bool] = False, n_samples: Optional[int] = 200, max_tokens: Optional[int] = 512, max_data: Optional[int] = 5000, min_words: Optional[int] = 100, max_words: Optional[int] = 200, max_words_cutoff: Optional[bool] = True, batch_size: Optional[int] = 50, chunk_size: Optional[int] = 20, scoring_model_name: Optional[str] = None, top_k: Optional[int] = 40, do_top_k: Optional[bool] = False, top_p: Optional[float] = 0.96, do_top_p: Optional[bool] = False, pre_perturb_pct: Optional[float] = 0.0, pre_perturb_span_length: Optional[int] = 5, tok_by_tok: Optional[bool] = False, fpr_list: Optional[List[float]] = &lt;factory&gt;, ref_config: Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>] = None, neighborhood_config: Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>] = None, env_config: Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>] = None, openai_config: Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>] = None, extraction_config: Optional[<a title="mimir.config.ExtractionConfig" href="#mimir.config.ExtractionConfig">ExtractionConfig</a>] = None)</span>
+<span>(</span><span>base_model: str, dataset_member: str, dataset_nonmember: str, dataset_nonmember_other_sources: Optional[List[str]] = &lt;factory&gt;, pretokenized: Optional[bool] = False, revision: Optional[str] = None, presampled_dataset_member: Optional[str] = None, presampled_dataset_nonmember: Optional[str] = None, token_frequency_map: Optional[str] = None, dataset_key: Optional[str] = None, output_name: Optional[str] = None, specific_source: Optional[str] = None, full_doc: Optional[bool] = False, max_substrs: Optional[int] = 20, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, blackbox_attacks: Optional[List[str]] = &lt;factory&gt;, baselines_only: Optional[bool] = False, tokenization_attack: Optional[bool] = False, quantile_attack: Optional[bool] = False, n_samples: Optional[int] = 200, max_tokens: Optional[int] = 512, max_data: Optional[int] = 5000, min_words: Optional[int] = 100, max_words: Optional[int] = 200, max_words_cutoff: Optional[bool] = True, batch_size: Optional[int] = 50, chunk_size: Optional[int] = 20, scoring_model_name: Optional[str] = None, top_k: Optional[int] = 40, do_top_k: Optional[bool] = False, top_p: Optional[float] = 0.96, do_top_p: Optional[bool] = False, pre_perturb_pct: Optional[float] = 0.0, pre_perturb_span_length: Optional[int] = 5, tok_by_tok: Optional[bool] = False, fpr_list: Optional[List[float]] = &lt;factory&gt;, ref_config: Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>] = None, neighborhood_config: Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>] = None, env_config: Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>] = None, openai_config: Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>] = None, extraction_config: Optional[<a title="mimir.config.ExtractionConfig" href="#mimir.config.ExtractionConfig">ExtractionConfig</a>] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Config for attacks</p></div>
@@ -376,13 +373,16 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;
     Config for attacks
     &#34;&#34;&#34;
-
     base_model: str
     &#34;&#34;&#34;Base model name&#34;&#34;&#34;
     dataset_member: str
     &#34;&#34;&#34;Dataset source for members&#34;&#34;&#34;
     dataset_nonmember: str
     &#34;&#34;&#34;Dataset source for nonmembers&#34;&#34;&#34;
+    dataset_nonmember_other_sources: Optional[List[str]] = field(
+        default_factory=lambda: None
+    )
+    &#34;&#34;&#34;Dataset sources for nonmembers for which metrics will be computed, using the thresholds derived from the main member/nonmember datasets&#34;&#34;&#34;
     pretokenized: Optional[bool] = False
     &#34;&#34;&#34;Is the data already pretokenized&#34;&#34;&#34;
     revision: Optional[str] = None
@@ -390,7 +390,7 @@ class ExperimentConfig(Serializable):
     presampled_dataset_member: Optional[str] = None
     &#34;&#34;&#34;Path to presampled dataset source for members&#34;&#34;&#34;
     presampled_dataset_nonmember: Optional[str] = None
-    &#34;&#34;&#34;Path to presampled dataset source for mpmmembers&#34;&#34;&#34;
+    &#34;&#34;&#34;Path to presampled dataset source for non-members&#34;&#34;&#34;
     token_frequency_map: Optional[
         str
     ] = None  # TODO: Handling auxiliary data structures
@@ -518,6 +518,10 @@ class ExperimentConfig(Serializable):
 <dd>
 <div class="desc"><p>Dataset source for nonmembers</p></div>
 </dd>
+<dt id="mimir.config.ExperimentConfig.dataset_nonmember_other_sources"><code class="name">var <span class="ident">dataset_nonmember_other_sources</span> : Optional[List[str]]</code></dt>
+<dd>
+<div class="desc"><p>Dataset sources for nonmembers for which metrics will be computed, using the thresholds derived from the main member/nonmember datasets</p></div>
+</dd>
 <dt id="mimir.config.ExperimentConfig.decode_into_subclasses"><code class="name">var <span class="ident">decode_into_subclasses</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -608,7 +612,7 @@ class ExperimentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig.presampled_dataset_nonmember"><code class="name">var <span class="ident">presampled_dataset_nonmember</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"><p>Path to presampled dataset source for mpmmembers</p></div>
+<div class="desc"><p>Path to presampled dataset source for non-members</p></div>
 </dd>
 <dt id="mimir.config.ExperimentConfig.pretokenized"><code class="name">var <span class="ident">pretokenized</span> : Optional[bool]</code></dt>
 <dd>
@@ -671,7 +675,6 @@ class ExtractionConfig(Serializable):
     &#34;&#34;&#34;
     Config for model-extraction
     &#34;&#34;&#34;
-
     prompt_len: Optional[int] = 30
     &#34;&#34;&#34;Prompt length&#34;&#34;&#34;</code></pre>
 </details>
@@ -707,7 +710,6 @@ class NeighborhoodConfig(Serializable):
     &#34;&#34;&#34;
     Config for neighborhood attack
     &#34;&#34;&#34;
-
     model: str
     &#34;&#34;&#34;Mask-filling model&#34;&#34;&#34;
     n_perturbation_list: List[int] = field(default_factory=lambda: [1, 10])
@@ -839,7 +841,6 @@ class OpenAIConfig(Serializable):
     &#34;&#34;&#34;
     Config for OpenAI calls
     &#34;&#34;&#34;
-
     key: str
     &#34;&#34;&#34;OpenAI API key&#34;&#34;&#34;
     model: str
@@ -881,7 +882,6 @@ class ReferenceConfig(Serializable):
     &#34;&#34;&#34;
     Config for attacks that use reference models.
     &#34;&#34;&#34;
-
     models: List[str]
     &#34;&#34;&#34;Reference model names&#34;&#34;&#34;</code></pre>
 </details>
@@ -945,6 +945,7 @@ class ReferenceConfig(Serializable):
 <li><code><a title="mimir.config.ExperimentConfig.dataset_key" href="#mimir.config.ExperimentConfig.dataset_key">dataset_key</a></code></li>
 <li><code><a title="mimir.config.ExperimentConfig.dataset_member" href="#mimir.config.ExperimentConfig.dataset_member">dataset_member</a></code></li>
 <li><code><a title="mimir.config.ExperimentConfig.dataset_nonmember" href="#mimir.config.ExperimentConfig.dataset_nonmember">dataset_nonmember</a></code></li>
+<li><code><a title="mimir.config.ExperimentConfig.dataset_nonmember_other_sources" href="#mimir.config.ExperimentConfig.dataset_nonmember_other_sources">dataset_nonmember_other_sources</a></code></li>
 <li><code><a title="mimir.config.ExperimentConfig.decode_into_subclasses" href="#mimir.config.ExperimentConfig.decode_into_subclasses">decode_into_subclasses</a></code></li>
 <li><code><a title="mimir.config.ExperimentConfig.do_top_k" href="#mimir.config.ExperimentConfig.do_top_k">do_top_k</a></code></li>
 <li><code><a title="mimir.config.ExperimentConfig.do_top_p" href="#mimir.config.ExperimentConfig.do_top_p">do_top_p</a></code></li>

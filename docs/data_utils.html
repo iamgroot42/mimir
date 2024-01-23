@@ -109,7 +109,7 @@ class Data:
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, mask_tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
         data_split = &#34;train&#34; if train else &#34;test&#34;
         n_samples = self.config.n_samples
 
@@ -155,8 +155,9 @@ class Data:
                     cache_dir=self.cache_dir,
                     split=f&#34;train[:{min_load}]&#34;,
                 )
+                specific_source_use = self.config.specific_source if specific_source is None else specific_source
                 data = pile_selection_utility(
-                    data, self.key, wanted_source=self.config.specific_source
+                    data, self.key, wanted_source=specific_source_use
                 )
             elif &#34;human&#34; in self.name:
                 data = datasets.load_dataset(
@@ -535,7 +536,7 @@ def drop_last_word(text):
             max_tokens=self.config.max_tokens,
         )
 
-    def load(self, train: bool, mask_tokenizer=None):
+    def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
         data_split = &#34;train&#34; if train else &#34;test&#34;
         n_samples = self.config.n_samples
 
@@ -581,8 +582,9 @@ def drop_last_word(text):
                     cache_dir=self.cache_dir,
                     split=f&#34;train[:{min_load}]&#34;,
                 )
+                specific_source_use = self.config.specific_source if specific_source is None else specific_source
                 data = pile_selection_utility(
-                    data, self.key, wanted_source=self.config.specific_source
+                    data, self.key, wanted_source=specific_source_use
                 )
             elif &#34;human&#34; in self.name:
                 data = datasets.load_dataset(
@@ -771,7 +773,7 @@ def drop_last_word(text):
 </details>
 </dd>
 <dt id="mimir.data_utils.Data.load"><code class="name flex">
-<span>def <span class="ident">load</span></span>(<span>self, train: bool, mask_tokenizer=None)</span>
+<span>def <span class="ident">load</span></span>(<span>self, train: bool, mask_tokenizer=None, specific_source: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -779,7 +781,7 @@ def drop_last_word(text):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load(self, train: bool, mask_tokenizer=None):
+<pre><code class="python">def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
     data_split = &#34;train&#34; if train else &#34;test&#34;
     n_samples = self.config.n_samples
 
@@ -825,8 +827,9 @@ def drop_last_word(text):
                 cache_dir=self.cache_dir,
                 split=f&#34;train[:{min_load}]&#34;,
             )
+            specific_source_use = self.config.specific_source if specific_source is None else specific_source
             data = pile_selection_utility(
-                data, self.key, wanted_source=self.config.specific_source
+                data, self.key, wanted_source=specific_source_use
             )
         elif &#34;human&#34; in self.name:
             data = datasets.load_dataset(
