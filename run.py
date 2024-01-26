@@ -73,8 +73,9 @@ def run_blackbox_attacks(
         runnable_attacks.append(a)
     attacks = runnable_attacks
 
-    neighborhood_attacker = NeighborhoodAttack(config, target_model)
-    neighborhood_attacker.prepare()
+    if BlackBoxAttacks.NEIGHBOR in attacks:
+        neighborhood_attacker = NeighborhoodAttack(config, target_model)
+        neighborhood_attacker.prepare()
 
     results = defaultdict(list)
     for classification in keys_care_about:
