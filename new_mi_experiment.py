@@ -52,6 +52,7 @@ def run_blackbox_attacks(
     batch_size: int = 50,
     keys_care_about: List[str] = ["nonmember", "member"],
     scores_not_needed: bool = False,
+    verbose: bool = True,
 ):
     torch.manual_seed(0)
     np.random.seed(0)
@@ -92,9 +93,12 @@ def run_blackbox_attacks(
 
         # For each batch of data
         # TODO: Batch-size isn't really "batching" data - change later
-        for batch in tqdm(
-            range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"
-        ):
+        if verbose:
+            iterator = range(math.ceil(n_samples / batch_size))
+        else:
+            iterator = tqdm(iterator, desc=f"Computing criterion")
+
+        for batch in iterator:
             texts = data[classification][batch * batch_size : (batch + 1) * batch_size]
 
             # For each entry in batch
@@ -555,11 +559,6 @@ if __name__ == "__main__":
     print(f"Loading dataset {config.dataset_member} and {config.dataset_nonmember}...")
     # data, seq_lens, n_samples = generate_data(config.dataset_member)
 
-    data_obj_nonmem, data_nonmember = generate_data(
-        config.dataset_nonmember,
-        train=False,
-        presampled=config.presampled_dataset_nonmember,
-    )
     data_obj_mem, data_member = generate_data(
         config.dataset_member, presampled=config.presampled_dataset_member
     )
@@ -570,11 +569,9 @@ if __name__ == "__main__":
         Return version of x that has some distance 'n' from x.
         Could be edit-distance based, or semantic distance (NE) based
         """
-        # Idea 1 : Basic edit distance. Replace any randomly selected word with a word present in The Pile
         # Tokenize sentence
         x_tok = base_model.tokenizer(x)["input_ids"]
         # Pick n random positions
-        # TODO: Avoid special tokens
         positions = np.random.choice(len(x_tok), n, replace=False)
         # Replace those positions with random words from vocabulary
         for pos in positions:
@@ -583,137 +580,60 @@ if __name__ == "__main__":
         x = base_model.tokenizer.decode(x_tok)
         return x
 
-    # Try out multiple "distances"
-    n_try = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    # TODO: Could reduce # of samples from 1000 to 100 and/or focus on 1/10% FPR range for compute efficiency.
-    n_trials = 2
-    other_members = []
-    for n in n_try:
-        perturbed_members = []
-        for _ in range(n_trials):
-            perturbed_members += [[edit(x, n) for x in data_member]]
-        other_members.append(perturbed_members)
-    ### </LOGIC FOR SPECIFIC EXPERIMENTS>
-
-    if config.dump_cache and not config.load_from_cache:
+    if config.load_from_cache:
+        with open(
+            f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
+            "r",
+        ) as f:
+            other_members_data = json.load(f)
+            n_try = list(other_members_data.keys())
+            n_trials = len(other_members_data[n_try[0]])
+    elif config.dump_cache:
+        # Try out multiple "distances"
+        n_try = [1, 5, 10, 25, 100]
+        # With multiple trials
+        n_trials = 50
+        other_members_data = {}
+        for n in tqdm(n_try, "Generating edited members"):
+            trials = {}
+            for i in tqdm(range(n_trials)):
+                trials[i] = [edit(x, n) for x in data_member]
+            other_members_data[n] = trials
+        with open(
+            f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
+            "w",
+        ) as f:
+            json.dump(other_members_data, f)
         print("Data dumped! Please re-run with load_from_cache set to True")
         exit(0)
-
-    if config.pretokenized:
-        assert data_member.shape == data_nonmember.shape
-        data = {
-            "nonmember": data_nonmember,
-            "member": data_member,
-        }
-        n_samples, seq_lens = data_nonmember.shape
-    else:
-        data, seq_lens, n_samples = generate_data_processed(
-            data_member,
-            batch_size=config.batch_size,
-            raw_data_non_member=data_nonmember,
-        )
-
-    # If neighborhood attack is used, see if we have cache available (and load from it, if we do)
-    neighbors_nonmember, neighbors_member = None, None
-    if (
-        BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks
-        and neigh_config.load_from_cache
-    ):
-        neighbors_nonmember, neighbors_member = {}, {}
-        for n_perturbations in n_perturbation_list:
-            neighbors_nonmember[n_perturbations] = data_obj_nonmem.load_neighbors(
-                train=False,
-                num_neighbors=n_perturbations,
-                model=neigh_config.model,
-                in_place_swap=in_place_swap,
-            )
-            neighbors_member[n_perturbations] = data_obj_mem.load_neighbors(
-                train=True,
-                num_neighbors=n_perturbations,
-                model=neigh_config.model,
-                in_place_swap=in_place_swap,
-            )
-
-    print("NEW N_SAMPLES IS ", n_samples)
-
-    if (
-        neigh_config
-        and neigh_config.load_from_cache is False
-        and neigh_config.random_fills
-        and "t5" in neigh_config
-        and neigh_config.model
-    ):
-        if not config.pretokenized:
-            # TODO: maybe can be done if detokenized, but currently not supported
-            mask_model.create_fill_dictionary(data)
-
-    if config.scoring_model_name:
-        print(f"Loading SCORING model {config.scoring_model_name}...")
-        del base_model
-        # Clear CUDA cache
-        torch.cuda.empty_cache()
-
-        base_model = LanguageModel(config, name=config.scoring_model_name)
-        print("MOVING BASE MODEL TO GPU...", end="", flush=True)
-        base_model.load()
-
-    # Add neighbordhood-related data to 'data' here if we want it to be saved in raw data. Otherwise, add jsut before calling attack
-
-    # write the data to a json file in the save folder
-    if not config.pretokenized:
-        with open(os.path.join(SAVE_FOLDER, "raw_data.json"), "w") as f:
-            print(f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data.json')}")
-            json.dump(data, f)
-
-        with open(os.path.join(SAVE_FOLDER, "raw_data_lens.json"), "w") as f:
-            print(
-                f"Writing raw data to {os.path.join(SAVE_FOLDER, 'raw_data_lens.json')}"
-            )
-            json.dump(seq_lens, f)
-
-    tk_freq_map = None
-    if config.token_frequency_map is not None:
-        print("loading tk freq map")
-        tk_freq_map = pickle.load(open(config.token_frequency_map, "rb"))
-
-    # Add neighborhood-related data entries to 'data'
-    data["nonmember_neighbors"] = neighbors_nonmember
-    data["member_neighbors"] = neighbors_member
-
-    ds_objects = {"nonmember": data_obj_nonmem, "member": data_obj_mem}
-
-    outputs = []
-    # perform blackbox attacks
-    blackbox_outputs = run_blackbox_attacks(
-        data,
-        ds_objects=ds_objects,
-        target_model=base_model,
-        ref_models=ref_models,
-        config=config,
-        n_samples=n_samples,
-    )
+    ### </LOGIC FOR SPECIFIC EXPERIMENTS>
 
     # Using thresholds returned in blackbox_outputs, compute AUCs and ROC curves for other non-member sources
-    for other_member, n in tqdm(zip(other_members, n_try), total=len(n_try), desc="Computing for varying distances"):
-        other_ds_objects = {"member": data_obj_mem}
+    score_dict = {x: [] for x in config.blackbox_attacks}
+    for k, v in score_dict.items():
+        score_dict[k] = {x: {} for x in n_try}
+
+    pbar = tqdm(total=len(n_try) * n_trials)
+    for n, other_member in other_members_data.items():
+        ds_objects = {"member": data_obj_mem}
         for i in range(n_trials):
+            n_samples = len(other_member[str(i)])
             other_blackbox_predictions = run_blackbox_attacks(
-                data={"member": other_member[i]},
-                ds_objects=other_ds_objects,
+                data={"member": other_member[str(i)]},
+                ds_objects=ds_objects,
                 target_model=base_model,
                 ref_models=ref_models,
                 config=config,
                 n_samples=n_samples,
                 keys_care_about=["member"],
                 scores_not_needed=True,
+                verbose=False,
             )
+            pbar.update(1)
 
-            for attack in blackbox_outputs.keys():
-                member_scores = np.array(
-                    blackbox_outputs[attack]["predictions"]["member"]
-                )
-                thresholds = blackbox_outputs[attack]["metrics"]["thresholds"]
-                new_member_scores = np.array(
-                    other_blackbox_predictions[attack]["member"]
-                )
-                # TODO: Compute TPR (at some FPR) on edited-members, using thresholds derived from original members
+            for attack in other_blackbox_predictions.keys():
+                score_dict[attack][n][i] = other_blackbox_predictions[attack]["member"]
+
+    pbar.close()
+    with open(f"./edit_distance_results_{args.specific_source}.json", "w") as f:
+        json.dump(score_dict, f)
