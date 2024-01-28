@@ -75,8 +75,9 @@ def run_blackbox_attacks(
         runnable_attacks.append(a)
     attacks = runnable_attacks
 
-    neighborhood_attacker = NeighborhoodAttack(config, target_model)
-    neighborhood_attacker.prepare()
+    if BlackBoxAttacks.NEIGHBOR in attacks:
+        neighborhood_attacker = NeighborhoodAttack(config, target_model)
+        neighborhood_attacker.prepare()
 
     results = defaultdict(list)
     for classification in keys_care_about:
@@ -239,7 +240,10 @@ def run_blackbox_attacks(
 
                 # Update collected scores for each sample with ref-based attack scores
                 for classification, result in results.items():
-                    for r in tqdm(result, desc="Ref scores"):
+                    itr = result
+                    if verbose:
+                        itr = tqdm(itr, desc="Ref scores")
+                    for r in itr:
                         ref_model_scores = []
                         for i, s in enumerate(r["sample"]):
                             if config.pretokenized:
@@ -631,7 +635,7 @@ if __name__ == "__main__":
             )
             pbar.update(1)
 
-            for attack in other_blackbox_predictions.keys():
+            for attack in config.blackbox_attacks:
                 score_dict[attack][n][i] = other_blackbox_predictions[attack]["member"]
 
     pbar.close()
