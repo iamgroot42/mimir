@@ -11,9 +11,7 @@
     "n_samples": 1000,
     "blackbox_attacks": ["ne"],
     "ref_config": {
-        "models": [
-            "gpt2"
-        ]
+        "models": []
     },
     "neighborhood_config": {
         "model": "bert",
@@ -27,7 +25,8 @@
     },
     "env_config": {
         "results": "results_new",
-        "device": "cuda:0"
+        "device": "cuda:0",
+        "device_aux": "cuda:0"
     },
     "dump_cache": false,
     "load_from_cache": true

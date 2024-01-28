@@ -186,7 +186,7 @@ def run_blackbox_attacks(
                                 if not neigh_config.dump_cache:
                                     # Only evaluate neighborhood attack when not caching neighbors
                                     mean_substr_score = target_model.get_lls(
-                                        substr_neighbors, batch_size=15
+                                        substr_neighbors, batch_size=4
                                     )
                                     d_based_score = loss - mean_substr_score
 

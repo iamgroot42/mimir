@@ -8,6 +8,7 @@ from typing import List
 import numpy as np
 import transformers
 import time
+from collections import defaultdict
 from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
@@ -80,10 +81,9 @@ class Model(nn.Module):
             if labels.shape[0] != 1:
                 # expand first dimension
                 labels = labels.unsqueeze(0)
-            labels = labels.to(self.device)
         else:
             tokenized = self.tokenizer(
-                text, return_tensors="pt").to(self.device)
+                text, return_tensors="pt")
             labels = tokenized.input_ids
 
         all_prob = []
@@ -91,7 +91,7 @@ class Model(nn.Module):
             begin_loc = max(i + self.stride - self.max_length, 0)
             end_loc = min(i + self.stride, labels.size(1))
             trg_len = end_loc - i  # may be different from stride on last loop
-            input_ids = labels[:, begin_loc:end_loc]
+            input_ids = labels[:, begin_loc:end_loc].to(self.device)
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
 
@@ -171,7 +171,7 @@ class Model(nn.Module):
         else:
             tokenizer = transformers.AutoTokenizer.from_pretrained(
                 self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
-        tokenizer.pad_token_id = tokenizer.eos_token_id
+        tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
         return model, tokenizer
     
@@ -320,28 +320,63 @@ class LanguageModel(Model):
 
     # TODO extend for longer sequences
     @torch.no_grad()
-    def get_lls(self, texts: str, batch_size: int = 6):
-        # return [self.get_ll(text) for text in texts]
-        tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
-        labels = tokenized.input_ids
-        total_size = labels.shape[0]
+    def get_lls(self, texts: List[str], batch_size: int = 6):
+        #return [self.get_ll(text) for text in texts] # -np.mean([self.get_ll(text) for text in texts])
+        # tokenized = self.tokenizer(texts, return_tensors="pt", padding=True)
+        # labels = tokenized.input_ids
+        total_size = len(texts)
         losses = []
         for i in range(0, total_size, batch_size):
-            label_batch = labels[i:i+batch_size].to(self.device)
-            output = self.model(label_batch, labels=label_batch, return_dict=False)
-            loss = output[0]
-            # logits = output.logits
-            # # Shift so that tokens < n predict n
-            # shift_logits = logits[..., :-1, :].contiguous()
-            # shift_logits = torch.transpose(shift_logits, 1, 2)
-            # shift_labels = label_batch[..., 1:].contiguous()
-            # loss = F.cross_entropy(input=shift_logits, target=shift_labels)#, reduction='none').mean(dim=1)
-            losses.append(loss.item() * batch_size)
-            # del label_batch
-            # del shift_logits
+            # Delegate batches and tokenize
+            batch = texts[i:i+batch_size]
+            tokenized = self.tokenizer(batch, return_tensors="pt", padding=True, return_attention_mask=True)
+            label_batch = tokenized.input_ids
+            
+            # # mask out padding tokens
+            attention_mask = tokenized.attention_mask
+            assert attention_mask.size() == label_batch.size()
+
+            needs_sliding = label_batch.size(1) > self.max_length
+            if not needs_sliding:
+                label_batch = label_batch.to(self.device)
+                attention_mask = attention_mask.to(self.device)
+
+            # Collect token probabilities per sample in batch
+            all_prob = defaultdict(list)
+            for i in range(0, label_batch.size(1), self.stride):
+                begin_loc = max(i + self.stride - self.max_length, 0)
+                end_loc = min(i + self.stride, label_batch.size(1))
+                trg_len = end_loc - i  # may be different from stride on last loop
+                input_ids = label_batch[:, begin_loc:end_loc]
+                mask = attention_mask[:, begin_loc:end_loc]
+                if needs_sliding:
+                    input_ids = input_ids.to(self.device)
+                    mask = mask.to(self.device)
+                    
+                target_ids = input_ids.clone()
+                # Don't count padded tokens or tokens that already have computed probabilities
+                target_ids[:, :-trg_len] = -100
+                # target_ids[attention_mask == 0] = -100
+                
+                outputs = self.model(input_ids, labels=target_ids, attention_mask=mask)
+                logits = outputs.logits
+                shift_logits = logits[..., :-1, :].contiguous()
+                probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+                shift_labels = target_ids[..., 1:].contiguous()
+
+                for i, sample in enumerate(shift_labels):
+                    for j, token_id in enumerate(sample):
+                        if token_id != -100 and token_id != self.tokenizer.pad_token_id:
+                            probability = probabilities[i, j, token_id].item()
+                            all_prob[i].append(probability)
+            
+            # average over each sample to get losses
+            batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]
+            # print(batch_losses)
+            losses.extend(batch_losses)
             del label_batch
-            del output
-        return np.sum(losses) / total_size
+            del attention_mask
+        return losses #np.mean(losses)
     
     @torch.no_grad()
     def get_min_k_prob(self, text: str, tokens=None, probs=None, k=.2, window=1, stride=1):

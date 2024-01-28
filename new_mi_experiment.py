@@ -93,9 +93,8 @@ def run_blackbox_attacks(
 
         # For each batch of data
         # TODO: Batch-size isn't really "batching" data - change later
+        iterator = range(math.ceil(n_samples / batch_size))
         if verbose:
-            iterator = range(math.ceil(n_samples / batch_size))
-        else:
             iterator = tqdm(iterator, desc=f"Computing criterion")
 
         for batch in iterator:
@@ -580,14 +579,14 @@ if __name__ == "__main__":
         x = base_model.tokenizer.decode(x_tok)
         return x
 
-    if config.load_from_cache:
+    if config.load_from_cache and not config.dump_cache:
         with open(
-            f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
+            f"edit_distance_members/{config.specific_source}.json",
             "r",
         ) as f:
             other_members_data = json.load(f)
             n_try = list(other_members_data.keys())
-            n_trials = len(other_members_data[n_try[0]])
+            n_trials = 20 #len(other_members_data[n_try[0]])
     elif config.dump_cache:
         # Try out multiple "distances"
         n_try = [1, 5, 10, 25, 100]
@@ -600,7 +599,7 @@ if __name__ == "__main__":
                 trials[i] = [edit(x, n) for x in data_member]
             other_members_data[n] = trials
         with open(
-            f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
+            f"edit_distance_members/{config.specific_source}.json",
             "w",
         ) as f:
             json.dump(other_members_data, f)
@@ -609,9 +608,10 @@ if __name__ == "__main__":
     ### </LOGIC FOR SPECIFIC EXPERIMENTS>
 
     # Using thresholds returned in blackbox_outputs, compute AUCs and ROC curves for other non-member sources
-    score_dict = {x: [] for x in config.blackbox_attacks}
-    for k, v in score_dict.items():
-        score_dict[k] = {x: {} for x in n_try}
+    # score_dict = {x: [] for x in config.blackbox_attacks}
+    # for k, v in score_dict.items():
+    #     score_dict[k] = {x: {} for x in n_try}
+    score_dict = defaultdict(lambda: defaultdict(dict))
 
     pbar = tqdm(total=len(n_try) * n_trials)
     for n, other_member in other_members_data.items():
@@ -627,7 +627,7 @@ if __name__ == "__main__":
                 n_samples=n_samples,
                 keys_care_about=["member"],
                 scores_not_needed=True,
-                verbose=False,
+                verbose=True,
             )
             pbar.update(1)
 
@@ -635,5 +635,5 @@ if __name__ == "__main__":
                 score_dict[attack][n][i] = other_blackbox_predictions[attack]["member"]
 
     pbar.close()
-    with open(f"./edit_distance_results_{args.specific_source}.json", "w") as f:
+    with open(f"edit_distance_members/scores/edit_distance_results_{config.specific_source}.json", "w") as f:
         json.dump(score_dict, f)
