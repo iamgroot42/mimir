@@ -29,7 +29,8 @@ def process_texts(data, min_len, provided_subset=None):
         tokenized = text.split()
         # Initial simple filter to get candidates surpassing min_len requirement
         if len(tokenized) >= min_len:
-            dp["raw"] = text
+            # TODO: for temporal_wiki, need to append title metadata to front. Should refactor this
+            dp["raw"] = dp["title"] + "\n\n" + text if "title" in dp and provided_subset == 'temporal_wiki' else text
             subset_samples[pile_subset].append(dp)
 
     return subset_samples, subset_counts
