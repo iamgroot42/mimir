@@ -65,3 +65,10 @@ done
 #     --max_ngram_overlap 0.8 \
 #     --provided_subset arxiv_2020-06 \
 #     --split test
+
+python create_datasets.py \
+        /mmfs1/gscratch/h2lab/micdun/mimir/data/temporal_wiki/wikitext_latest_full.json \
+        --benchmark_dir temporal_wiki \
+        --provided_subset temporal_wiki \
+        --split test \
+        --n_samples 1000

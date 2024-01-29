@@ -187,7 +187,7 @@ def run_blackbox_attacks(
                                 if not neigh_config.dump_cache:
                                     # Only evaluate neighborhood attack when not caching neighbors
                                     mean_substr_score = target_model.get_lls(
-                                        substr_neighbors, batch_size=15
+                                        substr_neighbors, batch_size=4
                                     )
                                     d_based_score = loss - mean_substr_score
 
@@ -231,8 +231,8 @@ def run_blackbox_attacks(
             print("No reference models specified, skipping Reference-based attacks")
         else:
             for name, ref_model in ref_models.items():
-                # if "llama" not in name and "alpaca" not in name:
-                ref_model.load()
+                if "llama" not in name and "alpaca" not in name:
+                    ref_model.load()
 
                 # Update collected scores for each sample with ref-based attack scores
                 for classification, result in results.items():
@@ -247,8 +247,8 @@ def run_blackbox_attacks(
                             f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
                         ].extend(ref_model_scores)
 
-                # if "llama" not in name and "alpaca" not in name:
-                ref_model.unload()
+                if "llama" not in name and "alpaca" not in name:
+                    ref_model.unload()
 
     # Rearrange the nesting of the results dict and calculated aggregated score for sample
     # attack -> member/nonmember -> list of scores
@@ -559,6 +559,7 @@ if __name__ == "__main__":
         # n_similarity_samples = args.n_similarity_samples # NOT USED
 
     cache_dir = env_config.cache_dir
+    print(f"LOG: cache_dir is {cache_dir}")
     os.environ["XDG_CACHE_HOME"] = cache_dir
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)

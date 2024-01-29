@@ -583,41 +583,39 @@ if __name__ == "__main__":
         x = base_model.tokenizer.decode(x_tok)
         return x
 
-    # """
-    with open(
-        f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
-        "r",
-    ) as f:
-        other_members_data = json.load(f)
-        n_try = list(other_members_data.keys())
-        n_trials = len(other_members_data[n_try[0]])
-    # """
-
-    """
-    # Try out multiple "distances"
-    n_try = [1, 5, 10, 25, 100]
-    # With multiple trials
-    n_trials = 20
-    other_members_data = {}
-    for n in tqdm(n_try, "Generating edited members"):
-        trials = {}
-        for i in tqdm(range(n_trials)):
-            trials[i] = [edit(x, n) for x in data_member]
-        other_members_data[n] = trials
-    with open(
-        f"/p/distinf/uw_llm_collab/edit_distance_members/{config.specific_source}.json",
-        "w",
-    ) as f:
-        json.dump(other_members_data, f)
-    print("Data dumped! Please re-run with load_from_cache set to True")
-    exit(0)
-    """
+    if config.load_from_cache and not config.dump_cache:
+        with open(
+            f"edit_distance_members/{config.specific_source}.json",
+            "r",
+        ) as f:
+            other_members_data = json.load(f)
+            n_try = list(other_members_data.keys())
+            n_trials = 20 #len(other_members_data[n_try[0]])
+    elif config.dump_cache:
+        # Try out multiple "distances"
+        n_try = [1, 5, 10, 25, 100]
+        # With multiple trials
+        n_trials = 50
+        other_members_data = {}
+        for n in tqdm(n_try, "Generating edited members"):
+            trials = {}
+            for i in tqdm(range(n_trials)):
+                trials[i] = [edit(x, n) for x in data_member]
+            other_members_data[n] = trials
+        with open(
+            f"edit_distance_members/{config.specific_source}.json",
+            "w",
+        ) as f:
+            json.dump(other_members_data, f)
+        print("Data dumped! Please re-run with load_from_cache set to True")
+        exit(0)
     ### </LOGIC FOR SPECIFIC EXPERIMENTS>
 
     # Using thresholds returned in blackbox_outputs, compute AUCs and ROC curves for other non-member sources
-    score_dict = {x: [] for x in config.blackbox_attacks}
-    for k, v in score_dict.items():
-        score_dict[k] = {x: {} for x in n_try}
+    # score_dict = {x: [] for x in config.blackbox_attacks}
+    # for k, v in score_dict.items():
+    #     score_dict[k] = {x: {} for x in n_try}
+    score_dict = defaultdict(lambda: defaultdict(dict))
 
     pbar = tqdm(total=len(n_try) * n_trials)
     for n, other_member in other_members_data.items():
@@ -633,7 +631,7 @@ if __name__ == "__main__":
                 n_samples=n_samples,
                 keys_care_about=["member"],
                 scores_not_needed=True,
-                verbose=False,
+                verbose=True,
             )
             pbar.update(1)
 
@@ -641,5 +639,5 @@ if __name__ == "__main__":
                 score_dict[attack][n][i] = other_blackbox_predictions[attack]["member"]
 
     pbar.close()
-    with open(f"./edit_distance_results_{args.specific_source}.json", "w") as f:
+    with open(f"edit_distance_members/scores/edit_distance_results_{config.specific_source}.json", "w") as f:
         json.dump(score_dict, f)
