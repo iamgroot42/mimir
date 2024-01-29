@@ -643,7 +643,7 @@ class OpenAI_APIModel(LanguageModel):
 </code></dt>
 <dd>
 <div class="desc"><p>GPT-based detector that can distinguish between machine-generated and human-written text</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -734,7 +734,7 @@ def get_preds(self, data):
 </code></dt>
 <dd>
 <div class="desc"><p>Generic LM- used most often for target model</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1311,7 +1311,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
 </code></dt>
 <dd>
 <div class="desc"><p>Base class (for LLMs).</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1520,7 +1520,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
 <span>def <span class="ident">forward</span></span>(<span>self, *input: Any) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Defines the computation performed at every call.</p>
+<div class="desc"><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1534,7 +1534,7 @@ registered hooks while the latter silently ignores them.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _forward_unimplemented(self, *input: Any) -&gt; None:
-    r&#34;&#34;&#34;Defines the computation performed at every call.
+    r&#34;&#34;&#34;Define the computation performed at every call.
 
     Should be overridden by all subclasses.
 
@@ -1781,7 +1781,7 @@ def get_probabilities(self, text: str, tokens=None):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for OpenAI API calls</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2003,7 +2003,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for referenc model, specifically used for quantile regression</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2068,7 +2068,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for reference model</p>
-<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
