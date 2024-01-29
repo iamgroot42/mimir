@@ -23,7 +23,8 @@
         "pct_words_masked": 0.3,
         "span_length": 2,
         "dump_cache": false,
-        "load_from_cache": true
+        "load_from_cache": true,
+        "neighbor_strategy": "random"
     },
     "env_config": {
         "results": "results_new",
