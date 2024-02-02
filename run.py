@@ -1,14 +1,15 @@
+"""
+    Main entry point for running experiments with MIMIR
+"""
 import numpy as np
 import torch
 from tqdm import tqdm
-import random
 import datetime
 import os
 import json
 import pickle
 import math
 from collections import defaultdict
-from functools import partial
 from typing import List
 
 from simple_parsing import ArgumentParser
@@ -24,6 +25,7 @@ from mimir.config import (
 )
 import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
+from mimir.utils import fix_seed
 from mimir.models import EvalModel, LanguageModel, ReferenceModel, OpenAI_APIModel
 from mimir.attacks.blackbox_attacks import BlackBoxAttacks
 from mimir.attacks.neighborhood import T5Model, BertModel, NeighborhoodAttack
@@ -31,13 +33,8 @@ from mimir.attacks.attack_utils import (
     f1_score,
     get_roc_metrics,
     get_precision_recall_metrics,
-    get_auc_from_thresholds
+    get_auc_from_thresholds,
 )
-
-torch.manual_seed(0)
-np.random.seed(0)
-random.seed(0)
-
 
 # TODO: Might make more sense to have this function called once each for mem and non-mem, instead of handling all of them in a loop inside here
 # For instance, makes it easy to know exact source of data
@@ -52,8 +49,7 @@ def run_blackbox_attacks(
     keys_care_about: List[str] = ["nonmember", "member"],
     scores_not_needed: bool = False,
 ):
-    torch.manual_seed(0)
-    np.random.seed(0)
+    fix_seed(config.random_seed)
 
     n_samples = len(data["nonmember"]) if n_samples is None else n_samples
 
@@ -72,6 +68,10 @@ def run_blackbox_attacks(
 
         runnable_attacks.append(a)
     attacks = runnable_attacks
+
+    if neigh_config:
+        n_perturbation_list = neigh_config.n_perturbation_list
+        in_place_swap = neigh_config.original_tokenization_swap
 
     if BlackBoxAttacks.NEIGHBOR in attacks:
         neighborhood_attacker = NeighborhoodAttack(config, target_model)
@@ -380,11 +380,17 @@ def generate_data_processed(
     return data, seq_lens, n_samples
 
 
-def generate_data(dataset: str, train: bool = True, presampled: str = None, specific_source: str = None):
+def generate_data(
+    dataset: str,
+    train: bool = True,
+    presampled: str = None,
+    specific_source: str = None,
+):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(
-        train=train, mask_tokenizer=mask_model.tokenizer if mask_model else None,
-        specific_source=specific_source
+        train=train,
+        mask_tokenizer=mask_model.tokenizer if mask_model else None,
+        specific_source=specific_source,
     )
     return data_obj, data
     # return generate_samples(data[:n_samples], batch_size=batch_size)
@@ -445,32 +451,12 @@ def eval_supervised(data, model):
     }
 
 
-if __name__ == "__main__":
-    # TODO: Shift below to main() function - variables here are global and may interfe with functions etc.
-
-    # Extract relevant configurations from config file
-    parser = ArgumentParser(add_help=False)
-    parser.add_argument("--config", help="Path to attack config file", type=Path)
-    args, remaining_argv = parser.parse_known_args()
-    # Attempt to extract as much information from config file as you can
-    config = ExperimentConfig.load(args.config, drop_extra_fields=False)
-    # Also give user the option to provide config values over CLI
-    parser = ArgumentParser(parents=[parser])
-    parser.add_arguments(ExperimentConfig, dest="exp_config", default=config)
-    args = parser.parse_args(remaining_argv)
-    config: ExperimentConfig = args.exp_config
-
+def main(config: ExperimentConfig):
     env_config: EnvironmentConfig = config.env_config
     neigh_config: NeighborhoodConfig = config.neighborhood_config
     ref_config: ReferenceConfig = config.ref_config
     openai_config: OpenAIConfig = config.openai_config
     extraction_config: ExtractionConfig = config.extraction_config
-
-    if neigh_config:
-        if neigh_config.load_from_cache and neigh_config.dump_cache:
-            raise ValueError(
-                "Cannot dump and load from cache at the same time. Please set one of these to False"
-            )
 
     if openai_config:
         openAI_model = OpenAI_APIModel(config)
@@ -486,12 +472,6 @@ if __name__ == "__main__":
 
     # define SAVE_FOLDER as the timestamp - base model name - mask filling model name
     # create it if it doesn't exist
-    precision_string = (
-        "int8" if env_config.int8 else ("fp16" if env_config.half else "fp32")
-    )
-    sampling_string = (
-        "top_k" if config.do_top_k else ("top_p" if config.do_top_p else "temp")
-    )
     output_subfolder = f"{config.output_name}/" if config.output_name else ""
     if openai_config is None:
         base_model_name = config.base_model.replace("/", "_")
@@ -500,17 +480,6 @@ if __name__ == "__main__":
     scoring_model_string = (
         f"-{config.scoring_model_name}" if config.scoring_model_name else ""
     ).replace("/", "_")
-
-    if config.tok_by_tok:
-        tok_by_tok_string = "--tok_true"
-    else:
-        tok_by_tok_string = "--tok_false"
-
-    if neigh_config:
-        if neigh_config.span_length == 2:
-            span_length_string = ""
-        else:
-            span_length_string = f"--{neigh_config.span_length}"
 
     # Replace paths
     dataset_member_name = config.dataset_member.replace("/", "_")
@@ -526,9 +495,8 @@ if __name__ == "__main__":
     )  # hack: will fix later
     # suffix = "QUANTILE_TEST"
     # TODO - Either automate suffix construction, or use better names (e.g. save folder with results, and attack config in it)
-    suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
-    if config.dataset_nonmember_other_sources is not None:
-        suffix += "-additional_nonmem_sources"
+    suffix = "DUDDU"
+    # suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
 
     # Add pile source to suffix, if provided
     # TODO: Shift dataset-specific processing to their corresponding classes
@@ -554,7 +522,6 @@ if __name__ == "__main__":
 
     if neigh_config:
         n_perturbation_list = neigh_config.n_perturbation_list
-        n_perturbation_rounds = neigh_config.n_perturbation_rounds
         in_place_swap = neigh_config.original_tokenization_swap
         # n_similarity_samples = args.n_similarity_samples # NOT USED
 
@@ -570,11 +537,13 @@ if __name__ == "__main__":
 
     # reference model if we are doing the ref-based attack
     ref_models = None
-    if ref_config is not None and BlackBoxAttacks.REFERENCE_BASED in config.blackbox_attacks:
+    if (
+        ref_config is not None
+        and BlackBoxAttacks.REFERENCE_BASED in config.blackbox_attacks
+    ):
         ref_models = {
             model: ReferenceModel(config, model) for model in ref_config.models
         }
-        # print('MOVING ref MODEL TO GPU...', end='', flush=True)
 
     # Load neighborhood attack model, only if we are doing the neighborhood attack AND generating neighbors
     mask_model = None
@@ -584,7 +553,7 @@ if __name__ == "__main__":
         and (BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks)
     ):
         model_kwargs = dict()
-        if not config.baselines_only and not neigh_config.random_fills:
+        if not neigh_config.random_fills:
             if env_config.int8:
                 model_kwargs = dict(
                     load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
@@ -647,8 +616,7 @@ if __name__ == "__main__":
             other_objs, other_nonmembers = [], []
             for other_name in config.dataset_nonmember_other_sources:
                 data_obj_nonmem_others, data_nonmember_others = generate_data(
-                    config.dataset_nonmember, train=False,
-                    specific_source=other_name
+                    config.dataset_nonmember, train=False, specific_source=other_name
                 )
                 other_objs.append(data_obj_nonmem_others)
                 other_nonmembers.append(data_nonmember_others)
@@ -786,7 +754,9 @@ if __name__ == "__main__":
         # Will fix later!
         if config.dataset_nonmember_other_sources is not None:
             # Using thresholds returned in blackbox_outputs, compute AUCs and ROC curves for other non-member sources
-            for other_obj, other_nonmember, other_name in zip(other_objs, other_nonmembers, config.dataset_nonmember_other_sources):
+            for other_obj, other_nonmember, other_name in zip(
+                other_objs, other_nonmembers, config.dataset_nonmember_other_sources
+            ):
                 # other_data, _, other_n_samples = generate_data_processed(
                 #     other_nonmember, batch_size=config.batch_size
                 # )
@@ -803,13 +773,19 @@ if __name__ == "__main__":
                 )
 
                 for attack in blackbox_outputs.keys():
-                    member_scores = np.array(blackbox_outputs[attack]["predictions"]["member"])
+                    member_scores = np.array(
+                        blackbox_outputs[attack]["predictions"]["member"]
+                    )
                     thresholds = blackbox_outputs[attack]["metrics"]["thresholds"]
-                    nonmember_scores = np.array(other_blackbox_predictions[attack]["nonmember"])
+                    nonmember_scores = np.array(
+                        other_blackbox_predictions[attack]["nonmember"]
+                    )
                     auc = get_auc_from_thresholds(
                         member_scores, nonmember_scores, thresholds
                     )
-                    print(f"AUC using thresholds of original split on {other_name} using {attack}: {auc}")
+                    print(
+                        f"AUC using thresholds of original split on {other_name} using {attack}: {auc}"
+                    )
             exit(0)
 
         # TODO: Skipping openai-detector (for now)
@@ -821,62 +797,6 @@ if __name__ == "__main__":
             outputs.append(output)
             with open(os.path.join(SAVE_FOLDER, f"{attack}_results.json"), "w") as f:
                 json.dump(output, f)
-
-    if not config.baselines_only:
-        pass
-        # # TODO: incorporate all attacks below into blackbox attack flow (or separate white box attack flow if necessary)
-        # # run perturbation experiments
-        """
-        if (
-            neigh_config and not config.pretokenized
-        ):  # TODO: not supported for pretokenized text
-            for n_perturbations in n_perturbation_list:
-                perturbation_results = get_perturbation_results(
-                    neigh_config.span_length, n_perturbations
-                )
-                for perturbation_mode in ["d", "z"]:
-                    output = run_perturbation_experiment(
-                        perturbation_results,
-                        perturbation_mode,
-                        n_samples=n_samples,
-                        span_length=neigh_config.span_length,
-                        n_perturbations=n_perturbations,
-                    )
-                    outputs.append(output)
-                    with open(
-                        os.path.join(
-                            SAVE_FOLDER,
-                            f"perturbation_{n_perturbations}_{perturbation_mode}_results.json",
-                        ),
-                        "w",
-                    ) as f:
-                        json.dump(output, f)
-        """
-
-        # # run tokenization attack, if requested
-        # if config.tokenization_attack:
-        #     from mimir.attacks.tokenization import token_attack
-        #     def token_attack_wrapper(text): return token_attack(base_model, text)
-        #     output = run_baseline_threshold_experiment(data, token_attack_wrapper, "tokenization_attack", n_samples=n_samples)
-        #     outputs.append(output)
-        #     with open(os.path.join(SAVE_FOLDER, f"tokenization_attack_results.json"), "w") as f:
-        #         json.dump(output, f)
-
-        # # run quantile attack, if requested
-        # if config.quantile_attack:
-        #     from datasets import load_dataset
-        #     from mimir.attacks.quantile import QuantileAttack
-        #     alpha = 0.1 # FPR
-        #     quantile_attacker = QuantileAttack(config, alpha)
-
-        #     nonmember_data_other = load_dataset("imdb", split="test")["text"] # use split "unsupervised" for 2x data
-
-        #     quantile_attacker.prepare(nonmember_data_other, base_model)
-        #     def quantile_attack_wrapper(text): return quantile_attacker.attack(base_model, text)
-        #     output = run_baseline_threshold_experiment(data, quantile_attack_wrapper, "quantile_attack", n_samples=n_samples)
-        #     outputs.append(output)
-        #     with open(os.path.join(SAVE_FOLDER, f"quantile_attack_results.json"), "w") as f:
-        #         json.dump(output, f)
 
         # Skipping openai-detector (for now)
         # write supervised results to a file
@@ -908,4 +828,23 @@ if __name__ == "__main__":
     api_calls = 0
     if openai_config:
         api_calls = openai_config.api_calls
-    print(f"Used an *estimated* {api_calls} API tokens (may be inaccurate)")
+        print(f"Used an *estimated* {api_calls} API tokens (may be inaccurate)")
+
+
+if __name__ == "__main__":
+    # Extract relevant configurations from config file
+    parser = ArgumentParser(add_help=False)
+    parser.add_argument("--config", help="Path to attack config file", type=Path)
+    args, remaining_argv = parser.parse_known_args()
+    # Attempt to extract as much information from config file as you can
+    config = ExperimentConfig.load(args.config, drop_extra_fields=False)
+    # Also give user the option to provide config values over CLI
+    parser = ArgumentParser(parents=[parser])
+    parser.add_arguments(ExperimentConfig, dest="exp_config", default=config)
+    args = parser.parse_args(remaining_argv)
+    config: ExperimentConfig = args.exp_config
+
+    # Fix randomness
+    fix_seed(config.random_seed)
+    # Call main function
+    main(config)

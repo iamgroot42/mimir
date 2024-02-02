@@ -2,11 +2,19 @@
     Misc utils
 """
 import os
-
+import random
+import torch as ch
+import numpy as np
 
 # Read environment variables
 CACHE_PATH = os.environ.get('MIMIR_CACHE_PATH', None)
 DATA_SOURCE = os.environ.get('MIMIR_DATA_SOURCE', None)
+
+
+def fix_seed(seed: int = 0):
+    ch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
 
 def get_cache_path():

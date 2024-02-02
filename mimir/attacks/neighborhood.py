@@ -36,7 +36,7 @@ class NeighborhoodAttack(Attack):
         env_config = self.config.env_config
         if neigh_config:
             model_kwargs = dict()
-            if not self.config.baselines_only and not neigh_config.random_fills:
+            if not neigh_config.random_fills:
                 if env_config.int8:
                     model_kwargs = dict(
                         load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16

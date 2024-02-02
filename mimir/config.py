@@ -46,8 +46,6 @@ class NeighborhoodConfig(Serializable):
     """Randomly fill?"""
     pct_words_masked: Optional[float] = 0.3
     """Percentage masked is actually pct_words_masked * (span_length / (span_length + 2 * buffer_size))"""
-    n_perturbation_rounds: Optional[int] = 1
-    """Number of perturbation-round trials"""
     buffer_size: Optional[int] = 1
     """Buffer size"""
     top_p: Optional[float] = 1.0
@@ -155,14 +153,12 @@ class ExperimentConfig(Serializable):
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
+    load_from_hf: Optional[bool] = False
+    """Load data from HuggingFace?"""
     blackbox_attacks: Optional[List[str]] = field(
         default_factory=lambda: None
     )  # Can replace with "default" attacks if we want
     """List of attacks to evaluate"""
-    baselines_only: Optional[
-        bool
-    ] = False  # TODO: to be removed after Neighborhood attack is implemented into blackbox attack flow
-    """Evaluate only baselines?"""
     tokenization_attack: Optional[bool] = False
     """Run tokenization attack?"""
     quantile_attack: Optional[bool] = False
@@ -201,6 +197,8 @@ class ExperimentConfig(Serializable):
     """FPRs at which to compute TPR"""
     fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
     """Process data token-wise?"""
+    random_seed: Optional[int] = 0
+    """Random seed"""
     ref_config: Optional[ReferenceConfig] = None
     """Reference model config"""
     neighborhood_config: Optional[NeighborhoodConfig] = None
