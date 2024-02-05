@@ -8,16 +8,13 @@ from mimir.models import Model
 
 # Attack definitions
 class BlackBoxAttacks(str, Enum):
-    LOSS = "loss"
-    REFERENCE_BASED = "ref"
-    ZLIB = "zlib"
-    MIN_K = "min_k"
-    NEIGHBOR = "ne"
+    LOSS = "loss" # Done
+    REFERENCE_BASED = "ref" # Done
+    ZLIB = "zlib" # Done
+    MIN_K = "min_k" # Done
+    NEIGHBOR = "ne" # Done
     QUANTILE = "quantile"
 
-
-# TODO: Move attacks in models into this file as functions
-# TODO Use decorators to link attack implementations with enum above
 
 # Base attack class
 class Attack:
@@ -32,8 +29,26 @@ class Attack:
         """
         pass
 
-    def attack(self, document, **kwargs):
+    def _attack(self, document, probs, tokens=None, **kwargs):
         """
-        Score a document using the attack's scoring function
+        Actual logic for attack. 
         """
         raise NotImplementedError("Attack must implement attack()")
+
+    def attack(self, document, probs, **kwargs):
+        """
+        Score a document using the attack's scoring function. Calls self._attack
+        """
+        detokenized_sample = kwargs.get("detokenized_sample", None)
+        if self.config.pretokenized and detokenized_sample is None:
+            raise ValueError("detokenized_sample must be provided")
+
+        score = (
+            self._attack(document, probs=probs, **kwargs)
+            if not self.config.pretokenized
+            else self._attack(
+                detokenized_sample, tokens=document, probs=probs, **kwargs
+            )
+        )
+
+        return score

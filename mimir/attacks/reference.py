@@ -11,6 +11,9 @@ class ReferenceAttack(Attack):
     def prepare(self, **kwargs):
         self.reference_model.load()
 
-    def attack(self, document, **kwargs):
-        # TODO: Implement
-        pass
+    def _attack(self, document, probs, tokens=None, **kwargs):
+        loss = kwargs.get('loss', None)
+        if loss is None:
+            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+        ref_loss = self.reference_model.get_ll(document, probs=probs, tokens=tokens)
+        return ref_loss - loss

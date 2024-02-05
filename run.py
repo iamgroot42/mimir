@@ -28,6 +28,7 @@ import mimir.plot_utils as plot_utils
 from mimir.utils import fix_seed
 from mimir.models import EvalModel, LanguageModel, ReferenceModel, OpenAI_APIModel
 from mimir.attacks.blackbox_attacks import BlackBoxAttacks
+from mimir.attacks.utils import get_attacker
 from mimir.attacks.neighborhood import T5Model, BertModel, NeighborhoodAttack
 from mimir.attacks.attack_utils import (
     f1_score,
@@ -73,9 +74,12 @@ def run_blackbox_attacks(
         n_perturbation_list = neigh_config.n_perturbation_list
         in_place_swap = neigh_config.original_tokenization_swap
 
-    if BlackBoxAttacks.NEIGHBOR in attacks:
-        neighborhood_attacker = NeighborhoodAttack(config, target_model)
-        neighborhood_attacker.prepare()
+    # Initialize attackers
+    attackers = {}
+    for attack in attacks:
+        if attack != BlackBoxAttacks.REFERENCE_BASED:
+            attackers[attack] = get_attacker(attack)(config, target_model)
+            attackers[attack].prepare()
 
     results = defaultdict(list)
     for classification in keys_care_about:
@@ -128,7 +132,7 @@ def run_blackbox_attacks(
                         )
                     )
 
-                    # always compute loss score
+                    # Always compute LOSS score. Also helpful for reference-based and many other attacks.
                     loss = (
                         target_model.get_ll(substr, probs=s_tk_probs)
                         if not config.pretokenized
@@ -136,35 +140,24 @@ def run_blackbox_attacks(
                             detokenized_sample[i], tokens=substr, probs=s_tk_probs
                         )
                     )
-                    # TODO: Instead of doing this outside, set config default to always include LOSS
                     sample_information[BlackBoxAttacks.LOSS].append(loss)
 
                     # TODO: Shift functionality into each attack entirely, so that this is just a for loop
                     # For each attack
                     for attack in attacks:
-                        if attack == BlackBoxAttacks.ZLIB:
-                            score = (
-                                target_model.get_zlib_entropy(substr, probs=s_tk_probs)
-                                if not config.pretokenized
-                                else target_model.get_zlib_entropy(
-                                    detokenized_sample[i],
-                                    tokens=substr,
-                                    probs=s_tk_probs,
-                                )
-                            )
+                        # LOSS already added above, Reference handled later
+                        if attack == BlackBoxAttacks.REFERENCE_BASED or BlackBoxAttacks.LOSS:
+                            continue
+
+                        attacker = attackers[attack]
+                        if attack != BlackBoxAttacks.NEIGHBOR:
+                            score = attacker.attack(substr,
+                                                    probs=s_tk_probs,
+                                                    detokenized_sample=detokenized_sample[i] if config.pretokenized else None,
+                                                    loss=loss)
                             sample_information[attack].append(score)
-                        elif attack == BlackBoxAttacks.MIN_K:
-                            score = (
-                                target_model.get_min_k_prob(substr, probs=s_tk_probs)
-                                if not config.pretokenized
-                                else target_model.get_min_k_prob(
-                                    detokenized_sample[i],
-                                    tokens=substr,
-                                    probs=s_tk_probs,
-                                )
-                            )
-                            sample_information[attack].append(score)
-                        elif attack == BlackBoxAttacks.NEIGHBOR:
+
+                        if attack == BlackBoxAttacks.NEIGHBOR:
                             # For each 'number of neighbors'
                             for n_perturbation in n_perturbation_list:
                                 # Use neighbors if available
@@ -173,10 +166,8 @@ def run_blackbox_attacks(
                                         batch * batch_size + idx
                                     ][i]
                                 else:
-                                    substr_neighbors = (
-                                        neighborhood_attacker.get_neighbors(
-                                            [substr], n_perturbations=n_perturbation
-                                        )
+                                    substr_neighbors = attacker.get_neighbors(
+                                        [substr], n_perturbations=n_perturbation
                                     )
                                     # Collect this neighbor information if neigh_config.dump_cache is True
                                     if neigh_config.dump_cache:
@@ -226,29 +217,30 @@ def run_blackbox_attacks(
         exit(0)
 
     # Perform reference-based attacks
-    if BlackBoxAttacks.REFERENCE_BASED in attacks:
-        if ref_models is None:
-            print("No reference models specified, skipping Reference-based attacks")
-        else:
-            for name, ref_model in ref_models.items():
-                if "llama" not in name and "alpaca" not in name:
-                    ref_model.load()
+    if BlackBoxAttacks.REFERENCE_BASED in attacks and ref_models is not None:
+        for name, ref_model in ref_models.items():
+            if "llama" not in name and "alpaca" not in name:
+                ref_model.load()
+            
+            # attacker = get_attacker(BlackBoxAttacks.REFERENCE_BASED)(config, target_model, ref_model)
 
-                # Update collected scores for each sample with ref-based attack scores
-                for classification, result in results.items():
-                    for r in tqdm(result, desc="Ref scores"):
-                        ref_model_scores = []
-                        for i, s in enumerate(r["sample"]):
-                            if config.pretokenized:
-                                s = r["detokenized"][i]
-                            ref_score = r[BlackBoxAttacks.LOSS][i] - ref_model.get_ll(s)
-                            ref_model_scores.append(ref_score)
-                        r[
-                            f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
-                        ].extend(ref_model_scores)
+            # Update collected scores for each sample with ref-based attack scores
+            for classification, result in results.items():
+                for r in tqdm(result, desc="Ref scores"):
+                    ref_model_scores = []
+                    for i, s in enumerate(r["sample"]):
+                        if config.pretokenized:
+                            s = r["detokenized"][i]
+                        ref_score = r[BlackBoxAttacks.LOSS][i] - ref_model.get_ll(s)
+                        ref_model_scores.append(ref_score)
+                    r[
+                        f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
+                    ].extend(ref_model_scores)
 
-                if "llama" not in name and "alpaca" not in name:
-                    ref_model.unload()
+            if "llama" not in name and "alpaca" not in name:
+                ref_model.unload()
+    else:
+        print("No reference models specified, skipping Reference-based attacks")
 
     # Rearrange the nesting of the results dict and calculated aggregated score for sample
     # attack -> member/nonmember -> list of scores
@@ -312,6 +304,9 @@ def run_blackbox_attacks(
 
 
 def generate_data_processed(
+    base_model,
+    extraction_config,
+    mask_model,
     raw_data_member, batch_size, raw_data_non_member: List[str] = None
 ):
     torch.manual_seed(42)
@@ -385,6 +380,7 @@ def generate_data(
     train: bool = True,
     presampled: str = None,
     specific_source: str = None,
+    mask_model = None
 ):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(
@@ -472,37 +468,19 @@ def main(config: ExperimentConfig):
 
     # define SAVE_FOLDER as the timestamp - base model name - mask filling model name
     # create it if it doesn't exist
-    output_subfolder = f"{config.output_name}/" if config.output_name else ""
+    output_subfolder = f"{config.output_name}/"
     if openai_config is None:
         base_model_name = config.base_model.replace("/", "_")
     else:
         base_model_name = "openai-" + openai_config.model.replace("/", "_")
-    scoring_model_string = (
-        f"-{config.scoring_model_name}" if config.scoring_model_name else ""
-    ).replace("/", "_")
 
-    # Replace paths
-    dataset_member_name = config.dataset_member.replace("/", "_")
-    dataset_nonmember_name = config.dataset_nonmember.replace("/", "_")
-
-    if extraction_config is not None:
-        sf_ext = "extraction_"
-    else:
-        sf_ext = "mia_"
-
-    default_prompt_len = (
-        extraction_config.prompt_len if extraction_config else 30
-    )  # hack: will fix later
-    # suffix = "QUANTILE_TEST"
     # TODO - Either automate suffix construction, or use better names (e.g. save folder with results, and attack config in it)
-    suffix = "DUDDU"
-    # suffix = f"{sf_ext}{output_subfolder}{base_model_name}-{scoring_model_string}-{neigh_config.model}-{sampling_string}/{precision_string}-{neigh_config.pct_words_masked}-{neigh_config.n_perturbation_rounds}-{dataset_member_name}-{dataset_nonmember_name}-{config.n_samples}{span_length_string}{config.max_words}{config.min_words}_plen{default_prompt_len}_{tok_by_tok_string}"
+    suffix = "DUMMY"
 
     # Add pile source to suffix, if provided
     # TODO: Shift dataset-specific processing to their corresponding classes
     if config.specific_source is not None:
         processed_source = data_utils.sourcename_process(config.specific_source)
-        suffix += f"-{processed_source}"
     SAVE_FOLDER = os.path.join(env_config.tmp_results, suffix)
 
     new_folder = os.path.join(env_config.results, suffix)
@@ -589,10 +567,12 @@ def main(config: ExperimentConfig):
         print(f"Loading dataset {config.dataset_member}...")
         data_obj_nonmem = None
         data_obj_mem, data = generate_data(
-            config.dataset_member, presampled=config.presampled_dataset_member
+            config.dataset_member, presampled=config.presampled_dataset_member,
+            mask_model=mask_model
         )
 
         data, seq_lens, n_samples = generate_data_processed(
+            base_model, extraction_config, mask_model,
             data[: config.n_samples], batch_size=config.batch_size
         )
 
@@ -606,9 +586,12 @@ def main(config: ExperimentConfig):
             config.dataset_nonmember,
             train=False,
             presampled=config.presampled_dataset_nonmember,
+            mask_model=mask_model
         )
         data_obj_mem, data_member = generate_data(
-            config.dataset_member, presampled=config.presampled_dataset_member
+            config.dataset_member,
+            presampled=config.presampled_dataset_member,
+            mask_model=mask_model,
         )
 
         other_objs, other_nonmembers = None, None
@@ -616,7 +599,10 @@ def main(config: ExperimentConfig):
             other_objs, other_nonmembers = [], []
             for other_name in config.dataset_nonmember_other_sources:
                 data_obj_nonmem_others, data_nonmember_others = generate_data(
-                    config.dataset_nonmember, train=False, specific_source=other_name
+                    config.dataset_nonmember,
+                    train=False,
+                    specific_source=other_name,
+                    mask_model=mask_model,
                 )
                 other_objs.append(data_obj_nonmem_others)
                 other_nonmembers.append(data_nonmember_others)
@@ -634,6 +620,7 @@ def main(config: ExperimentConfig):
             n_samples, seq_lens = data_nonmember.shape
         else:
             data, seq_lens, n_samples = generate_data_processed(
+                base_model, extraction_config, mask_model,
                 data_member,
                 batch_size=config.batch_size,
                 raw_data_non_member=data_nonmember,
@@ -727,10 +714,13 @@ def main(config: ExperimentConfig):
             )
             json.dump(seq_lens, f)
 
+    # Remove below if not needed/used
+    """
     tk_freq_map = None
     if config.token_frequency_map is not None:
         print("loading tk freq map")
         tk_freq_map = pickle.load(open(config.token_frequency_map, "rb"))
+    """
 
     # Add neighborhood-related data entries to 'data'
     data["nonmember_neighbors"] = neighbors_nonmember
@@ -810,6 +800,7 @@ def main(config: ExperimentConfig):
         #         json.dump(baseline_outputs[-1], f)
 
     neighbor_model_name = neigh_config.model if neigh_config else None
+    # TODO: Fix TPR/FPR computation
     plot_utils.save_roc_curves(
         outputs,
         save_folder=SAVE_FOLDER,

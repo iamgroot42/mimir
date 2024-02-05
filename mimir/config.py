@@ -123,6 +123,8 @@ class ExperimentConfig(Serializable):
     """Dataset source for members"""
     dataset_nonmember: str
     """Dataset source for nonmembers"""
+    output_name: str = None
+    """Output name for sub-directory."""
     dataset_nonmember_other_sources: Optional[List[str]] = field(
         default_factory=lambda: None
     )
@@ -141,8 +143,6 @@ class ExperimentConfig(Serializable):
     """Path to a pre-computed token frequency map"""
     dataset_key: Optional[str] = None
     """Dataset key"""
-    output_name: Optional[str] = None
-    """Output name for sub-directory. Defaults to nothing"""
     specific_source: Optional[str] = None
     """Specific sub-source to focus on. Only valid for the_pile"""
     full_doc: Optional[bool] = False  # TODO: refactor full_doc design?

@@ -94,9 +94,20 @@ class NeighborhoodAttack(Attack):
         neighbors = self.ref_model.generate_neighbors(documents, **kwargs)
         return neighbors
 
-    def attack(self, documents, **kwargs):
+    def _attack(self, document, probs, tokens=None, **kwargs):
         # documents here are actually neighbors
-        raise NotImplementedError("attack not implemented")
+        batch_size = kwargs.get("batch_size", 4)
+        substr_neighbors = kwargs.get("substr_neighbors", None)
+        loss = kwargs.get("loss", None)
+        if loss is None:
+            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+
+        # Only evaluate neighborhood attack when not caching neighbors
+        mean_substr_score = self.model.get_lls(
+            substr_neighbors, batch_size=batch_size
+        )
+        d_based_score = loss - mean_substr_score
+        return d_based_score
 
 
 class MaskFillingModel(Model):
