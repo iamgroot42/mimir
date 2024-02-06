@@ -7,7 +7,6 @@ from mimir.attacks.min_k import MinKProbAttack
 from mimir.attacks.neighborhood import NeighborhoodAttack
 
 
-
 # TODO Use decorators to link attack implementations with enum above
 def get_attacker(attack: str):
     mapping = {

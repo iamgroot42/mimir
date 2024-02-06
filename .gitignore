@@ -22,6 +22,7 @@ data/*/
 
 # Logs (from cluster runs)
 logs/*
+logs_cluster/*
 
 # Vscode
 .vscode/*
@@ -55,3 +56,6 @@ quantile_ref_model/*
 table*/*
 fig7/*
 new_mi/*
+
+# Ignore all tar.gz files
+*.tar.gz

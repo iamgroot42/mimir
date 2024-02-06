@@ -22,12 +22,18 @@ class Attack:
         self.config = config
         self.target_model = target_model
         self.ref_model = ref_model
+        self.is_loaded = False
 
-    def prepare(self, **kwargs):
+    def load(self):
         """
         Any attack-specific steps (one-time) preparation
         """
         pass
+
+    def unload(self):
+        if self.ref_model is not None:
+            self.ref_model.unload()
+            self.is_loaded = False
 
     def _attack(self, document, probs, tokens=None, **kwargs):
         """
@@ -39,6 +45,11 @@ class Attack:
         """
         Score a document using the attack's scoring function. Calls self._attack
         """
+        # Load attack if not loaded yet
+        if not self.is_loaded:
+            self.load()
+            self.is_loaded = True
+
         detokenized_sample = kwargs.get("detokenized_sample", None)
         if self.config.pretokenized and detokenized_sample is None:
             raise ValueError("detokenized_sample must be provided")

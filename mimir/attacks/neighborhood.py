@@ -68,7 +68,7 @@ class NeighborhoodAttack(Attack):
             raise ValueError(f"Unknown model {self.config.neighborhood_config.model}")
         return mask_model
 
-    def prepare(self, **kwargs):
+    def load(self):
         """
         Any attack-specific steps (one-time) preparation
         """

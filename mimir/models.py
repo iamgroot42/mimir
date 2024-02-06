@@ -34,13 +34,13 @@ class Model(nn.Module):
         self.name = None
         self.kwargs = kwargs
         self.cache_dir = self.config.env_config.cache_dir
-    
+
     def to(self, device):
         """
             Shift model to a particular device.
         """
-        self.model.to(device)
-    
+        self.model.to(device, non_blocking=True)
+
     def load(self):
         """
             Load model onto GPU (and compile, if requested) if not already loaded with device map.
@@ -56,7 +56,7 @@ class Model(nn.Module):
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f'DONE ({time.time() - start:.2f}s)')
-    
+
     def unload(self):
         """
             Unload model from GPU
@@ -110,7 +110,7 @@ class Model(nn.Module):
         assert len(all_prob) == labels.size(1) - 1
 
         return all_prob
-    
+
     @torch.no_grad()
     def get_ll(self, text: str, tokens=None, probs=None):
         """
@@ -118,7 +118,7 @@ class Model(nn.Module):
         """
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
-    
+
     def load_base_model_and_tokenizer(self, model_kwargs):
         """
             Load the base model and tokenizer for a given model name.
@@ -135,7 +135,7 @@ class Model(nn.Module):
                     self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
                 # Extract the model from the model wrapper so we dont need to call model.model
             elif "llama" in self.name or "alpaca" in self.name:
-                # TODO: This should be smth specified in config in case user has 
+                # TODO: This should be smth specified in config in case user has
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map="balanced_low_0", cache_dir=self.cache_dir)
                 self.device = 'cuda:1'
@@ -174,12 +174,12 @@ class Model(nn.Module):
         tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
         return model, tokenizer
-    
+
     def load_model_properties(self):
         """
             Load model properties, such as max length and stride.
         """
-         # TODO: getting max_length of input could be more generic
+        # TODO: getting max_length of input could be more generic
         if "silo" in self.name or "balanced" in self.name:
             self.max_length = self.model.model.seq_len
         elif hasattr(self.model.config, 'max_position_embeddings'):
@@ -215,6 +215,14 @@ class ReferenceModel(Model):
             model_kwargs=base_model_kwargs)
         self.load_model_properties()
 
+    def load(self):
+        if "llama" not in self.name and "alpaca" not in self.name:
+            super().load()
+
+    def unload(self):
+        if "llama" not in self.name and "alpaca" not in self.name:
+            super().unload()
+
 
 class QuantileReferenceModel(Model):
     """
@@ -233,28 +241,6 @@ class QuantileReferenceModel(Model):
         # Modify model's last linear layer to have only 1 output
         self.model.classifier.linear_out = nn.Linear(self.model.classifier.linear_out.in_features, 1)
         self.load_model_properties()
-
-
-class EvalModel(Model):
-    """
-        GPT-based detector that can distinguish between machine-generated and human-written text
-    """
-    def __init__(self, config: ExperimentConfig):
-        super().__init__(config)
-        self.device = self.config.env_config.device_aux
-        self.name = 'roberta-base-openai-detector'
-        self.model = transformers.AutoModelForSequenceClassification.from_pretrained(self.name, cache_dir=self.cache_dir).to(self.device)
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(self.name, cache_dir=self.cache_dir)
-
-    @torch.no_grad()
-    def get_preds(self, data):
-        batch_size = self.config.batch_size
-        preds = []
-        for batch in tqdm(range(len(data) // batch_size), desc="Evaluating fake"):
-            batch_fake = data[batch * batch_size:(batch + 1) * batch_size]
-            batch_fake = self.tokenizer(batch_fake, padding=True, truncation=True, max_length=512, return_tensors="pt").to(self.device)
-            preds.extend(self.model(**batch_fake).logits.softmax(-1)[:,0].tolist())
-        return preds
 
 
 class LanguageModel(Model):
