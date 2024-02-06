@@ -3,6 +3,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5289510774780549,
+                "std": 0.013110288452413231,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.018
@@ -10,6 +11,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5150043738693232,
+                "std": 0.012993392950809013,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -17,6 +19,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5169486481452017,
+                "std": 0.01284328693032271,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.008
@@ -24,6 +27,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5091399460467337,
+                "std": 0.012861815064622799,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -34,6 +38,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5284613497889662,
+                "std": 0.013175147597888359,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.013
@@ -41,6 +46,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.513317074026661,
+                "std": 0.013001203030379499,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.008
@@ -48,6 +54,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5106291433687683,
+                "std": 0.012804652803300742,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -55,6 +62,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5076534476349868,
+                "std": 0.012863439037786287,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -65,6 +73,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5511062452404712,
+                "std": 0.013158344262360344,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.021
@@ -72,6 +81,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5342604730483574,
+                "std": 0.013041482132737117,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -79,6 +89,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5456791942825963,
+                "std": 0.01297102908231809,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -86,6 +97,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5273535094330148,
+                "std": 0.012911394785224559,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -96,6 +108,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5430837445521688,
+                "std": 0.013215195639596515,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.018
@@ -103,6 +116,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5270756960968181,
+                "std": 0.01306128433594613,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -110,6 +124,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5300846246248012,
+                "std": 0.01294434915792006,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.009
@@ -117,6 +132,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.520594296774432,
+                "std": 0.012989091162256255,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -127,6 +143,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5234430713838272,
+                "std": 0.012934550564105939,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.013
@@ -134,6 +151,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5100581002718161,
+                "std": 0.01278625278448932,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -141,6 +159,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5071449694444045,
+                "std": 0.01250110445247291,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.004
@@ -148,6 +167,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5021489652755382,
+                "std": 0.01269230966788652,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -158,6 +178,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.521776930934244,
+                "std": 0.013019045775036233,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.013
@@ -165,6 +186,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5071453017584572,
+                "std": 0.012807424316222967,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -172,6 +194,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5010245212546799,
+                "std": 0.012549013589885862,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -179,6 +202,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5004622534161429,
+                "std": 0.012679593663917169,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.004
@@ -189,6 +213,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5342415145391258,
+                "std": 0.01319197550987158,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.019
@@ -196,6 +221,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5191465703133371,
+                "std": 0.01301715645383715,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -203,6 +229,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5246868782057472,
+                "std": 0.012859102083689245,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.008
@@ -210,6 +237,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5135376994209705,
+                "std": 0.01289499245170526,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -220,6 +248,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5328731134260957,
+                "std": 0.013194853080291002,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.013
@@ -227,6 +256,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5173704090971734,
+                "std": 0.012975714192352232,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -234,6 +264,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5216713905632823,
+                "std": 0.012750854509770308,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.006
@@ -241,6 +272,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5118834808960574,
+                "std": 0.012873299874420154,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.008
@@ -251,6 +283,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5454070011219685,
+                "std": 0.013154594986726727,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.018
@@ -258,6 +291,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5291630088953948,
+                "std": 0.013006466712015016,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -265,6 +299,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5353724172872157,
+                "std": 0.012858954745840407,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.013
@@ -272,6 +307,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5229423013695201,
+                "std": 0.012904210780760074,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.006
@@ -282,6 +318,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5373887242564128,
+                "std": 0.013216674807515299,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.018
@@ -289,6 +326,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5213260521822665,
+                "std": 0.013000570453343567,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -296,6 +334,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5240537353671239,
+                "std": 0.012865574992454776,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.014
@@ -303,6 +342,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5155007536077852,
+                "std": 0.012921991512517902,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -315,6 +355,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48583276930556973,
+                "std": 0.013065974831224566,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -322,6 +363,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4859166654073424,
+                "std": 0.012818953397855342,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.012
@@ -329,6 +371,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.49702631732114605,
+                "std": 0.013189557315723901,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.002
@@ -336,6 +379,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.48196268823057287,
+                "std": 0.013028853179240425,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -346,6 +390,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4853129168571797,
+                "std": 0.01306078297302814,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.006
@@ -353,6 +398,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.48590295632498326,
+                "std": 0.012798352683421076,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.012
@@ -360,6 +406,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.49685985444437397,
+                "std": 0.013151107845291847,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -367,6 +414,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4808591745401572,
+                "std": 0.013015338268461685,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -377,6 +425,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48621330300111026,
+                "std": 0.013076534486256718,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -384,6 +433,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4853388320069532,
+                "std": 0.012888205186289792,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.014
@@ -391,6 +441,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4971173511480299,
+                "std": 0.01317487197837215,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -398,6 +449,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.48089556657946425,
+                "std": 0.013045822938902371,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.003
@@ -408,6 +460,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48597998318917224,
+                "std": 0.013058262957834212,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -415,6 +468,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4851972555254616,
+                "std": 0.012819891408362568,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.014
@@ -422,6 +476,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4953193426828589,
+                "std": 0.013151392920093269,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.003
@@ -429,6 +484,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.48107797106846545,
+                "std": 0.013017712679463929,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -439,6 +495,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4867337307179271,
+                "std": 0.013083735866783021,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.008
@@ -446,6 +503,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4889844817476374,
+                "std": 0.012812372777170712,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.015
@@ -453,6 +511,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4945012395718738,
+                "std": 0.01303158332578203,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -460,6 +519,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4811571998015225,
+                "std": 0.01302994682627433,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -470,6 +530,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48837601901723954,
+                "std": 0.013069588364723616,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.004
@@ -477,6 +538,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4900449883772014,
+                "std": 0.01292783448747496,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.014
@@ -484,6 +546,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4929861260889501,
+                "std": 0.013094861822584685,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -491,6 +554,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4823957005216257,
+                "std": 0.013104805068748027,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -501,6 +565,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48483624234553097,
+                "std": 0.013058614458493574,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.004
@@ -508,6 +573,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.48425151216488305,
+                "std": 0.012858404405565764,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.012
@@ -515,6 +581,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4951682552912083,
+                "std": 0.013160264121348408,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -522,6 +589,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.48045334480118024,
+                "std": 0.013037111084272902,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -532,6 +600,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48612648398521785,
+                "std": 0.013005132714358278,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.004
@@ -539,6 +608,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.48540953929073277,
+                "std": 0.012832963036732533,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.011
@@ -546,6 +616,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4969604154803943,
+                "std": 0.013150076960284595,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -553,6 +624,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4817026169208225,
+                "std": 0.013015225523893477,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -563,6 +635,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.48645309251424573,
+                "std": 0.013033937695928838,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.004
@@ -570,6 +643,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4853097647833457,
+                "std": 0.012860831420350074,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.015
@@ -577,6 +651,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.49646028248248486,
+                "std": 0.013160519512748452,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.0
@@ -584,6 +659,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.48094605790553546,
+                "std": 0.013024573169932522,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.003
@@ -594,6 +670,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4846692265168919,
+                "std": 0.013073131102875384,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -601,6 +678,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4846969321279871,
+                "std": 0.012851385812750091,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.014
@@ -608,6 +686,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.49604955008075025,
+                "std": 0.013186881735210714,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.003
@@ -615,6 +694,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4810847441554207,
+                "std": 0.013057340118718399,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.001
@@ -627,6 +707,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5694975030075473,
+                "std": 0.012973349189498488,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.021
@@ -634,6 +715,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.6976308559081028,
+                "std": 0.011562091950185881,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.02
@@ -641,6 +723,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6985247009610235,
+                "std": 0.011446694244471093,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.037
@@ -648,6 +731,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.7095729136511659,
+                "std": 0.01128565107621505,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.026
@@ -658,6 +742,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5482280742500995,
+                "std": 0.013139348350697612,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.02
@@ -665,6 +750,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.6557225493942617,
+                "std": 0.011923973781379936,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -672,6 +758,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6544776720298758,
+                "std": 0.011886629693013418,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.026
@@ -679,6 +766,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.6697544118648808,
+                "std": 0.01173829022983947,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.019
@@ -689,6 +777,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5718461197957033,
+                "std": 0.012986238907209647,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.023
@@ -696,6 +785,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.739644110650272,
+                "std": 0.010964161801459461,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.025
@@ -703,6 +793,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.7430637129403187,
+                "std": 0.010850641735818935,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.024
@@ -710,6 +801,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.7483592389704776,
+                "std": 0.010728232896289018,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.026
@@ -720,6 +812,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5482314805605326,
+                "std": 0.013129968757675598,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.019
@@ -727,6 +820,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.6775301052472599,
+                "std": 0.011682444078207678,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.023
@@ -734,6 +828,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6832157868255009,
+                "std": 0.011593412813877099,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.026
@@ -741,6 +836,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.689843692533727,
+                "std": 0.011451434395758414,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.021
@@ -751,6 +847,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5841254261257969,
+                "std": 0.013079428294356033,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.017
@@ -758,6 +855,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.656826356645061,
+                "std": 0.011953347062073912,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -765,6 +863,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6520917503743034,
+                "std": 0.011774479431510151,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.018
@@ -772,6 +871,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.6743167747064864,
+                "std": 0.011726081328179089,
                 "tpr_at_low_fpr": {
                     "0.001": 0.005,
                     "0.01": 0.022
@@ -782,6 +882,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.566581189460673,
+                "std": 0.013236518211996376,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.024
@@ -789,6 +890,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.637718740540482,
+                "std": 0.012270149118668394,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.019
@@ -796,6 +898,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6336019629851962,
+                "std": 0.012102447586569386,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.024
@@ -803,6 +906,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.6559574708764113,
+                "std": 0.012084295847210387,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.02
@@ -813,6 +917,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5690590249053408,
+                "std": 0.012991782846380723,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.023
@@ -820,6 +925,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.71233026613497,
+                "std": 0.011320196822524678,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.021
@@ -827,6 +933,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.712874132457956,
+                "std": 0.01122821951828241,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.042
@@ -834,6 +941,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.722527073964504,
+                "std": 0.011039414701758453,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.026
@@ -844,6 +952,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5682001087994871,
+                "std": 0.012992363702662353,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.022
@@ -851,6 +960,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.7065939734934764,
+                "std": 0.011402075971581754,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.021
@@ -858,6 +968,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.7082474909768277,
+                "std": 0.011270320255225525,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.031
@@ -865,6 +976,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.7173291235276205,
+                "std": 0.011132560994378557,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.028
@@ -875,6 +987,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5721088728794066,
+                "std": 0.012988456438257471,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.023
@@ -882,6 +995,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.7297356980622348,
+                "std": 0.011058256080129164,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.023
@@ -889,6 +1003,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.7326072825495761,
+                "std": 0.010930202170994269,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.032
@@ -896,6 +1011,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.7391124592236114,
+                "std": 0.010803271819059684,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.031
@@ -906,6 +1022,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.548421580551336,
+                "std": 0.013105292702172273,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.02
@@ -913,6 +1030,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.6716629166915953,
+                "std": 0.011749978399273555,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.019
@@ -920,6 +1038,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.6752908098531425,
+                "std": 0.011664646086211946,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.031
@@ -927,6 +1046,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.6839329461170771,
+                "std": 0.01152707568937351,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.024
@@ -939,6 +1059,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5108925115617362,
+                "std": 0.012816747501924719,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.011
@@ -946,6 +1067,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5053099601814881,
+                "std": 0.012827741322983944,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.01
@@ -953,6 +1075,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5124896585664814,
+                "std": 0.013035162982287121,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.008
@@ -960,6 +1083,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5038856829965598,
+                "std": 0.012648507084351095,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.012
@@ -970,6 +1094,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5066201175812908,
+                "std": 0.012874681607425066,
                 "tpr_at_low_fpr": {
                     "0.001": 0.007,
                     "0.01": 0.01
@@ -977,6 +1102,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5029526227641712,
+                "std": 0.012726997958050539,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.016
@@ -984,6 +1110,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5093657847420655,
+                "std": 0.013242174128966215,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.013
@@ -991,6 +1118,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5021702892835913,
+                "std": 0.01257981141336019,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.009
@@ -1001,6 +1129,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5402644733738378,
+                "std": 0.012799467573855952,
                 "tpr_at_low_fpr": {
                     "0.001": 0.007,
                     "0.01": 0.011
@@ -1008,6 +1137,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5277473303365425,
+                "std": 0.012699873046984174,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.015
@@ -1015,6 +1145,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5463854281960577,
+                "std": 0.012878408115737705,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.015
@@ -1022,6 +1153,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5173945740996155,
+                "std": 0.012567903713811383,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.015
@@ -1032,6 +1164,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.528946569960396,
+                "std": 0.01289562668431351,
                 "tpr_at_low_fpr": {
                     "0.001": 0.009,
                     "0.01": 0.012
@@ -1039,6 +1172,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5184409328482746,
+                "std": 0.012738408608345549,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.015
@@ -1046,6 +1180,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5330153079233463,
+                "std": 0.01282869379870214,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.015
@@ -1053,6 +1188,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5116458148626474,
+                "std": 0.012552308772592715,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.017
@@ -1063,6 +1199,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.49838792644600116,
+                "std": 0.012834920660704241,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.015
@@ -1070,6 +1207,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.49401012546802725,
+                "std": 0.012543330145457356,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.018
@@ -1077,6 +1215,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5088274650326169,
+                "std": 0.012929298613603622,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.011
@@ -1084,6 +1223,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.49793499673624436,
+                "std": 0.012461884758995604,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.01
@@ -1094,6 +1234,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4961786961792386,
+                "std": 0.012877339191752402,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.009
@@ -1101,6 +1242,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.49220072160745465,
+                "std": 0.012608113070661118,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.018
@@ -1108,6 +1250,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.49729781198510004,
+                "std": 0.013100086470105611,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.012
@@ -1115,6 +1258,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.49704010589648007,
+                "std": 0.012500344090590074,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.01
@@ -1125,6 +1269,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5216131260035662,
+                "std": 0.012756238087664788,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.01
@@ -1132,6 +1277,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5128132489148731,
+                "std": 0.012781151665293106,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.012
@@ -1139,6 +1285,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5242722867438101,
+                "std": 0.012838396400680034,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.016
@@ -1146,6 +1293,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5090418796313932,
+                "std": 0.012645357712451392,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.013
@@ -1156,6 +1304,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5177762390297059,
+                "std": 0.012910761633356796,
                 "tpr_at_low_fpr": {
                     "0.001": 0.005,
                     "0.01": 0.011
@@ -1163,6 +1312,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5095603990939137,
+                "std": 0.012778290754624866,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.013
@@ -1170,6 +1320,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5177468942096121,
+                "std": 0.012924402765769175,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.017
@@ -1177,6 +1328,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5073812174980736,
+                "std": 0.012619368724925886,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.009
@@ -1187,6 +1339,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5313980031505706,
+                "std": 0.012806254426439463,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.011
@@ -1194,6 +1347,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5207008993320057,
+                "std": 0.012750413569566294,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.015
@@ -1201,6 +1355,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5360672701503907,
+                "std": 0.013132518145093216,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.008
@@ -1208,6 +1363,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.512962405851966,
+                "std": 0.01258495479741233,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.014
@@ -1218,6 +1374,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5213154144750352,
+                "std": 0.012965471224943181,
                 "tpr_at_low_fpr": {
                     "0.001": 0.008,
                     "0.01": 0.011
@@ -1225,6 +1382,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5126837497539515,
+                "std": 0.012794994428934447,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.016
@@ -1232,6 +1390,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5279281849229189,
+                "std": 0.012901241812702928,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.021
@@ -1239,6 +1398,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5080272127825829,
+                "std": 0.012570365310040413,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.018
@@ -1251,6 +1411,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5256804298024019,
+                "std": 0.012649891798624061,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1258,6 +1419,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5005575262516438,
+                "std": 0.012989696749251264,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.014
@@ -1265,6 +1427,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5098166681841063,
+                "std": 0.012601223956032333,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1272,6 +1435,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5017790692186954,
+                "std": 0.012888426652678418,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -1282,6 +1446,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5217469517882518,
+                "std": 0.01269955874448638,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1289,6 +1454,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.49957904316961993,
+                "std": 0.013029378472893824,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -1296,6 +1462,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5087326269220754,
+                "std": 0.012732855456192429,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.019
@@ -1303,6 +1470,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5022408400291112,
+                "std": 0.012888831439951587,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.005
@@ -1313,6 +1481,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5368987118798128,
+                "std": 0.01275165563521113,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.015
@@ -1320,6 +1489,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5111224466232096,
+                "std": 0.012880629306123879,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.019
@@ -1327,6 +1497,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5171836376262083,
+                "std": 0.012599201786189267,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -1334,6 +1505,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5123243733000168,
+                "std": 0.012743655523303875,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1344,6 +1516,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5414829707724513,
+                "std": 0.01266474945159377,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.012
@@ -1351,6 +1524,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5159896597819786,
+                "std": 0.012882625922947838,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.021
@@ -1358,6 +1532,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5206777823153664,
+                "std": 0.012580695055033134,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.011
@@ -1365,6 +1540,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.516552483434245,
+                "std": 0.01272796413435861,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1375,6 +1551,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5194229032907762,
+                "std": 0.013082482115668313,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.002
@@ -1382,6 +1559,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4960784306799048,
+                "std": 0.013130778714781115,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1389,6 +1567,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5035015629690592,
+                "std": 0.012725524748801112,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -1396,6 +1575,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4967950099028123,
+                "std": 0.013162630831487767,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.008
@@ -1406,6 +1586,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5234877088277008,
+                "std": 0.013019395404053275,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.006
@@ -1413,6 +1594,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.49756639489002813,
+                "std": 0.013010101376658551,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1420,6 +1602,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5033654810005896,
+                "std": 0.012834090846510776,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.014
@@ -1427,6 +1610,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.49883348483637635,
+                "std": 0.013043187793927973,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.008
@@ -1437,6 +1621,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5257184848752904,
+                "std": 0.012688497156449242,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.012
@@ -1444,6 +1629,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5013833002702577,
+                "std": 0.013021197050812483,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -1451,6 +1637,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5076872616339204,
+                "std": 0.012695315510300908,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.014
@@ -1458,6 +1645,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5036784241534517,
+                "std": 0.012873880439570698,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.006
@@ -1468,6 +1656,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5242373469209498,
+                "std": 0.01265733971828062,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1475,6 +1664,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.500692111318779,
+                "std": 0.01301694736966596,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.015
@@ -1482,6 +1672,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.508957750060495,
+                "std": 0.012719357946626772,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.018
@@ -1489,6 +1680,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.502974849278301,
+                "std": 0.012916000165745014,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.007
@@ -1499,6 +1691,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5324830699653137,
+                "std": 0.012724129250093724,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.013
@@ -1506,6 +1699,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5073504318145821,
+                "std": 0.012895831463479465,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.015
@@ -1513,6 +1707,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5150122072605096,
+                "std": 0.01252017895508439,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.013
@@ -1520,6 +1715,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5089279995985257,
+                "std": 0.012763969493144756,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1530,6 +1726,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5362676087688103,
+                "std": 0.012719437695043133,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.013
@@ -1537,6 +1734,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5111048899917778,
+                "std": 0.012922214691441558,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.012
@@ -1544,6 +1742,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5164280713656912,
+                "std": 0.01270600506954917,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1551,6 +1750,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5122250146211418,
+                "std": 0.012758899442720007,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1563,6 +1763,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4926201496458402,
+                "std": 0.01226363904900574,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.006
@@ -1570,6 +1771,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4980510285544547,
+                "std": 0.013350053623406865,
                 "tpr_at_low_fpr": {
                     "0.001": 0.01,
                     "0.01": 0.012
@@ -1577,6 +1779,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5019939625298769,
+                "std": 0.01314992799571022,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.017
@@ -1584,6 +1787,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5000186311018313,
+                "std": 0.013422678508519694,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.016
@@ -1594,6 +1798,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4938271407146065,
+                "std": 0.01230635661249454,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.006
@@ -1601,6 +1806,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4985690985993216,
+                "std": 0.01332579803192062,
                 "tpr_at_low_fpr": {
                     "0.001": 0.008,
                     "0.01": 0.016
@@ -1608,6 +1814,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5047461857532934,
+                "std": 0.013040464885327703,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.01
@@ -1615,6 +1822,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5001225092466665,
+                "std": 0.013416667515920097,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.018
@@ -1625,6 +1833,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5091840132208637,
+                "std": 0.012276777677363588,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.006
@@ -1632,6 +1841,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5131876863739876,
+                "std": 0.013351314940432298,
                 "tpr_at_low_fpr": {
                     "0.001": 0.009,
                     "0.01": 0.014
@@ -1639,6 +1849,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5228026532495212,
+                "std": 0.013058116490509574,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.019
@@ -1646,6 +1857,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5120370517752202,
+                "std": 0.013357672499374418,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.026
@@ -1656,6 +1868,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5013142182410905,
+                "std": 0.012237625526998572,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.008
@@ -1663,6 +1876,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5062164646567386,
+                "std": 0.013279525520374525,
                 "tpr_at_low_fpr": {
                     "0.001": 0.008,
                     "0.01": 0.013
@@ -1670,6 +1884,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5120516463882002,
+                "std": 0.012936744363342068,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.014
@@ -1677,6 +1892,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5063756718419993,
+                "std": 0.013326308771676123,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.021
@@ -1687,6 +1903,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4929696640140263,
+                "std": 0.012605375783541085,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.014
@@ -1694,6 +1911,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.49853314479489447,
+                "std": 0.013553999082589465,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.017
@@ -1701,6 +1919,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5058948718190932,
+                "std": 0.013214240307227905,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.014
@@ -1708,6 +1927,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.4995518999264042,
+                "std": 0.013596821100298773,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.02
@@ -1718,6 +1938,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4934587918634065,
+                "std": 0.01247733737837716,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.013
@@ -1725,6 +1946,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4996949009043494,
+                "std": 0.013513432726897118,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.011
@@ -1732,6 +1954,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5042441929199307,
+                "std": 0.01313134391547185,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1739,6 +1962,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5004176900620504,
+                "std": 0.013619449051549139,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.019
@@ -1749,6 +1973,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4948573543917484,
+                "std": 0.01229510763663872,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.009
@@ -1756,6 +1981,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4995651401278744,
+                "std": 0.013338027251798078,
                 "tpr_at_low_fpr": {
                     "0.001": 0.01,
                     "0.01": 0.013
@@ -1763,6 +1989,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.503718014298311,
+                "std": 0.013068673105450316,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.02
@@ -1770,6 +1997,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5010044397974349,
+                "std": 0.013389783664151214,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.022
@@ -1780,6 +2008,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.4932349734564325,
+                "std": 0.012309222298676014,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.006
@@ -1787,6 +2016,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.4982246522991685,
+                "std": 0.01334154500613452,
                 "tpr_at_low_fpr": {
                     "0.001": 0.01,
                     "0.01": 0.013
@@ -1794,6 +2024,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5019690742847462,
+                "std": 0.013046409661441431,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.014
@@ -1801,6 +2032,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5000872846268739,
+                "std": 0.013390010676111074,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.017
@@ -1811,6 +2043,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5006857839005237,
+                "std": 0.01231553605276345,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.006
@@ -1818,6 +2051,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5063107943523292,
+                "std": 0.013316307292383233,
                 "tpr_at_low_fpr": {
                     "0.001": 0.009,
                     "0.01": 0.014
@@ -1825,6 +2059,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5106491299138968,
+                "std": 0.013099444090148064,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.018
@@ -1832,6 +2067,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.506464755205676,
+                "std": 0.013338569490238034,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.024
@@ -1842,6 +2078,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.49831863065695586,
+                "std": 0.01226988562461072,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.006
@@ -1849,6 +2086,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.503517704915027,
+                "std": 0.013349956825207185,
                 "tpr_at_low_fpr": {
                     "0.001": 0.008,
                     "0.01": 0.013
@@ -1856,6 +2094,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5076277680515113,
+                "std": 0.013107764740575513,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.018
@@ -1863,6 +2102,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5042664853158032,
+                "std": 0.013392189902988669,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.018
@@ -1875,6 +2115,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.506627687120685,
+                "std": 0.013571338107609984,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.012
@@ -1882,6 +2123,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5133352125172042,
+                "std": 0.013079898757352723,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.01
@@ -1889,6 +2131,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5110872327672797,
+                "std": 0.0125848957632552,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.02
@@ -1896,6 +2139,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5204943421950263,
+                "std": 0.01301260130376762,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -1906,6 +2150,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5034690737335279,
+                "std": 0.013551474974613443,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.013
@@ -1913,6 +2158,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.509683807422168,
+                "std": 0.01300339460038698,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.012
@@ -1920,6 +2166,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5058735278433756,
+                "std": 0.012516024792214074,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.02
@@ -1927,6 +2174,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5183456053358598,
+                "std": 0.013013032686505046,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.011
@@ -1937,6 +2185,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5298515150515926,
+                "std": 0.013453768855895849,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.014
@@ -1944,6 +2193,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5348384670758374,
+                "std": 0.013056970841283424,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.014
@@ -1951,6 +2201,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5447268007557445,
+                "std": 0.012755534799181093,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.022
@@ -1958,6 +2209,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.543699416124748,
+                "std": 0.013090707773922424,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.012
@@ -1968,6 +2220,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5094489937086287,
+                "std": 0.013510952871848787,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.014
@@ -1975,6 +2228,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5163180600844728,
+                "std": 0.013082113453066724,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.011
@@ -1982,6 +2236,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5174959222979,
+                "std": 0.012790383586736927,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.018
@@ -1989,6 +2244,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5235896018745079,
+                "std": 0.013100809719455129,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -1999,6 +2255,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.49915436247103856,
+                "std": 0.01341263481834241,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -2006,6 +2263,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.502703710525912,
+                "std": 0.01301283734053988,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.008
@@ -2013,6 +2271,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.4913341187424098,
+                "std": 0.012749854501264094,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -2020,6 +2279,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5119158549748252,
+                "std": 0.013047437528565388,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.011
@@ -2030,6 +2290,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5003158357054769,
+                "std": 0.013373775627391409,
                 "tpr_at_low_fpr": {
                     "0.001": 0.002,
                     "0.01": 0.004
@@ -2037,6 +2298,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.504315617512117,
+                "std": 0.01295581678792241,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.009
@@ -2044,6 +2306,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.48780430104390665,
+                "std": 0.01255866662813856,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.017
@@ -2051,6 +2314,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5138049199430668,
+                "std": 0.01304025876986246,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.011
@@ -2061,6 +2325,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5114311997390782,
+                "std": 0.013533089368904992,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.01
@@ -2068,6 +2333,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5179725920854472,
+                "std": 0.013043907486788077,
                 "tpr_at_low_fpr": {
                     "0.001": 0.004,
                     "0.01": 0.012
@@ -2075,6 +2341,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5177688160408748,
+                "std": 0.01266462158711125,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.024
@@ -2082,6 +2349,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.524717065201572,
+                "std": 0.013013100245330545,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -2092,6 +2360,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5090778334412221,
+                "std": 0.013492171119941984,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.006
@@ -2099,6 +2368,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5156159687579263,
+                "std": 0.013043936559246514,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.014
@@ -2106,6 +2376,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5108384719413027,
+                "std": 0.012679189524744942,
                 "tpr_at_low_fpr": {
                     "0.001": 0.001,
                     "0.01": 0.018
@@ -2113,6 +2384,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5217480032973846,
+                "std": 0.01298631152206159,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.01
@@ -2123,6 +2395,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5229604463647567,
+                "std": 0.01350397180367137,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.012
@@ -2130,6 +2403,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.528263369279127,
+                "std": 0.013068412575599453,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.015
@@ -2137,6 +2411,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5363693998324665,
+                "std": 0.012826056982177004,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.026
@@ -2144,6 +2419,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5358406414699459,
+                "std": 0.013082490500537362,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.009
@@ -2154,6 +2430,7 @@
         {
             "ref_model_gpt2_lira_ratio_threshold_results.json": {
                 "roc_auc": 0.5068247277602903,
+                "std": 0.013540314658801076,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.012
@@ -2161,6 +2438,7 @@
             },
             "likelihood_threshold_results.json": {
                 "roc_auc": 0.5138616321759175,
+                "std": 0.01308769861250242,
                 "tpr_at_low_fpr": {
                     "0.001": 0.003,
                     "0.01": 0.006
@@ -2168,6 +2446,7 @@
             },
             "min_prob_k_results.json": {
                 "roc_auc": 0.5124147199590495,
+                "std": 0.012729589340383046,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.024
@@ -2175,6 +2454,7 @@
             },
             "zlib_entropy_threshold_results.json": {
                 "roc_auc": 0.5207425275349811,
+                "std": 0.013064085071709891,
                 "tpr_at_low_fpr": {
                     "0.001": 0.0,
                     "0.01": 0.011

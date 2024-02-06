@@ -1,5 +1,5 @@
 #!/bin/bash
-version=unified_mia_v5_hyp_ngram_overlap_ref
+version=unified_mia_v5_hyp_ngram_overlap_ne_redo
 ngram=13
 
 # deduped models
@@ -21,7 +21,7 @@ do
     #         --output_name unified_mia_v5_hyp_ngram_overlap \
     #         --baselines_only true
 
-    for subset in "github" "wikipedia_(en)" "pile_cc" "pubmed_central"  "arxiv" "hackernews" "dm_mathematics"
+    for subset in "wikipedia_(en)" "arxiv" #"github" "pile_cc" "pubmed_central"  "arxiv" "hackernews" "dm_mathematics"
     do
         python run.py \
             --config configs/mi.json \

@@ -17,8 +17,8 @@ new_neigh_mia/*
 # Ignore generated data
 data/*/
 
-# Ignore local helper scripts
-# local/
+# Ignore local results files
+local/*results.json
 
 # Logs (from cluster runs)
 logs/*
@@ -55,3 +55,6 @@ quantile_ref_model/*
 table*/*
 fig7/*
 new_mi/*
+
+# Ignore resources for edited members
+edit_distance_members

@@ -12,7 +12,7 @@ if __name__ == '__main__':
     dirs = args.dirs
     output = args.output
 
-    with open(output, 'a') as f_out: 
+    with open(output, 'w') as f_out: 
         complete_metrics = defaultdict(list)
         for dir in dirs:
             dir_metrics = {}
@@ -23,7 +23,7 @@ if __name__ == '__main__':
                 metrics = metrics_dict['metrics']
                 dir_metrics[f] = {
                     'roc_auc': metrics['bootstrap_roc_auc_mean'],
-                    # 'std': lls_metrics['bootstrap_roc_auc_std'],
+                    'std': metrics['bootstrap_roc_auc_std'],
                     'tpr_at_low_fpr': metrics['tpr_at_low_fpr']
                 }
 
