@@ -46,6 +46,17 @@ from mimir.models import Model
 from mimir.attacks.blackbox_attacks import Attack
 
 
+# def get_mask_model(config: ExperimentConfig, **kwargs):
+#     if &#34;t5&#34; in config.neighborhood_config.model:
+#         mask_model = T5Model(
+#                 config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs
+#             )
+#         elif &#34;bert&#34; in config.neighborhood_config.model:
+#             mask_model = BertModel(config)
+#         else:
+#             raise ValueError(f&#34;Unknown model {config.neighborhood_config.model}&#34;)
+
+
 class NeighborhoodAttack(Attack):
     def __init__(
         self,
@@ -58,43 +69,56 @@ class NeighborhoodAttack(Attack):
         self.ref_model = self._pick_neighbor_model()
         assert issubclass(type(self.ref_model), MaskFillingModel), &#34;ref_model must be MaskFillingModel for neighborhood attack&#34;
 
+    def get_mask_model(self):
+        return self.ref_model
+
+    def create_fill_dictionary(self, data):
+        neigh_config = self.config.neighborhood_config
+        if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
+            if not self.config.pretokenized:
+                # TODO: maybe can be done if detokenized, but currently not supported
+                self.ref_model.create_fill_dictionary(data)
+
     def _pick_neighbor_model(self):
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
         env_config = self.config.env_config
-        if neigh_config:
-            model_kwargs = dict()
-            if not neigh_config.random_fills:
-                if env_config.int8:
-                    model_kwargs = dict(
-                        load_in_8bit=True, device_map=&#34;auto&#34;, torch_dtype=torch.bfloat16
-                    )
-                elif env_config.half:
-                    model_kwargs = dict(torch_dtype=torch.bfloat16)
-                try:
-                    n_positions = (
-                        512  # Should fix later, but for T-5 this is 512 indeed
-                    )
-                    # mask_model.config.n_positions
-                except AttributeError:
-                    n_positions = self.config.max_tokens
-            else:
-                n_positions = self.config.max_tokens
-            tokenizer_kwargs = {
-                &#34;model_max_length&#34;: n_positions,
-            }
 
-        if &#34;t5&#34; in self.config.neighborhood_config.model:
+        model_kwargs = dict()
+        if not neigh_config.random_fills:
+            if env_config.int8:
+                model_kwargs = dict(
+                    load_in_8bit=True, device_map=&#34;auto&#34;, torch_dtype=torch.bfloat16
+                )
+            elif env_config.half:
+                model_kwargs = dict(torch_dtype=torch.bfloat16)
+            try:
+                n_positions = (
+                    512  # Should fix later, but for T-5 this is 512 indeed
+                )
+                # mask_model.config.n_positions
+            except AttributeError:
+                n_positions = self.config.max_tokens
+        else:
+            n_positions = self.config.max_tokens
+        tokenizer_kwargs = {
+            &#34;model_max_length&#34;: n_positions,
+        }
+
+        print(f&#34;Loading mask filling model {neigh_config.model}...&#34;)
+        if &#34;t5&#34; in neigh_config.model:
             mask_model = T5Model(
                 self.config,
                 model_kwargs=model_kwargs,
                 tokenizer_kwargs=tokenizer_kwargs,
             )
-        elif &#34;bert&#34; in self.config.neighborhood_config.model:
+        elif &#34;bert&#34; in neigh_config.model:
             mask_model = BertModel(self.config)
         else:
-            raise ValueError(f&#34;Unknown model {self.config.neighborhood_config.model}&#34;)
+            raise ValueError(f&#34;Unknown model {neigh_config.model}&#34;)
+        # if config.dataset_member in [&#39;english&#39;, &#39;german&#39;]:
+        #     preproc_tokenizer = mask_tokenizer
         return mask_model
 
     def load(self):
@@ -124,6 +148,9 @@ class NeighborhoodAttack(Attack):
         return neighbors
 
     def _attack(self, document, probs, tokens=None, **kwargs):
+        &#34;&#34;&#34;
+        Neighborhood attack score. Looks at difference in likelihood for given document and average likelihood of its neighbors
+        &#34;&#34;&#34;
         # documents here are actually neighbors
         batch_size = kwargs.get(&#34;batch_size&#34;, 4)
         substr_neighbors = kwargs.get(&#34;substr_neighbors&#34;, None)
@@ -1138,43 +1165,56 @@ class BertModel(MaskFillingModel):
         self.ref_model = self._pick_neighbor_model()
         assert issubclass(type(self.ref_model), MaskFillingModel), &#34;ref_model must be MaskFillingModel for neighborhood attack&#34;
 
+    def get_mask_model(self):
+        return self.ref_model
+
+    def create_fill_dictionary(self, data):
+        neigh_config = self.config.neighborhood_config
+        if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
+            if not self.config.pretokenized:
+                # TODO: maybe can be done if detokenized, but currently not supported
+                self.ref_model.create_fill_dictionary(data)
+
     def _pick_neighbor_model(self):
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
         env_config = self.config.env_config
-        if neigh_config:
-            model_kwargs = dict()
-            if not neigh_config.random_fills:
-                if env_config.int8:
-                    model_kwargs = dict(
-                        load_in_8bit=True, device_map=&#34;auto&#34;, torch_dtype=torch.bfloat16
-                    )
-                elif env_config.half:
-                    model_kwargs = dict(torch_dtype=torch.bfloat16)
-                try:
-                    n_positions = (
-                        512  # Should fix later, but for T-5 this is 512 indeed
-                    )
-                    # mask_model.config.n_positions
-                except AttributeError:
-                    n_positions = self.config.max_tokens
-            else:
-                n_positions = self.config.max_tokens
-            tokenizer_kwargs = {
-                &#34;model_max_length&#34;: n_positions,
-            }
 
-        if &#34;t5&#34; in self.config.neighborhood_config.model:
+        model_kwargs = dict()
+        if not neigh_config.random_fills:
+            if env_config.int8:
+                model_kwargs = dict(
+                    load_in_8bit=True, device_map=&#34;auto&#34;, torch_dtype=torch.bfloat16
+                )
+            elif env_config.half:
+                model_kwargs = dict(torch_dtype=torch.bfloat16)
+            try:
+                n_positions = (
+                    512  # Should fix later, but for T-5 this is 512 indeed
+                )
+                # mask_model.config.n_positions
+            except AttributeError:
+                n_positions = self.config.max_tokens
+        else:
+            n_positions = self.config.max_tokens
+        tokenizer_kwargs = {
+            &#34;model_max_length&#34;: n_positions,
+        }
+
+        print(f&#34;Loading mask filling model {neigh_config.model}...&#34;)
+        if &#34;t5&#34; in neigh_config.model:
             mask_model = T5Model(
                 self.config,
                 model_kwargs=model_kwargs,
                 tokenizer_kwargs=tokenizer_kwargs,
             )
-        elif &#34;bert&#34; in self.config.neighborhood_config.model:
+        elif &#34;bert&#34; in neigh_config.model:
             mask_model = BertModel(self.config)
         else:
-            raise ValueError(f&#34;Unknown model {self.config.neighborhood_config.model}&#34;)
+            raise ValueError(f&#34;Unknown model {neigh_config.model}&#34;)
+        # if config.dataset_member in [&#39;english&#39;, &#39;german&#39;]:
+        #     preproc_tokenizer = mask_tokenizer
         return mask_model
 
     def load(self):
@@ -1204,6 +1244,9 @@ class BertModel(MaskFillingModel):
         return neighbors
 
     def _attack(self, document, probs, tokens=None, **kwargs):
+        &#34;&#34;&#34;
+        Neighborhood attack score. Looks at difference in likelihood for given document and average likelihood of its neighbors
+        &#34;&#34;&#34;
         # documents here are actually neighbors
         batch_size = kwargs.get(&#34;batch_size&#34;, 4)
         substr_neighbors = kwargs.get(&#34;substr_neighbors&#34;, None)
@@ -1224,6 +1267,36 @@ class BertModel(MaskFillingModel):
 </ul>
 <h3>Methods</h3>
 <dl>
+<dt id="mimir.attacks.neighborhood.NeighborhoodAttack.create_fill_dictionary"><code class="name flex">
+<span>def <span class="ident">create_fill_dictionary</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_fill_dictionary(self, data):
+    neigh_config = self.config.neighborhood_config
+    if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
+        if not self.config.pretokenized:
+            # TODO: maybe can be done if detokenized, but currently not supported
+            self.ref_model.create_fill_dictionary(data)</code></pre>
+</details>
+</dd>
+<dt id="mimir.attacks.neighborhood.NeighborhoodAttack.get_mask_model"><code class="name flex">
+<span>def <span class="ident">get_mask_model</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_mask_model(self):
+    return self.ref_model</code></pre>
+</details>
+</dd>
 <dt id="mimir.attacks.neighborhood.NeighborhoodAttack.get_neighbors"><code class="name flex">
 <span>def <span class="ident">get_neighbors</span></span>(<span>self, documents, **kwargs)</span>
 </code></dt>
@@ -1833,6 +1906,8 @@ class BertModel(MaskFillingModel):
 <li>
 <h4><code><a title="mimir.attacks.neighborhood.NeighborhoodAttack" href="#mimir.attacks.neighborhood.NeighborhoodAttack">NeighborhoodAttack</a></code></h4>
 <ul class="">
+<li><code><a title="mimir.attacks.neighborhood.NeighborhoodAttack.create_fill_dictionary" href="#mimir.attacks.neighborhood.NeighborhoodAttack.create_fill_dictionary">create_fill_dictionary</a></code></li>
+<li><code><a title="mimir.attacks.neighborhood.NeighborhoodAttack.get_mask_model" href="#mimir.attacks.neighborhood.NeighborhoodAttack.get_mask_model">get_mask_model</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.NeighborhoodAttack.get_neighbors" href="#mimir.attacks.neighborhood.NeighborhoodAttack.get_neighbors">get_neighbors</a></code></li>
 </ul>
 </li>
