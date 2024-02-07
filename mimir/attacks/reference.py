@@ -19,4 +19,4 @@ class ReferenceAttack(Attack):
         if loss is None:
             loss = self.model.get_ll(document, probs=probs, tokens=tokens)
         ref_loss = self.ref_model.get_ll(document, probs=probs, tokens=tokens)
-        return ref_loss - loss
+        return loss - ref_loss
