@@ -31,8 +31,8 @@
     Datasets and data-processing utilities
 &#34;&#34;&#34;
 import datasets
-import random
 import numpy as np
+import torch as ch
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
@@ -155,7 +155,11 @@ class Data:
                     cache_dir=self.cache_dir,
                     split=f&#34;train[:{min_load}]&#34;,
                 )
-                specific_source_use = self.config.specific_source if specific_source is None else specific_source
+                specific_source_use = (
+                    self.config.specific_source
+                    if specific_source is None
+                    else specific_source
+                )
                 data = pile_selection_utility(
                     data, self.key, wanted_source=specific_source_use
                 )
@@ -283,6 +287,25 @@ class Data:
         else:
             filename = self.name
         return filename
+
+
+class HFCompatibleDataset(ch.utils.data.Dataset):
+    def __init__(self, records, neighbors=None):
+        self.records = records
+        self.neighbors = neighbors
+        if self.neighbors is not None:
+            assert len(self.records) == len(
+                self.neighbors
+            ), &#34;Records and neighbors must be same length&#34;
+
+    def __len__(self):
+        return len(self.records)
+
+    def __getitem__(self, idx):
+        if self.neighbors is None:
+            return self.records[idx]
+
+        return {&#34;record&#34;: self.records[idx], &#34;neighbors&#34;: self.neighbors[idx]}
 
 
 def strip_newlines(text):
@@ -582,7 +605,11 @@ def drop_last_word(text):
                     cache_dir=self.cache_dir,
                     split=f&#34;train[:{min_load}]&#34;,
                 )
-                specific_source_use = self.config.specific_source if specific_source is None else specific_source
+                specific_source_use = (
+                    self.config.specific_source
+                    if specific_source is None
+                    else specific_source
+                )
                 data = pile_selection_utility(
                     data, self.key, wanted_source=specific_source_use
                 )
@@ -827,7 +854,11 @@ def drop_last_word(text):
                 cache_dir=self.cache_dir,
                 split=f&#34;train[:{min_load}]&#34;,
             )
-            specific_source_use = self.config.specific_source if specific_source is None else specific_source
+            specific_source_use = (
+                self.config.specific_source
+                if specific_source is None
+                else specific_source
+            )
             data = pile_selection_utility(
                 data, self.key, wanted_source=specific_source_use
             )
@@ -973,6 +1004,56 @@ def drop_last_word(text):
 </dd>
 </dl>
 </dd>
+<dt id="mimir.data_utils.HFCompatibleDataset"><code class="flex name class">
+<span>class <span class="ident">HFCompatibleDataset</span></span>
+<span>(</span><span>records, neighbors=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An abstract class representing a :class:<code>Dataset</code>.</p>
+<p>All datasets that represent a map from keys to data samples should subclass
+it. All subclasses should overwrite :meth:<code>__getitem__</code>, supporting fetching a
+data sample for a given key. Subclasses could also optionally overwrite
+:meth:<code>__len__</code>, which is expected to return the size of the dataset by many
+:class:<code>~torch.utils.data.Sampler</code> implementations and the default options
+of :class:<code>~torch.utils.data.DataLoader</code>. Subclasses could also
+optionally implement :meth:<code>__getitems__</code>, for speedup batched samples
+loading. This method accepts list of indices of samples of batch and returns
+list of samples.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>:class:<code>~torch.utils.data.DataLoader</code> by default constructs an index
+sampler that yields integral indices.
+To make it work with a map-style
+dataset with non-integral indices/keys, a custom sampler must be provided.</p>
+</div></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HFCompatibleDataset(ch.utils.data.Dataset):
+    def __init__(self, records, neighbors=None):
+        self.records = records
+        self.neighbors = neighbors
+        if self.neighbors is not None:
+            assert len(self.records) == len(
+                self.neighbors
+            ), &#34;Records and neighbors must be same length&#34;
+
+    def __len__(self):
+        return len(self.records)
+
+    def __getitem__(self, idx):
+        if self.neighbors is None:
+            return self.records[idx]
+
+        return {&#34;record&#34;: self.records[idx], &#34;neighbors&#34;: self.neighbors[idx]}</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>torch.utils.data.dataset.Dataset</li>
+<li>typing.Generic</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -1007,6 +1088,9 @@ def drop_last_word(text):
 <li><code><a title="mimir.data_utils.Data.load" href="#mimir.data_utils.Data.load">load</a></code></li>
 <li><code><a title="mimir.data_utils.Data.load_neighbors" href="#mimir.data_utils.Data.load_neighbors">load_neighbors</a></code></li>
 </ul>
+</li>
+<li>
+<h4><code><a title="mimir.data_utils.HFCompatibleDataset" href="#mimir.data_utils.HFCompatibleDataset">HFCompatibleDataset</a></code></h4>
 </li>
 </ul>
 </li>
