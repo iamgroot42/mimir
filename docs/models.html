@@ -81,7 +81,7 @@ class Model(nn.Module):
             except NameError:
                 pass
             if self.config.openai_config is None:
-                self.model.to(self.device)
+                self.model.to(self.device, non_blocking=True)
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
@@ -423,9 +423,9 @@ class LanguageModel(Model):
         # encode each text as a list of token ids
         if self.config.dataset_member == &#39;pubmed&#39;:
             texts = [t[:t.index(SEPARATOR)] for t in texts]
-            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
         else:
-            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
             all_encoded = {key: value[:, :prompt_tokens] for key, value in all_encoded.items()}
 
         decoded = [&#39;&#39; for _ in range(len(texts))]
@@ -472,7 +472,7 @@ class LanguageModel(Model):
     
     @torch.no_grad()
     def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
-        # TODO: update like oher attacks
+        # TODO: update like other attacks
         tokenized = self.tokenizer(
             text, return_tensors=&#34;pt&#34;).to(self.device)
         labels = tokenized.input_ids
@@ -788,9 +788,9 @@ class OpenAI_APIModel(LanguageModel):
         # encode each text as a list of token ids
         if self.config.dataset_member == &#39;pubmed&#39;:
             texts = [t[:t.index(SEPARATOR)] for t in texts]
-            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
         else:
-            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
             all_encoded = {key: value[:, :prompt_tokens] for key, value in all_encoded.items()}
 
         decoded = [&#39;&#39; for _ in range(len(texts))]
@@ -837,7 +837,7 @@ class OpenAI_APIModel(LanguageModel):
     
     @torch.no_grad()
     def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
-        # TODO: update like oher attacks
+        # TODO: update like other attacks
         tokenized = self.tokenizer(
             text, return_tensors=&#34;pt&#34;).to(self.device)
         labels = tokenized.input_ids
@@ -1008,7 +1008,7 @@ def get_lls(self, texts: List[str], batch_size: int = 6):
 </summary>
 <pre><code class="python">@torch.no_grad()
 def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
-    # TODO: update like oher attacks
+    # TODO: update like other attacks
     tokenized = self.tokenizer(
         text, return_tensors=&#34;pt&#34;).to(self.device)
     labels = tokenized.input_ids
@@ -1164,9 +1164,9 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
     # encode each text as a list of token ids
     if self.config.dataset_member == &#39;pubmed&#39;:
         texts = [t[:t.index(SEPARATOR)] for t in texts]
-        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
     else:
-        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device)
+        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
         all_encoded = {key: value[:, :prompt_tokens] for key, value in all_encoded.items()}
 
     decoded = [&#39;&#39; for _ in range(len(texts))]
@@ -1255,7 +1255,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
             except NameError:
                 pass
             if self.config.openai_config is None:
-                self.model.to(self.device)
+                self.model.to(self.device, non_blocking=True)
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
@@ -1550,7 +1550,7 @@ def get_probabilities(self, text: str, tokens=None):
         except NameError:
             pass
         if self.config.openai_config is None:
-            self.model.to(self.device)
+            self.model.to(self.device, non_blocking=True)
         if self.config.env_config.compile:
             torch.compile(self.model)
         print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)</code></pre>
