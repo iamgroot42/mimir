@@ -17,6 +17,17 @@ from mimir.models import Model
 from mimir.attacks.blackbox_attacks import Attack
 
 
+# def get_mask_model(config: ExperimentConfig, **kwargs):
+#     if "t5" in config.neighborhood_config.model:
+#         mask_model = T5Model(
+#                 config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs
+#             )
+#         elif "bert" in config.neighborhood_config.model:
+#             mask_model = BertModel(config)
+#         else:
+#             raise ValueError(f"Unknown model {config.neighborhood_config.model}")
+
+
 class NeighborhoodAttack(Attack):
     def __init__(
         self,
@@ -29,43 +40,56 @@ class NeighborhoodAttack(Attack):
         self.ref_model = self._pick_neighbor_model()
         assert issubclass(type(self.ref_model), MaskFillingModel), "ref_model must be MaskFillingModel for neighborhood attack"
 
+    def get_mask_model(self):
+        return self.ref_model
+
+    def create_fill_dictionary(self, data):
+        neigh_config = self.config.neighborhood_config
+        if "t5" in neigh_config.model and neigh_config.random_fills:
+            if not self.config.pretokenized:
+                # TODO: maybe can be done if detokenized, but currently not supported
+                self.ref_model.create_fill_dictionary(data)
+
     def _pick_neighbor_model(self):
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
         env_config = self.config.env_config
-        if neigh_config:
-            model_kwargs = dict()
-            if not neigh_config.random_fills:
-                if env_config.int8:
-                    model_kwargs = dict(
-                        load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
-                    )
-                elif env_config.half:
-                    model_kwargs = dict(torch_dtype=torch.bfloat16)
-                try:
-                    n_positions = (
-                        512  # Should fix later, but for T-5 this is 512 indeed
-                    )
-                    # mask_model.config.n_positions
-                except AttributeError:
-                    n_positions = self.config.max_tokens
-            else:
-                n_positions = self.config.max_tokens
-            tokenizer_kwargs = {
-                "model_max_length": n_positions,
-            }
 
-        if "t5" in self.config.neighborhood_config.model:
+        model_kwargs = dict()
+        if not neigh_config.random_fills:
+            if env_config.int8:
+                model_kwargs = dict(
+                    load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
+                )
+            elif env_config.half:
+                model_kwargs = dict(torch_dtype=torch.bfloat16)
+            try:
+                n_positions = (
+                    512  # Should fix later, but for T-5 this is 512 indeed
+                )
+                # mask_model.config.n_positions
+            except AttributeError:
+                n_positions = self.config.max_tokens
+        else:
+            n_positions = self.config.max_tokens
+        tokenizer_kwargs = {
+            "model_max_length": n_positions,
+        }
+
+        print(f"Loading mask filling model {neigh_config.model}...")
+        if "t5" in neigh_config.model:
             mask_model = T5Model(
                 self.config,
                 model_kwargs=model_kwargs,
                 tokenizer_kwargs=tokenizer_kwargs,
             )
-        elif "bert" in self.config.neighborhood_config.model:
+        elif "bert" in neigh_config.model:
             mask_model = BertModel(self.config)
         else:
-            raise ValueError(f"Unknown model {self.config.neighborhood_config.model}")
+            raise ValueError(f"Unknown model {neigh_config.model}")
+        # if config.dataset_member in ['english', 'german']:
+        #     preproc_tokenizer = mask_tokenizer
         return mask_model
 
     def load(self):
@@ -95,6 +119,9 @@ class NeighborhoodAttack(Attack):
         return neighbors
 
     def _attack(self, document, probs, tokens=None, **kwargs):
+        """
+        Neighborhood attack score. Looks at difference in likelihood for given document and average likelihood of its neighbors
+        """
         # documents here are actually neighbors
         batch_size = kwargs.get("batch_size", 4)
         substr_neighbors = kwargs.get("substr_neighbors", None)

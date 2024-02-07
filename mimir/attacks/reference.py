@@ -12,6 +12,9 @@ class ReferenceAttack(Attack):
         self.ref_model.load()
 
     def _attack(self, document, probs, tokens=None, **kwargs):
+        """
+        Reference-based attack score. Performs difficulty calibration in model likelihood using a reference model.
+        """
         loss = kwargs.get('loss', None)
         if loss is None:
             loss = self.model.get_ll(document, probs=probs, tokens=tokens)

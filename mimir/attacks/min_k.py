@@ -3,7 +3,6 @@
 """
 import torch as ch
 import numpy as np
-
 from mimir.attacks.blackbox_attacks import Attack
 
 
@@ -13,6 +12,9 @@ class MinKProbAttack(Attack):
 
     @ch.no_grad()
     def _attack(self, document, probs, tokens=None, **kwargs):
+        """
+        Min-k % Prob Attack. Gets model praobbilities and returns likelihood when computed over top k% of ngrams.
+        """
         # Hyper-params specific to min-k attack
         k: float = kwargs.get("k", 0.2)
         window: int = kwargs.get("window", 1)

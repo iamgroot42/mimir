@@ -337,7 +337,9 @@ def compute_metrics_from_scores(
 def generate_data_processed(
     base_model,
     mask_model,
-    raw_data_member, batch_size, raw_data_non_member: List[str] = None
+    raw_data_member,
+    batch_size: int,
+    raw_data_non_member: List[str] = None
 ):
     torch.manual_seed(42)
     np.random.seed(42)
@@ -398,12 +400,12 @@ def generate_data(
     train: bool = True,
     presampled: str = None,
     specific_source: str = None,
-    mask_model = None
+    mask_model_tokenizer = None
 ):
     data_obj = data_utils.Data(dataset, config=config, presampled=presampled)
     data = data_obj.load(
         train=train,
-        mask_tokenizer=mask_model.tokenizer if mask_model else None,
+        mask_tokenizer=mask_model_tokenizer,
         specific_source=specific_source,
     )
     return data_obj, data
@@ -484,6 +486,9 @@ def main(config: ExperimentConfig):
             model: ReferenceModel(config, model) for model in ref_config.models
         }
 
+    # Prepare attackers
+    attackers_dict = get_attackers(base_model, ref_models, config)
+
     # Load neighborhood attack model, only if we are doing the neighborhood attack AND generating neighbors
     mask_model = None
     if (
@@ -491,55 +496,25 @@ def main(config: ExperimentConfig):
         and (not neigh_config.load_from_cache)
         and (BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks)
     ):
-        model_kwargs = dict()
-        if not neigh_config.random_fills:
-            if env_config.int8:
-                model_kwargs = dict(
-                    load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
-                )
-            elif env_config.half:
-                model_kwargs = dict(torch_dtype=torch.bfloat16)
-            try:
-                n_positions = 512  # Should fix later, but for T-5 this is 512 indeed
-                # mask_model.config.n_positions
-            except AttributeError:
-                n_positions = config.max_tokens
-        else:
-            n_positions = config.max_tokens
-        tokenizer_kwargs = {
-            "model_max_length": n_positions,
-        }
-        print(f"Loading mask filling model {config.neighborhood_config.model}...")
-        if "t5" in config.neighborhood_config.model:
-            mask_model = T5Model(
-                config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs
-            )
-        elif "bert" in config.neighborhood_config.model:
-            mask_model = BertModel(config)
-        else:
-            raise ValueError(f"Unknown model {config.neighborhood_config.model}")
-        # if config.dataset_member in ['english', 'german']:
-        #     preproc_tokenizer = mask_tokenizer
+        attacker_ne = attackers_dict[BlackBoxAttacks.NEIGHBOR]
+        mask_model = attacker_ne.get_mask_model_tokenizer()
 
     print("MOVING BASE MODEL TO GPU...", end="", flush=True)
     base_model.load()
 
-    # FROM HERE
-    print(
-        f"Loading dataset {config.dataset_member} and {config.dataset_nonmember}..."
-    )
+    print(f"Loading dataset {config.dataset_nonmember}...")
     # data, seq_lens, n_samples = generate_data(config.dataset_member)
-
     data_obj_nonmem, data_nonmember = generate_data(
         config.dataset_nonmember,
         train=False,
         presampled=config.presampled_dataset_nonmember,
-        mask_model=mask_model
+        mask_model_tokenizer=mask_model.tokenizer if mask_model else None,
     )
+    print(f"Loading dataset {config.dataset_member}...")
     data_obj_mem, data_member = generate_data(
         config.dataset_member,
         presampled=config.presampled_dataset_member,
-        mask_model=mask_model,
+        mask_model_tokenizer=mask_model.tokenizer if mask_model else None,
     )
 
     other_objs, other_nonmembers = None, None
@@ -550,7 +525,7 @@ def main(config: ExperimentConfig):
                 config.dataset_nonmember,
                 train=False,
                 specific_source=other_name,
-                mask_model=mask_model,
+                mask_model_tokenizer=mask_model.tokenizer if mask_model else None,
             )
             other_objs.append(data_obj_nonmem_others)
             other_nonmembers.append(data_nonmember_others)
@@ -597,16 +572,8 @@ def main(config: ExperimentConfig):
 
     print("NEW N_SAMPLES IS ", n_samples)
 
-    if (
-        neigh_config
-        and neigh_config.load_from_cache is False
-        and neigh_config.random_fills
-        and "t5" in neigh_config
-        and neigh_config.model
-    ):
-        if not config.pretokenized:
-            # TODO: maybe can be done if detokenized, but currently not supported
-            mask_model.create_fill_dictionary(data)
+    if mask_model is not None:
+        attacker_ne.create_fill_dictionary(data)
 
     if config.scoring_model_name:
         print(f"Loading SCORING model {config.scoring_model_name}...")
@@ -653,9 +620,6 @@ def main(config: ExperimentConfig):
     outputs = []
     if config.blackbox_attacks is None:
         raise ValueError("No blackbox attacks specified in config!")
-
-    # Prepare attackers
-    attackers_dict = get_attackers(base_model, ref_models, config)
 
     # Collect scores for members
     member_preds, member_samples = get_mia_scores(

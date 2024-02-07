@@ -1,6 +1,7 @@
 """
-    Straight-forward LOSS attack
+    Straight-forward LOSS attack, as described in https://ieeexplore.ieee.org/abstract/document/8429311
 """
+import torch as ch
 from mimir.attacks.blackbox_attacks import Attack
 
 
@@ -8,5 +9,9 @@ class LOSSAttack(Attack):
     def __init__(self, config, model):
         super().__init__(config, model, ref_model=None)
 
+    @ch.no_grad()
     def _attack(self, document, probs, tokens=None, **kwargs):
+        """
+            LOSS-score. Use log-likelihood from model.
+        """
         return self.model.get_ll(document, probs=probs, tokens=tokens)
