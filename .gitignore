@@ -56,6 +56,7 @@ quantile_ref_model/*
 table*/*
 fig7/*
 new_mi/*
+DEBUG/*
 
 # Ignore all tar.gz files
 *.tar.gz
