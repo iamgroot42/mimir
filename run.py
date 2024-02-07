@@ -457,10 +457,6 @@ def main(config: ExperimentConfig):
         os.makedirs(SAVE_FOLDER)
     print(f"Saving results to absolute path: {os.path.abspath(SAVE_FOLDER)}")
 
-    # write args to file
-    # if not config.dump_cache:
-    #     config.save(os.path.join(SAVE_FOLDER, 'args.json'), indent=4)
-
     if neigh_config:
         n_perturbation_list = neigh_config.n_perturbation_list
         in_place_swap = neigh_config.original_tokenization_swap
@@ -684,8 +680,7 @@ def main(config: ExperimentConfig):
         exit(0)
 
     # Dump main config into SAVE_FOLDER
-    with open(os.path.join(SAVE_FOLDER, "config.json"), "w") as f:
-        config.save(f)
+    config.save(os.path.join(SAVE_FOLDER, 'config.json'), indent=4)
 
     for attack, output in blackbox_outputs.items():
         outputs.append(output)
