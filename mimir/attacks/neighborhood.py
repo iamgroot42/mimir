@@ -36,7 +36,7 @@ class NeighborhoodAttack(Attack):
         env_config = self.config.env_config
         if neigh_config:
             model_kwargs = dict()
-            if not self.config.baselines_only and not neigh_config.random_fills:
+            if not neigh_config.random_fills:
                 if env_config.int8:
                     model_kwargs = dict(
                         load_in_8bit=True, device_map="auto", torch_dtype=torch.bfloat16
@@ -68,7 +68,7 @@ class NeighborhoodAttack(Attack):
             raise ValueError(f"Unknown model {self.config.neighborhood_config.model}")
         return mask_model
 
-    def prepare(self, **kwargs):
+    def load(self):
         """
         Any attack-specific steps (one-time) preparation
         """
@@ -94,9 +94,20 @@ class NeighborhoodAttack(Attack):
         neighbors = self.ref_model.generate_neighbors(documents, **kwargs)
         return neighbors
 
-    def attack(self, documents, **kwargs):
+    def _attack(self, document, probs, tokens=None, **kwargs):
         # documents here are actually neighbors
-        raise NotImplementedError("attack not implemented")
+        batch_size = kwargs.get("batch_size", 4)
+        substr_neighbors = kwargs.get("substr_neighbors", None)
+        loss = kwargs.get("loss", None)
+        if loss is None:
+            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+
+        # Only evaluate neighborhood attack when not caching neighbors
+        mean_substr_score = self.model.get_lls(
+            substr_neighbors, batch_size=batch_size
+        )
+        d_based_score = loss - mean_substr_score
+        return d_based_score
 
 
 class MaskFillingModel(Model):

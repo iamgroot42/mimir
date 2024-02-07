@@ -2,8 +2,8 @@
     Datasets and data-processing utilities
 """
 import datasets
-import random
 import numpy as np
+import torch as ch
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
@@ -126,7 +126,11 @@ class Data:
                     cache_dir=self.cache_dir,
                     split=f"train[:{min_load}]",
                 )
-                specific_source_use = self.config.specific_source if specific_source is None else specific_source
+                specific_source_use = (
+                    self.config.specific_source
+                    if specific_source is None
+                    else specific_source
+                )
                 data = pile_selection_utility(
                     data, self.key, wanted_source=specific_source_use
                 )
@@ -254,6 +258,25 @@ class Data:
         else:
             filename = self.name
         return filename
+
+
+class HFCompatibleDataset(ch.utils.data.Dataset):
+    def __init__(self, records, neighbors=None):
+        self.records = records
+        self.neighbors = neighbors
+        if self.neighbors is not None:
+            assert len(self.records) == len(
+                self.neighbors
+            ), "Records and neighbors must be same length"
+
+    def __len__(self):
+        return len(self.records)
+
+    def __getitem__(self, idx):
+        if self.neighbors is None:
+            return self.records[idx]
+
+        return {"record": self.records[idx], "neighbors": self.neighbors[idx]}
 
 
 def strip_newlines(text):

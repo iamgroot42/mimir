@@ -51,7 +51,6 @@ We include and implement the following attacks, as described in our paper.
 - [Zlib Entropy](https://www.usenix.org/system/files/sec21-carlini-extracting.pdf) (`zlib`). Uses the zlib compression size of a sample to approximate local difficulty of sample.
 - [Min-k% Prob](https://swj0419.github.io/detect-pretrain.github.io/) (`min_k`). Uses k% of tokens with minimum likelihood for score computation.
 - [Neighborhood](https://aclanthology.org/2023.findings-acl.719/) (`ne`). Generates neighbors using auxiliary model and measures change in likelihood.
-- [Quantile](https://neurips.cc/virtual/2023/poster/70232) (`quantile`). Trains meta-classifier for predicting quantile of loss.
 
 ## Adding your own attack
 
