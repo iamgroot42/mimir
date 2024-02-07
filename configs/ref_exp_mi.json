@@ -12,7 +12,10 @@
     "blackbox_attacks": ["ref"],
     "ref_config": {
         "models": [
-            "huggyllama/llama-7b"
+            "EleutherAI/pythia-1.4b",
+            "distilgpt2",
+            "EleutherAI/gpt-neo-1.3B",
+            "facebook/opt-1.3B"
         ]
     },
     "neighborhood_config": {
