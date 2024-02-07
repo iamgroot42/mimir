@@ -37,25 +37,8 @@ class LOSSAttack(Attack):
     def __init__(self, config, model):
         super().__init__(config, model, ref_model=None)
 
-    def attack(self, document, **kwargs):
-        &#34;&#34;&#34;
-        Score a document using the attack&#39;s scoring function
-        &#34;&#34;&#34;
-        substr = kwargs.get(&#34;substr&#34;, None)
-        if substr is None:
-            raise ValueError(&#34;substr (tokenized version of document) must be provided&#34;)
-
-        if self.config.pretokenized:
-            detokenized_sample = kwargs.get(&#34;detokenized_sample&#34;, None)
-            if detokenized_sample is None:
-                raise ValueError(&#34;detokenized_sample must be provided when self.config.pretokenized is True&#34;)
-
-            s_tk_probs = self.model.get_probabilities(detokenized_sample, tokens=substr)
-            loss = self.get_ll(detokenized_sample, tokens=substr, probs=s_tk_probs)
-        else:
-            s_tk_probs = self.model.get_probabilities(substr)
-            loss = self.get_ll(document, probs=s_tk_probs)
-        return loss</code></pre>
+    def _attack(self, document, probs, tokens=None, **kwargs):
+        return self.model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
 </details>
 </section>
 <section>
@@ -81,25 +64,8 @@ class LOSSAttack(Attack):
     def __init__(self, config, model):
         super().__init__(config, model, ref_model=None)
 
-    def attack(self, document, **kwargs):
-        &#34;&#34;&#34;
-        Score a document using the attack&#39;s scoring function
-        &#34;&#34;&#34;
-        substr = kwargs.get(&#34;substr&#34;, None)
-        if substr is None:
-            raise ValueError(&#34;substr (tokenized version of document) must be provided&#34;)
-
-        if self.config.pretokenized:
-            detokenized_sample = kwargs.get(&#34;detokenized_sample&#34;, None)
-            if detokenized_sample is None:
-                raise ValueError(&#34;detokenized_sample must be provided when self.config.pretokenized is True&#34;)
-
-            s_tk_probs = self.model.get_probabilities(detokenized_sample, tokens=substr)
-            loss = self.get_ll(detokenized_sample, tokens=substr, probs=s_tk_probs)
-        else:
-            s_tk_probs = self.model.get_probabilities(substr)
-            loss = self.get_ll(document, probs=s_tk_probs)
-        return loss</code></pre>
+    def _attack(self, document, probs, tokens=None, **kwargs):
+        return self.model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -110,7 +76,7 @@ class LOSSAttack(Attack):
 <li><code><b><a title="mimir.attacks.blackbox_attacks.Attack" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack">Attack</a></b></code>:
 <ul class="hlist">
 <li><code><a title="mimir.attacks.blackbox_attacks.Attack.attack" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack.attack">attack</a></code></li>
-<li><code><a title="mimir.attacks.blackbox_attacks.Attack.prepare" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack.prepare">prepare</a></code></li>
+<li><code><a title="mimir.attacks.blackbox_attacks.Attack.load" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack.load">load</a></code></li>
 </ul>
 </li>
 </ul>

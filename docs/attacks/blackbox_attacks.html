@@ -37,16 +37,13 @@ from mimir.models import Model
 
 # Attack definitions
 class BlackBoxAttacks(str, Enum):
-    LOSS = &#34;loss&#34;
-    REFERENCE_BASED = &#34;ref&#34;
-    ZLIB = &#34;zlib&#34;
-    MIN_K = &#34;min_k&#34;
-    NEIGHBOR = &#34;ne&#34;
+    LOSS = &#34;loss&#34; # Done
+    REFERENCE_BASED = &#34;ref&#34; # Done
+    ZLIB = &#34;zlib&#34; # Done
+    MIN_K = &#34;min_k&#34; # Done
+    NEIGHBOR = &#34;ne&#34; # Done
     QUANTILE = &#34;quantile&#34;
 
-
-# TODO: Move attacks in models into this file as functions
-# TODO Use decorators to link attack implementations with enum above
 
 # Base attack class
 class Attack:
@@ -54,18 +51,47 @@ class Attack:
         self.config = config
         self.target_model = target_model
         self.ref_model = ref_model
+        self.is_loaded = False
 
-    def prepare(self, **kwargs):
+    def load(self):
         &#34;&#34;&#34;
         Any attack-specific steps (one-time) preparation
         &#34;&#34;&#34;
         pass
 
-    def attack(self, document, **kwargs):
+    def unload(self):
+        if self.ref_model is not None:
+            self.ref_model.unload()
+            self.is_loaded = False
+
+    def _attack(self, document, probs, tokens=None, **kwargs):
         &#34;&#34;&#34;
-        Score a document using the attack&#39;s scoring function
+        Actual logic for attack. 
         &#34;&#34;&#34;
-        raise NotImplementedError(&#34;Attack must implement attack()&#34;)</code></pre>
+        raise NotImplementedError(&#34;Attack must implement attack()&#34;)
+
+    def attack(self, document, probs, **kwargs):
+        &#34;&#34;&#34;
+        Score a document using the attack&#39;s scoring function. Calls self._attack
+        &#34;&#34;&#34;
+        # Load attack if not loaded yet
+        if not self.is_loaded:
+            self.load()
+            self.is_loaded = True
+
+        detokenized_sample = kwargs.get(&#34;detokenized_sample&#34;, None)
+        if self.config.pretokenized and detokenized_sample is None:
+            raise ValueError(&#34;detokenized_sample must be provided&#34;)
+
+        score = (
+            self._attack(document, probs=probs, **kwargs)
+            if not self.config.pretokenized
+            else self._attack(
+                detokenized_sample, tokens=document, probs=probs, **kwargs
+            )
+        )
+
+        return score</code></pre>
 </details>
 </section>
 <section>
@@ -92,46 +118,94 @@ class Attack:
         self.config = config
         self.target_model = target_model
         self.ref_model = ref_model
+        self.is_loaded = False
 
-    def prepare(self, **kwargs):
+    def load(self):
         &#34;&#34;&#34;
         Any attack-specific steps (one-time) preparation
         &#34;&#34;&#34;
         pass
 
-    def attack(self, document, **kwargs):
+    def unload(self):
+        if self.ref_model is not None:
+            self.ref_model.unload()
+            self.is_loaded = False
+
+    def _attack(self, document, probs, tokens=None, **kwargs):
         &#34;&#34;&#34;
-        Score a document using the attack&#39;s scoring function
+        Actual logic for attack. 
         &#34;&#34;&#34;
-        raise NotImplementedError(&#34;Attack must implement attack()&#34;)</code></pre>
+        raise NotImplementedError(&#34;Attack must implement attack()&#34;)
+
+    def attack(self, document, probs, **kwargs):
+        &#34;&#34;&#34;
+        Score a document using the attack&#39;s scoring function. Calls self._attack
+        &#34;&#34;&#34;
+        # Load attack if not loaded yet
+        if not self.is_loaded:
+            self.load()
+            self.is_loaded = True
+
+        detokenized_sample = kwargs.get(&#34;detokenized_sample&#34;, None)
+        if self.config.pretokenized and detokenized_sample is None:
+            raise ValueError(&#34;detokenized_sample must be provided&#34;)
+
+        score = (
+            self._attack(document, probs=probs, **kwargs)
+            if not self.config.pretokenized
+            else self._attack(
+                detokenized_sample, tokens=document, probs=probs, **kwargs
+            )
+        )
+
+        return score</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="mimir.attacks.loss.LOSSAttack" href="loss.html#mimir.attacks.loss.LOSSAttack">LOSSAttack</a></li>
+<li><a title="mimir.attacks.min_k.MinKProbAttack" href="min_k.html#mimir.attacks.min_k.MinKProbAttack">MinKProbAttack</a></li>
 <li><a title="mimir.attacks.neighborhood.NeighborhoodAttack" href="neighborhood.html#mimir.attacks.neighborhood.NeighborhoodAttack">NeighborhoodAttack</a></li>
 <li><a title="mimir.attacks.quantile.QuantileAttack" href="quantile.html#mimir.attacks.quantile.QuantileAttack">QuantileAttack</a></li>
 <li><a title="mimir.attacks.reference.ReferenceAttack" href="reference.html#mimir.attacks.reference.ReferenceAttack">ReferenceAttack</a></li>
+<li><a title="mimir.attacks.zlib.ZLIBAttack" href="zlib.html#mimir.attacks.zlib.ZLIBAttack">ZLIBAttack</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
 <dt id="mimir.attacks.blackbox_attacks.Attack.attack"><code class="name flex">
-<span>def <span class="ident">attack</span></span>(<span>self, document, **kwargs)</span>
+<span>def <span class="ident">attack</span></span>(<span>self, document, probs, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Score a document using the attack's scoring function</p></div>
+<div class="desc"><p>Score a document using the attack's scoring function. Calls self._attack</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def attack(self, document, **kwargs):
+<pre><code class="python">def attack(self, document, probs, **kwargs):
     &#34;&#34;&#34;
-    Score a document using the attack&#39;s scoring function
+    Score a document using the attack&#39;s scoring function. Calls self._attack
     &#34;&#34;&#34;
-    raise NotImplementedError(&#34;Attack must implement attack()&#34;)</code></pre>
+    # Load attack if not loaded yet
+    if not self.is_loaded:
+        self.load()
+        self.is_loaded = True
+
+    detokenized_sample = kwargs.get(&#34;detokenized_sample&#34;, None)
+    if self.config.pretokenized and detokenized_sample is None:
+        raise ValueError(&#34;detokenized_sample must be provided&#34;)
+
+    score = (
+        self._attack(document, probs=probs, **kwargs)
+        if not self.config.pretokenized
+        else self._attack(
+            detokenized_sample, tokens=document, probs=probs, **kwargs
+        )
+    )
+
+    return score</code></pre>
 </details>
 </dd>
-<dt id="mimir.attacks.blackbox_attacks.Attack.prepare"><code class="name flex">
-<span>def <span class="ident">prepare</span></span>(<span>self, **kwargs)</span>
+<dt id="mimir.attacks.blackbox_attacks.Attack.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Any attack-specific steps (one-time) preparation</p></div>
@@ -139,11 +213,26 @@ class Attack:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def prepare(self, **kwargs):
+<pre><code class="python">def load(self):
     &#34;&#34;&#34;
     Any attack-specific steps (one-time) preparation
     &#34;&#34;&#34;
     pass</code></pre>
+</details>
+</dd>
+<dt id="mimir.attacks.blackbox_attacks.Attack.unload"><code class="name flex">
+<span>def <span class="ident">unload</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unload(self):
+    if self.ref_model is not None:
+        self.ref_model.unload()
+        self.is_loaded = False</code></pre>
 </details>
 </dd>
 </dl>
@@ -159,11 +248,11 @@ class Attack:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class BlackBoxAttacks(str, Enum):
-    LOSS = &#34;loss&#34;
-    REFERENCE_BASED = &#34;ref&#34;
-    ZLIB = &#34;zlib&#34;
-    MIN_K = &#34;min_k&#34;
-    NEIGHBOR = &#34;ne&#34;
+    LOSS = &#34;loss&#34; # Done
+    REFERENCE_BASED = &#34;ref&#34; # Done
+    ZLIB = &#34;zlib&#34; # Done
+    MIN_K = &#34;min_k&#34; # Done
+    NEIGHBOR = &#34;ne&#34; # Done
     QUANTILE = &#34;quantile&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -219,7 +308,8 @@ class Attack:
 <h4><code><a title="mimir.attacks.blackbox_attacks.Attack" href="#mimir.attacks.blackbox_attacks.Attack">Attack</a></code></h4>
 <ul class="">
 <li><code><a title="mimir.attacks.blackbox_attacks.Attack.attack" href="#mimir.attacks.blackbox_attacks.Attack.attack">attack</a></code></li>
-<li><code><a title="mimir.attacks.blackbox_attacks.Attack.prepare" href="#mimir.attacks.blackbox_attacks.Attack.prepare">prepare</a></code></li>
+<li><code><a title="mimir.attacks.blackbox_attacks.Attack.load" href="#mimir.attacks.blackbox_attacks.Attack.load">load</a></code></li>
+<li><code><a title="mimir.attacks.blackbox_attacks.Attack.unload" href="#mimir.attacks.blackbox_attacks.Attack.unload">unload</a></code></li>
 </ul>
 </li>
 <li>
