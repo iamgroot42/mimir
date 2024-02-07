@@ -719,6 +719,10 @@ def main(config: ExperimentConfig):
                 )
         exit(0)
 
+    # Dump main config into SAVE_FOLDER
+    with open(os.path.join(SAVE_FOLDER, "config.json"), "w") as f:
+        config.save(f)
+
     for attack, output in blackbox_outputs.items():
         outputs.append(output)
         with open(os.path.join(SAVE_FOLDER, f"{attack}_results.json"), "w") as f:
