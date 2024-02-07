@@ -7,7 +7,6 @@ from tqdm import tqdm
 import datetime
 import os
 import json
-import pickle
 import math
 from collections import defaultdict
 from typing import List, Dict
@@ -20,8 +19,7 @@ from mimir.config import (
     EnvironmentConfig,
     NeighborhoodConfig,
     ReferenceConfig,
-    OpenAIConfig,
-    ExtractionConfig,
+    OpenAIConfig
 )
 import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
@@ -29,7 +27,7 @@ from mimir.utils import fix_seed
 from mimir.models import LanguageModel, ReferenceModel, OpenAI_APIModel
 from mimir.attacks.blackbox_attacks import BlackBoxAttacks, Attack
 from mimir.attacks.utils import get_attacker
-from mimir.attacks.neighborhood import T5Model, BertModel, NeighborhoodAttack
+from mimir.attacks.neighborhood import T5Model, BertModel
 from mimir.attacks.attack_utils import (
     f1_score,
     get_roc_metrics,
@@ -338,7 +336,6 @@ def compute_metrics_from_scores(
 
 def generate_data_processed(
     base_model,
-    extraction_config,
     mask_model,
     raw_data_member, batch_size, raw_data_non_member: List[str] = None
 ):
@@ -354,19 +351,7 @@ def generate_data_processed(
     iterator = tqdm(range(num_batches), desc="Generating samples")
     for batch in iterator:
         member_text = raw_data_member[batch * batch_size : (batch + 1) * batch_size]
-        if extraction_config is not None:
-            non_member_text = base_model.sample_from_model(
-                member_text,
-                min_words=30
-                if config.dataset_member in ["pubmed"]
-                else config.min_words,
-                max_words=config.max_words,
-                prompt_tokens=extraction_config.prompt_len,
-            )
-        else:
-            non_member_text = raw_data_non_member[
-                batch * batch_size : (batch + 1) * batch_size
-            ]
+        non_member_text = raw_data_non_member[batch * batch_size : (batch + 1) * batch_size]
 
         # TODO make same len
         for o, s in zip(non_member_text, member_text):
@@ -430,7 +415,6 @@ def main(config: ExperimentConfig):
     neigh_config: NeighborhoodConfig = config.neighborhood_config
     ref_config: ReferenceConfig = config.ref_config
     openai_config: OpenAIConfig = config.openai_config
-    extraction_config: ExtractionConfig = config.extraction_config
 
     if openai_config:
         openAI_model = OpenAI_APIModel(config)
@@ -452,16 +436,15 @@ def main(config: ExperimentConfig):
     else:
         base_model_name = "openai-" + openai_config.model.replace("/", "_")
 
-    # TODO - Either automate suffix construction, or use better names (e.g. save folder with results, and attack config in it)
-    suffix = "DUMMY"
+    exp_name = config.experiment_name
 
     # Add pile source to suffix, if provided
     # TODO: Shift dataset-specific processing to their corresponding classes
     if config.specific_source is not None:
         processed_source = data_utils.sourcename_process(config.specific_source)
-    SAVE_FOLDER = os.path.join(env_config.tmp_results, suffix)
+    SAVE_FOLDER = os.path.join(env_config.tmp_results, exp_name)
 
-    new_folder = os.path.join(env_config.results, suffix)
+    new_folder = os.path.join(env_config.results, exp_name)
     ##don't run if exists!!!
     print(f"{new_folder}")
     if os.path.isdir((new_folder)):
@@ -541,89 +524,76 @@ def main(config: ExperimentConfig):
     print("MOVING BASE MODEL TO GPU...", end="", flush=True)
     base_model.load()
 
-    if extraction_config is not None:
-        print(f"Loading dataset {config.dataset_member}...")
-        data_obj_nonmem = None
-        data_obj_mem, data = generate_data(
-            config.dataset_member, presampled=config.presampled_dataset_member,
-            mask_model=mask_model
-        )
+    # FROM HERE
+    print(
+        f"Loading dataset {config.dataset_member} and {config.dataset_nonmember}..."
+    )
+    # data, seq_lens, n_samples = generate_data(config.dataset_member)
 
-        data, seq_lens, n_samples = generate_data_processed(
-            base_model, extraction_config, mask_model,
-            data[: config.n_samples], batch_size=config.batch_size
-        )
+    data_obj_nonmem, data_nonmember = generate_data(
+        config.dataset_nonmember,
+        train=False,
+        presampled=config.presampled_dataset_nonmember,
+        mask_model=mask_model
+    )
+    data_obj_mem, data_member = generate_data(
+        config.dataset_member,
+        presampled=config.presampled_dataset_member,
+        mask_model=mask_model,
+    )
 
-    else:
-        print(
-            f"Loading dataset {config.dataset_member} and {config.dataset_nonmember}..."
-        )
-        # data, seq_lens, n_samples = generate_data(config.dataset_member)
-
-        data_obj_nonmem, data_nonmember = generate_data(
-            config.dataset_nonmember,
-            train=False,
-            presampled=config.presampled_dataset_nonmember,
-            mask_model=mask_model
-        )
-        data_obj_mem, data_member = generate_data(
-            config.dataset_member,
-            presampled=config.presampled_dataset_member,
-            mask_model=mask_model,
-        )
-
-        other_objs, other_nonmembers = None, None
-        if config.dataset_nonmember_other_sources is not None:
-            other_objs, other_nonmembers = [], []
-            for other_name in config.dataset_nonmember_other_sources:
-                data_obj_nonmem_others, data_nonmember_others = generate_data(
-                    config.dataset_nonmember,
-                    train=False,
-                    specific_source=other_name,
-                    mask_model=mask_model,
-                )
-                other_objs.append(data_obj_nonmem_others)
-                other_nonmembers.append(data_nonmember_others)
-
-        if config.dump_cache and not config.load_from_cache:
-            print("Data dumped! Please re-run with load_from_cache set to True")
-            exit(0)
-
-        if config.pretokenized:
-            assert data_member.shape == data_nonmember.shape
-            data = {
-                "nonmember": data_nonmember,
-                "member": data_member,
-            }
-            n_samples, seq_lens = data_nonmember.shape
-        else:
-            data, seq_lens, n_samples = generate_data_processed(
-                base_model, extraction_config, mask_model,
-                data_member,
-                batch_size=config.batch_size,
-                raw_data_non_member=data_nonmember,
+    other_objs, other_nonmembers = None, None
+    if config.dataset_nonmember_other_sources is not None:
+        other_objs, other_nonmembers = [], []
+        for other_name in config.dataset_nonmember_other_sources:
+            data_obj_nonmem_others, data_nonmember_others = generate_data(
+                config.dataset_nonmember,
+                train=False,
+                specific_source=other_name,
+                mask_model=mask_model,
             )
+            other_objs.append(data_obj_nonmem_others)
+            other_nonmembers.append(data_nonmember_others)
 
-        # If neighborhood attack is used, see if we have cache available (and load from it, if we do)
-        neighbors_nonmember, neighbors_member = None, None
-        if (
-            BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks
-            and neigh_config.load_from_cache
-        ):
-            neighbors_nonmember, neighbors_member = {}, {}
-            for n_perturbations in n_perturbation_list:
-                neighbors_nonmember[n_perturbations] = data_obj_nonmem.load_neighbors(
-                    train=False,
-                    num_neighbors=n_perturbations,
-                    model=neigh_config.model,
-                    in_place_swap=in_place_swap,
-                )
-                neighbors_member[n_perturbations] = data_obj_mem.load_neighbors(
-                    train=True,
-                    num_neighbors=n_perturbations,
-                    model=neigh_config.model,
-                    in_place_swap=in_place_swap,
-                )
+    if config.dump_cache and not config.load_from_cache:
+        print("Data dumped! Please re-run with load_from_cache set to True")
+        exit(0)
+
+    if config.pretokenized:
+        assert data_member.shape == data_nonmember.shape
+        data = {
+            "nonmember": data_nonmember,
+            "member": data_member,
+        }
+        n_samples, seq_lens = data_nonmember.shape
+    else:
+        data, seq_lens, n_samples = generate_data_processed(
+            base_model, mask_model,
+            data_member,
+            batch_size=config.batch_size,
+            raw_data_non_member=data_nonmember,
+        )
+
+    # If neighborhood attack is used, see if we have cache available (and load from it, if we do)
+    neighbors_nonmember, neighbors_member = None, None
+    if (
+        BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks
+        and neigh_config.load_from_cache
+    ):
+        neighbors_nonmember, neighbors_member = {}, {}
+        for n_perturbations in n_perturbation_list:
+            neighbors_nonmember[n_perturbations] = data_obj_nonmem.load_neighbors(
+                train=False,
+                num_neighbors=n_perturbations,
+                model=neigh_config.model,
+                in_place_swap=in_place_swap,
+            )
+            neighbors_member[n_perturbations] = data_obj_mem.load_neighbors(
+                train=True,
+                num_neighbors=n_perturbations,
+                model=neigh_config.model,
+                in_place_swap=in_place_swap,
+            )
 
     print("NEW N_SAMPLES IS ", n_samples)
 
@@ -647,36 +617,6 @@ def main(config: ExperimentConfig):
         base_model = LanguageModel(config, name=config.scoring_model_name)
         print("MOVING BASE MODEL TO GPU...", end="", flush=True)
         base_model.load()
-
-    # TODO: Remove extraction-based logic, or make it so where it is not interleaved with MI logic flow (makes it hard to keep track)
-    if extraction_config is not None and not config.pretokenized:
-        f1_scores = []
-        precisions = []
-        recalls = []
-        for original, sampled in zip(data["member"], data["nonmember"]):
-            original_tokens = original.split(" ")
-            sampled_tokens = sampled.split(" ")
-            f1, precision, recall = f1_score(original_tokens, sampled_tokens)
-            f1_scores.append(f1)
-            precisions.append(precision)
-            recalls.append(recall)
-        # Summary statistics
-        summary_stats = {
-            "f1_mean": sum(f1_scores) / len(f1_scores),
-            "precision_mean": sum(precisions) / len(precisions),
-            "recall_mean": sum(recalls) / len(recalls),
-            "f1_min": min(f1_scores),
-            "precision_min": min(precisions),
-            "recall_min": min(recalls),
-            "f1_max": max(f1_scores),
-            "precision_max": max(precisions),
-            "recall_max": max(recalls),
-        }
-        # Save to JSON file
-        with open(os.path.join(SAVE_FOLDER, "extraction_stats.json"), "w") as f:
-            json.dump(summary_stats, f)
-        # Plot and save f1_scores
-        plot_utils.save_f1_histogram(f1_scores, save_folder=SAVE_FOLDER)
 
     # Add neighbordhood-related data to 'data' here if we want it to be saved in raw data. Otherwise, add jsut before calling attack
 
@@ -779,6 +719,10 @@ def main(config: ExperimentConfig):
                 )
         exit(0)
 
+    # Dump main config into SAVE_FOLDER
+    with open(os.path.join(SAVE_FOLDER, "config.json"), "w") as f:
+        config.save(f)
+
     for attack, output in blackbox_outputs.items():
         outputs.append(output)
         with open(os.path.join(SAVE_FOLDER, f"{attack}_results.json"), "w") as f:
@@ -796,7 +740,7 @@ def main(config: ExperimentConfig):
     plot_utils.save_llr_histograms(outputs, save_folder=SAVE_FOLDER)
 
     # move results folder from env_config.tmp_results to results/, making sure necessary directories exist
-    new_folder = os.path.join(env_config.results, suffix)
+    new_folder = os.path.join(env_config.results, exp_name)
     if not os.path.exists(os.path.dirname(new_folder)):
         os.makedirs(os.path.dirname(new_folder))
     os.rename(SAVE_FOLDER, new_folder)

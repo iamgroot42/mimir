@@ -63,13 +63,13 @@ class Model(nn.Module):
         self.name = None
         self.kwargs = kwargs
         self.cache_dir = self.config.env_config.cache_dir
-    
+
     def to(self, device):
         &#34;&#34;&#34;
             Shift model to a particular device.
         &#34;&#34;&#34;
-        self.model.to(device)
-    
+        self.model.to(device, non_blocking=True)
+
     def load(self):
         &#34;&#34;&#34;
             Load model onto GPU (and compile, if requested) if not already loaded with device map.
@@ -85,7 +85,7 @@ class Model(nn.Module):
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
-    
+
     def unload(self):
         &#34;&#34;&#34;
             Unload model from GPU
@@ -124,12 +124,15 @@ class Model(nn.Module):
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
 
-            outputs = self.model(input_ids, labels=target_ids)
-            logits = outputs.logits
+            logits = self.model(input_ids, labels=target_ids).logits.cpu()
             shift_logits = logits[..., :-1, :].contiguous()
             probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-            shift_labels = target_ids[..., 1:].contiguous()
+            shift_labels = target_ids[..., 1:].cpu().contiguous()
             labels_processed = shift_labels[0]
+
+            del input_ids
+            del target_ids
+
 
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
@@ -139,7 +142,7 @@ class Model(nn.Module):
         assert len(all_prob) == labels.size(1) - 1
 
         return all_prob
-    
+
     @torch.no_grad()
     def get_ll(self, text: str, tokens=None, probs=None):
         &#34;&#34;&#34;
@@ -147,7 +150,7 @@ class Model(nn.Module):
         &#34;&#34;&#34;
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
-    
+
     def load_base_model_and_tokenizer(self, model_kwargs):
         &#34;&#34;&#34;
             Load the base model and tokenizer for a given model name.
@@ -164,7 +167,7 @@ class Model(nn.Module):
                     self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
                 # Extract the model from the model wrapper so we dont need to call model.model
             elif &#34;llama&#34; in self.name or &#34;alpaca&#34; in self.name:
-                # TODO: This should be smth specified in config in case user has 
+                # TODO: This should be smth specified in config in case user has
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
                 self.device = &#39;cuda:1&#39;
@@ -203,12 +206,12 @@ class Model(nn.Module):
         tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
 
         return model, tokenizer
-    
+
     def load_model_properties(self):
         &#34;&#34;&#34;
             Load model properties, such as max length and stride.
         &#34;&#34;&#34;
-         # TODO: getting max_length of input could be more generic
+        # TODO: getting max_length of input could be more generic
         if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
             self.max_length = self.model.model.seq_len
         elif hasattr(self.model.config, &#39;max_position_embeddings&#39;):
@@ -244,6 +247,14 @@ class ReferenceModel(Model):
             model_kwargs=base_model_kwargs)
         self.load_model_properties()
 
+    def load(self):
+        if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+            super().load()
+
+    def unload(self):
+        if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+            super().unload()
+
 
 class QuantileReferenceModel(Model):
     &#34;&#34;&#34;
@@ -262,28 +273,6 @@ class QuantileReferenceModel(Model):
         # Modify model&#39;s last linear layer to have only 1 output
         self.model.classifier.linear_out = nn.Linear(self.model.classifier.linear_out.in_features, 1)
         self.load_model_properties()
-
-
-class EvalModel(Model):
-    &#34;&#34;&#34;
-        GPT-based detector that can distinguish between machine-generated and human-written text
-    &#34;&#34;&#34;
-    def __init__(self, config: ExperimentConfig):
-        super().__init__(config)
-        self.device = self.config.env_config.device_aux
-        self.name = &#39;roberta-base-openai-detector&#39;
-        self.model = transformers.AutoModelForSequenceClassification.from_pretrained(self.name, cache_dir=self.cache_dir).to(self.device)
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(self.name, cache_dir=self.cache_dir)
-
-    @torch.no_grad()
-    def get_preds(self, data):
-        batch_size = self.config.batch_size
-        preds = []
-        for batch in tqdm(range(len(data) // batch_size), desc=&#34;Evaluating fake&#34;):
-            batch_fake = data[batch * batch_size:(batch + 1) * batch_size]
-            batch_fake = self.tokenizer(batch_fake, padding=True, truncation=True, max_length=512, return_tensors=&#34;pt&#34;).to(self.device)
-            preds.extend(self.model(**batch_fake).logits.softmax(-1)[:,0].tolist())
-        return preds
 
 
 class LanguageModel(Model):
@@ -365,7 +354,7 @@ class LanguageModel(Model):
             attention_mask = tokenized.attention_mask
             assert attention_mask.size() == label_batch.size()
 
-            needs_sliding = label_batch.size(1) &gt; self.max_length
+            needs_sliding = label_batch.size(1) &gt; self.max_length // 2
             if not needs_sliding:
                 label_batch = label_batch.to(self.device)
                 attention_mask = attention_mask.to(self.device)
@@ -387,8 +376,8 @@ class LanguageModel(Model):
                 target_ids[:, :-trg_len] = -100
                 # target_ids[attention_mask == 0] = -100
                 
-                outputs = self.model(input_ids, labels=target_ids, attention_mask=mask)
-                logits = outputs.logits
+                logits = self.model(input_ids, labels=target_ids, attention_mask=mask).logits.cpu()
+                target_ids = target_ids.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
                 probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
                 shift_labels = target_ids[..., 1:].contiguous()
@@ -398,6 +387,9 @@ class LanguageModel(Model):
                         if token_id != -100 and token_id != self.tokenizer.pad_token_id:
                             probability = probabilities[i, j, token_id].item()
                             all_prob[i].append(probability)
+
+                del input_ids
+                del mask
             
             # average over each sample to get losses
             batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]
@@ -637,97 +629,6 @@ class OpenAI_APIModel(LanguageModel):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="mimir.models.EvalModel"><code class="flex name class">
-<span>class <span class="ident">EvalModel</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>GPT-based detector that can distinguish between machine-generated and human-written text</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class EvalModel(Model):
-    &#34;&#34;&#34;
-        GPT-based detector that can distinguish between machine-generated and human-written text
-    &#34;&#34;&#34;
-    def __init__(self, config: ExperimentConfig):
-        super().__init__(config)
-        self.device = self.config.env_config.device_aux
-        self.name = &#39;roberta-base-openai-detector&#39;
-        self.model = transformers.AutoModelForSequenceClassification.from_pretrained(self.name, cache_dir=self.cache_dir).to(self.device)
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(self.name, cache_dir=self.cache_dir)
-
-    @torch.no_grad()
-    def get_preds(self, data):
-        batch_size = self.config.batch_size
-        preds = []
-        for batch in tqdm(range(len(data) // batch_size), desc=&#34;Evaluating fake&#34;):
-            batch_fake = data[batch * batch_size:(batch + 1) * batch_size]
-            batch_fake = self.tokenizer(batch_fake, padding=True, truncation=True, max_length=512, return_tensors=&#34;pt&#34;).to(self.device)
-            preds.extend(self.model(**batch_fake).logits.softmax(-1)[:,0].tolist())
-        return preds</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="mimir.models.Model" href="#mimir.models.Model">Model</a></li>
-<li>torch.nn.modules.module.Module</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="mimir.models.EvalModel.call_super_init"><code class="name">var <span class="ident">call_super_init</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.models.EvalModel.dump_patches"><code class="name">var <span class="ident">dump_patches</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.models.EvalModel.training"><code class="name">var <span class="ident">training</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="mimir.models.EvalModel.get_preds"><code class="name flex">
-<span>def <span class="ident">get_preds</span></span>(<span>self, data)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@torch.no_grad()
-def get_preds(self, data):
-    batch_size = self.config.batch_size
-    preds = []
-    for batch in tqdm(range(len(data) // batch_size), desc=&#34;Evaluating fake&#34;):
-        batch_fake = data[batch * batch_size:(batch + 1) * batch_size]
-        batch_fake = self.tokenizer(batch_fake, padding=True, truncation=True, max_length=512, return_tensors=&#34;pt&#34;).to(self.device)
-        preds.extend(self.model(**batch_fake).logits.softmax(-1)[:,0].tolist())
-    return preds</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="mimir.models.Model" href="#mimir.models.Model">Model</a></b></code>:
-<ul class="hlist">
-<li><code><a title="mimir.models.Model.forward" href="#mimir.models.Model.forward">forward</a></code></li>
-<li><code><a title="mimir.models.Model.get_ll" href="#mimir.models.Model.get_ll">get_ll</a></code></li>
-<li><code><a title="mimir.models.Model.get_probabilities" href="#mimir.models.Model.get_probabilities">get_probabilities</a></code></li>
-<li><code><a title="mimir.models.Model.load" href="#mimir.models.Model.load">load</a></code></li>
-<li><code><a title="mimir.models.Model.load_base_model_and_tokenizer" href="#mimir.models.Model.load_base_model_and_tokenizer">load_base_model_and_tokenizer</a></code></li>
-<li><code><a title="mimir.models.Model.load_model_properties" href="#mimir.models.Model.load_model_properties">load_model_properties</a></code></li>
-<li><code><a title="mimir.models.Model.to" href="#mimir.models.Model.to">to</a></code></li>
-<li><code><a title="mimir.models.Model.unload" href="#mimir.models.Model.unload">unload</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="mimir.models.LanguageModel"><code class="flex name class">
 <span>class <span class="ident">LanguageModel</span></span>
 <span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, **kwargs)</span>
@@ -818,7 +719,7 @@ def get_preds(self, data):
             attention_mask = tokenized.attention_mask
             assert attention_mask.size() == label_batch.size()
 
-            needs_sliding = label_batch.size(1) &gt; self.max_length
+            needs_sliding = label_batch.size(1) &gt; self.max_length // 2
             if not needs_sliding:
                 label_batch = label_batch.to(self.device)
                 attention_mask = attention_mask.to(self.device)
@@ -840,8 +741,8 @@ def get_preds(self, data):
                 target_ids[:, :-trg_len] = -100
                 # target_ids[attention_mask == 0] = -100
                 
-                outputs = self.model(input_ids, labels=target_ids, attention_mask=mask)
-                logits = outputs.logits
+                logits = self.model(input_ids, labels=target_ids, attention_mask=mask).logits.cpu()
+                target_ids = target_ids.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
                 probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
                 shift_labels = target_ids[..., 1:].contiguous()
@@ -851,6 +752,9 @@ def get_preds(self, data):
                         if token_id != -100 and token_id != self.tokenizer.pad_token_id:
                             probability = probabilities[i, j, token_id].item()
                             all_prob[i].append(probability)
+
+                del input_ids
+                del mask
             
             # average over each sample to get losses
             batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]
@@ -1047,7 +951,7 @@ def get_lls(self, texts: List[str], batch_size: int = 6):
         attention_mask = tokenized.attention_mask
         assert attention_mask.size() == label_batch.size()
 
-        needs_sliding = label_batch.size(1) &gt; self.max_length
+        needs_sliding = label_batch.size(1) &gt; self.max_length // 2
         if not needs_sliding:
             label_batch = label_batch.to(self.device)
             attention_mask = attention_mask.to(self.device)
@@ -1069,8 +973,8 @@ def get_lls(self, texts: List[str], batch_size: int = 6):
             target_ids[:, :-trg_len] = -100
             # target_ids[attention_mask == 0] = -100
             
-            outputs = self.model(input_ids, labels=target_ids, attention_mask=mask)
-            logits = outputs.logits
+            logits = self.model(input_ids, labels=target_ids, attention_mask=mask).logits.cpu()
+            target_ids = target_ids.cpu()
             shift_logits = logits[..., :-1, :].contiguous()
             probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
             shift_labels = target_ids[..., 1:].contiguous()
@@ -1080,6 +984,9 @@ def get_lls(self, texts: List[str], batch_size: int = 6):
                     if token_id != -100 and token_id != self.tokenizer.pad_token_id:
                         probability = probabilities[i, j, token_id].item()
                         all_prob[i].append(probability)
+
+            del input_ids
+            del mask
         
         # average over each sample to get losses
         batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]
@@ -1330,13 +1237,13 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
         self.name = None
         self.kwargs = kwargs
         self.cache_dir = self.config.env_config.cache_dir
-    
+
     def to(self, device):
         &#34;&#34;&#34;
             Shift model to a particular device.
         &#34;&#34;&#34;
-        self.model.to(device)
-    
+        self.model.to(device, non_blocking=True)
+
     def load(self):
         &#34;&#34;&#34;
             Load model onto GPU (and compile, if requested) if not already loaded with device map.
@@ -1352,7 +1259,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
-    
+
     def unload(self):
         &#34;&#34;&#34;
             Unload model from GPU
@@ -1391,12 +1298,15 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
 
-            outputs = self.model(input_ids, labels=target_ids)
-            logits = outputs.logits
+            logits = self.model(input_ids, labels=target_ids).logits.cpu()
             shift_logits = logits[..., :-1, :].contiguous()
             probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-            shift_labels = target_ids[..., 1:].contiguous()
+            shift_labels = target_ids[..., 1:].cpu().contiguous()
             labels_processed = shift_labels[0]
+
+            del input_ids
+            del target_ids
+
 
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
@@ -1406,7 +1316,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
         assert len(all_prob) == labels.size(1) - 1
 
         return all_prob
-    
+
     @torch.no_grad()
     def get_ll(self, text: str, tokens=None, probs=None):
         &#34;&#34;&#34;
@@ -1414,7 +1324,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
         &#34;&#34;&#34;
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
-    
+
     def load_base_model_and_tokenizer(self, model_kwargs):
         &#34;&#34;&#34;
             Load the base model and tokenizer for a given model name.
@@ -1431,7 +1341,7 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
                     self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
                 # Extract the model from the model wrapper so we dont need to call model.model
             elif &#34;llama&#34; in self.name or &#34;alpaca&#34; in self.name:
-                # TODO: This should be smth specified in config in case user has 
+                # TODO: This should be smth specified in config in case user has
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
                 self.device = &#39;cuda:1&#39;
@@ -1470,12 +1380,12 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
         tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
 
         return model, tokenizer
-    
+
     def load_model_properties(self):
         &#34;&#34;&#34;
             Load model properties, such as max length and stride.
         &#34;&#34;&#34;
-         # TODO: getting max_length of input could be more generic
+        # TODO: getting max_length of input could be more generic
         if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
             self.max_length = self.model.model.seq_len
         elif hasattr(self.model.config, &#39;max_position_embeddings&#39;):
@@ -1494,7 +1404,6 @@ def get_zlib_entropy(self, text: str, tokens=None, probs=None):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="mimir.attacks.neighborhood.MaskFillingModel" href="attacks/neighborhood.html#mimir.attacks.neighborhood.MaskFillingModel">MaskFillingModel</a></li>
-<li><a title="mimir.models.EvalModel" href="#mimir.models.EvalModel">EvalModel</a></li>
 <li><a title="mimir.models.LanguageModel" href="#mimir.models.LanguageModel">LanguageModel</a></li>
 <li><a title="mimir.models.QuantileReferenceModel" href="#mimir.models.QuantileReferenceModel">QuantileReferenceModel</a></li>
 <li><a title="mimir.models.ReferenceModel" href="#mimir.models.ReferenceModel">ReferenceModel</a></li>
@@ -1601,12 +1510,15 @@ def get_probabilities(self, text: str, tokens=None):
         target_ids = input_ids.clone()
         target_ids[:, :-trg_len] = -100
 
-        outputs = self.model(input_ids, labels=target_ids)
-        logits = outputs.logits
+        logits = self.model(input_ids, labels=target_ids).logits.cpu()
         shift_logits = logits[..., :-1, :].contiguous()
         probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-        shift_labels = target_ids[..., 1:].contiguous()
+        shift_labels = target_ids[..., 1:].cpu().contiguous()
         labels_processed = shift_labels[0]
+
+        del input_ids
+        del target_ids
+
 
         for i, token_id in enumerate(labels_processed):
             if token_id != -100:
@@ -1669,7 +1581,7 @@ def get_probabilities(self, text: str, tokens=None):
                 self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
             # Extract the model from the model wrapper so we dont need to call model.model
         elif &#34;llama&#34; in self.name or &#34;alpaca&#34; in self.name:
-            # TODO: This should be smth specified in config in case user has 
+            # TODO: This should be smth specified in config in case user has
             # llama is too big, gotta use device map
             model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
             self.device = &#39;cuda:1&#39;
@@ -1723,7 +1635,7 @@ def get_probabilities(self, text: str, tokens=None):
     &#34;&#34;&#34;
         Load model properties, such as max length and stride.
     &#34;&#34;&#34;
-     # TODO: getting max_length of input could be more generic
+    # TODO: getting max_length of input could be more generic
     if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
         self.max_length = self.model.model.seq_len
     elif hasattr(self.model.config, &#39;max_position_embeddings&#39;):
@@ -1749,7 +1661,7 @@ def get_probabilities(self, text: str, tokens=None):
     &#34;&#34;&#34;
         Shift model to a particular device.
     &#34;&#34;&#34;
-    self.model.to(device)</code></pre>
+    self.model.to(device, non_blocking=True)</code></pre>
 </details>
 </dd>
 <dt id="mimir.models.Model.unload"><code class="name flex">
@@ -2094,7 +2006,15 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
             base_model_kwargs.update(dict(revision=split[-1]))
         self.model, self.tokenizer = self.load_base_model_and_tokenizer(
             model_kwargs=base_model_kwargs)
-        self.load_model_properties()</code></pre>
+        self.load_model_properties()
+
+    def load(self):
+        if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+            super().load()
+
+    def unload(self):
+        if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+            super().unload()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2148,15 +2068,6 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li>
-<h4><code><a title="mimir.models.EvalModel" href="#mimir.models.EvalModel">EvalModel</a></code></h4>
-<ul class="">
-<li><code><a title="mimir.models.EvalModel.call_super_init" href="#mimir.models.EvalModel.call_super_init">call_super_init</a></code></li>
-<li><code><a title="mimir.models.EvalModel.dump_patches" href="#mimir.models.EvalModel.dump_patches">dump_patches</a></code></li>
-<li><code><a title="mimir.models.EvalModel.get_preds" href="#mimir.models.EvalModel.get_preds">get_preds</a></code></li>
-<li><code><a title="mimir.models.EvalModel.training" href="#mimir.models.EvalModel.training">training</a></code></li>
-</ul>
-</li>
 <li>
 <h4><code><a title="mimir.models.LanguageModel" href="#mimir.models.LanguageModel">LanguageModel</a></code></h4>
 <ul class="two-column">

@@ -104,19 +104,12 @@ class OpenAIConfig(Serializable):
 
 
 @dataclass
-class ExtractionConfig(Serializable):
-    """
-    Config for model-extraction
-    """
-    prompt_len: Optional[int] = 30
-    """Prompt length"""
-
-
-@dataclass
 class ExperimentConfig(Serializable):
     """
     Config for attacks
     """
+    experiment_name: str
+    """Name for the experiment"""
     base_model: str
     """Base model name"""
     dataset_member: str
@@ -207,8 +200,6 @@ class ExperimentConfig(Serializable):
     """Environment config"""
     openai_config: Optional[OpenAIConfig] = None
     """OpenAI config"""
-    extraction_config: Optional[ExtractionConfig] = None
-    """Extraction config"""
 
     def __post_init__(self):
         if self.dump_cache and self.load_from_cache:

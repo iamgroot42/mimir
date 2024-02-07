@@ -64,18 +64,10 @@ def apply_extracted_fills(masked_texts: List[str], extracted_fills):
     return texts
 
 
-def get_likelihood(logits, labels):
-    assert logits.shape[0] == 1
-    assert labels.shape[0] == 1
-
-    logits = logits.view(-1, logits.shape[-1])[:-1]
-    labels = labels.view(-1)[1:]
-    log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
-    log_likelihood = log_probs.gather(dim=-1, index=labels.unsqueeze(-1)).squeeze(-1)
-    return log_likelihood.mean()
-
-
 def f1_score(prediction, ground_truth):
+    &#34;&#34;&#34;
+        Compute F1 score for given prediction and ground truth.
+    &#34;&#34;&#34;
     common = Counter(prediction) &amp; Counter(ground_truth)
     num_same = sum(common.values())
     if num_same == 0:
@@ -240,12 +232,15 @@ def filter_out_nan(x):
 <span>def <span class="ident">f1_score</span></span>(<span>prediction, ground_truth)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Compute F1 score for given prediction and ground truth.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def f1_score(prediction, ground_truth):
+    &#34;&#34;&#34;
+        Compute F1 score for given prediction and ground truth.
+    &#34;&#34;&#34;
     common = Counter(prediction) &amp; Counter(ground_truth)
     num_same = sum(common.values())
     if num_same == 0:
@@ -297,26 +292,6 @@ def filter_out_nan(x):
     fpr = np.array(fpr)
     roc_auc = auc(fpr, tpr)
     return roc_auc</code></pre>
-</details>
-</dd>
-<dt id="mimir.attacks.attack_utils.get_likelihood"><code class="name flex">
-<span>def <span class="ident">get_likelihood</span></span>(<span>logits, labels)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_likelihood(logits, labels):
-    assert logits.shape[0] == 1
-    assert labels.shape[0] == 1
-
-    logits = logits.view(-1, logits.shape[-1])[:-1]
-    labels = labels.view(-1)[1:]
-    log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
-    log_likelihood = log_probs.gather(dim=-1, index=labels.unsqueeze(-1)).squeeze(-1)
-    return log_likelihood.mean()</code></pre>
 </details>
 </dd>
 <dt id="mimir.attacks.attack_utils.get_precision_recall_metrics"><code class="name flex">
@@ -435,7 +410,6 @@ def filter_out_nan(x):
 <li><code><a title="mimir.attacks.attack_utils.f1_score" href="#mimir.attacks.attack_utils.f1_score">f1_score</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.filter_out_nan" href="#mimir.attacks.attack_utils.filter_out_nan">filter_out_nan</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_auc_from_thresholds" href="#mimir.attacks.attack_utils.get_auc_from_thresholds">get_auc_from_thresholds</a></code></li>
-<li><code><a title="mimir.attacks.attack_utils.get_likelihood" href="#mimir.attacks.attack_utils.get_likelihood">get_likelihood</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_precision_recall_metrics" href="#mimir.attacks.attack_utils.get_precision_recall_metrics">get_precision_recall_metrics</a></code></li>
 <li><code><a title="mimir.attacks.attack_utils.get_roc_metrics" href="#mimir.attacks.attack_utils.get_roc_metrics">get_roc_metrics</a></code></li>
 </ul>
