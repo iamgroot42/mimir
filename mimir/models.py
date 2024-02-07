@@ -95,12 +95,15 @@ class Model(nn.Module):
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
 
-            outputs = self.model(input_ids, labels=target_ids)
-            logits = outputs.logits
+            logits = self.model(input_ids, labels=target_ids).logits.cpu()
             shift_logits = logits[..., :-1, :].contiguous()
             probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-            shift_labels = target_ids[..., 1:].contiguous()
+            shift_labels = target_ids[..., 1:].cpu().contiguous()
             labels_processed = shift_labels[0]
+
+            del input_ids
+            del target_ids
+
 
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
@@ -322,7 +325,7 @@ class LanguageModel(Model):
             attention_mask = tokenized.attention_mask
             assert attention_mask.size() == label_batch.size()
 
-            needs_sliding = label_batch.size(1) > self.max_length
+            needs_sliding = label_batch.size(1) > self.max_length // 2
             if not needs_sliding:
                 label_batch = label_batch.to(self.device)
                 attention_mask = attention_mask.to(self.device)
@@ -344,8 +347,8 @@ class LanguageModel(Model):
                 target_ids[:, :-trg_len] = -100
                 # target_ids[attention_mask == 0] = -100
                 
-                outputs = self.model(input_ids, labels=target_ids, attention_mask=mask)
-                logits = outputs.logits
+                logits = self.model(input_ids, labels=target_ids, attention_mask=mask).logits.cpu()
+                target_ids = target_ids.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
                 probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
                 shift_labels = target_ids[..., 1:].contiguous()
@@ -355,6 +358,9 @@ class LanguageModel(Model):
                         if token_id != -100 and token_id != self.tokenizer.pad_token_id:
                             probability = probabilities[i, j, token_id].item()
                             all_prob[i].append(probability)
+
+                del input_ids
+                del mask
             
             # average over each sample to get losses
             batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]

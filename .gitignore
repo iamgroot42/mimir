@@ -17,8 +17,8 @@ new_neigh_mia/*
 # Ignore generated data
 data/*/
 
-# Ignore local helper scripts
-# local/
+# Ignore local results files
+local/*results.json
 
 # Logs (from cluster runs)
 logs/*
@@ -60,3 +60,6 @@ DEBUG/*
 
 # Ignore all tar.gz files
 *.tar.gz
+
+# Ignore resources for edited members
+edit_distance_members

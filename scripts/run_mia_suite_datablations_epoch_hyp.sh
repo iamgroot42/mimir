@@ -1,5 +1,5 @@
 #!/bin/bash
-version=unified_mia_v5_hyp_num_epochs_ref
+version=unified_mia_v5_hyp_num_epochs_ne_redo
 
 for model in "2b855b55bc4" "2b855b28bc4" "2b855b14bc4" "2b855b9bc4" "2b855b4bc4"
 do

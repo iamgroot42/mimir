@@ -584,13 +584,14 @@ if __name__ == "__main__":
         return x
 
     if config.load_from_cache and not config.dump_cache:
+        # For NE neighbors, 30% is masked
         with open(
-            f"edit_distance_members/{config.specific_source}.json",
+            f"edit_distance_members/ne/{config.specific_source}.json",
             "r",
         ) as f:
             other_members_data = json.load(f)
             n_try = list(other_members_data.keys())
-            n_trials = 20 #len(other_members_data[n_try[0]])
+            n_trials = 5 #len(other_members_data[n_try[0]])
     elif config.dump_cache:
         # Try out multiple "distances"
         n_try = [1, 5, 10, 25, 100]
@@ -603,7 +604,7 @@ if __name__ == "__main__":
                 trials[i] = [edit(x, n) for x in data_member]
             other_members_data[n] = trials
         with open(
-            f"edit_distance_members/{config.specific_source}.json",
+            f"edit_distance_members/ne/{config.specific_source}.json",
             "w",
         ) as f:
             json.dump(other_members_data, f)
@@ -635,9 +636,9 @@ if __name__ == "__main__":
             )
             pbar.update(1)
 
-            for attack in config.blackbox_attacks:
+            for attack in other_blackbox_predictions.keys():
                 score_dict[attack][n][i] = other_blackbox_predictions[attack]["member"]
 
     pbar.close()
     with open(f"edit_distance_members/scores/edit_distance_results_{config.specific_source}.json", "w") as f:
-        json.dump(score_dict, f)
+        json.dump(score_dict, f, indent=4)
