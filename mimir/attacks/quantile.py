@@ -107,7 +107,7 @@ class QuantileAttack(Attack):
         # Return ll - quantile_model(doc)
         tokenized = self.ref_model.tokenizer(document, return_tensors="pt")
         # Shift items in the dictionary to the correct device
-        tokenized = {k: v.to(self.ref_model.model.device) for k, v in tokenized.items()}
+        tokenized = {k: v.to(self.ref_model.model.device, non_blocking=True) for k, v in tokenized.items()}
         quantile_score = self.ref_model.model(**tokenized)
         print(quantile_score)
         quantile_score = quantile_score.logits.item()

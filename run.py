@@ -27,9 +27,7 @@ from mimir.utils import fix_seed
 from mimir.models import LanguageModel, ReferenceModel, OpenAI_APIModel
 from mimir.attacks.blackbox_attacks import BlackBoxAttacks, Attack
 from mimir.attacks.utils import get_attacker
-from mimir.attacks.neighborhood import T5Model, BertModel
 from mimir.attacks.attack_utils import (
-    f1_score,
     get_roc_metrics,
     get_precision_recall_metrics,
     get_auc_from_thresholds,
@@ -92,7 +90,6 @@ def get_mia_scores(
         in_place_swap = neigh_config.original_tokenization_swap
 
     results = []
-    # FROM HERE
     neighbors = None
     if BlackBoxAttacks.NEIGHBOR in attackers_dict.keys() and neigh_config.load_from_cache:
         neighbors = data[f"neighbors"]
