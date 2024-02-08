@@ -260,25 +260,6 @@ class Data:
         return filename
 
 
-class HFCompatibleDataset(ch.utils.data.Dataset):
-    def __init__(self, records, neighbors=None):
-        self.records = records
-        self.neighbors = neighbors
-        if self.neighbors is not None:
-            assert len(self.records) == len(
-                self.neighbors
-            ), "Records and neighbors must be same length"
-
-    def __len__(self):
-        return len(self.records)
-
-    def __getitem__(self, idx):
-        if self.neighbors is None:
-            return self.records[idx]
-
-        return {"record": self.records[idx], "neighbors": self.neighbors[idx]}
-
-
 def strip_newlines(text):
     """
     Strip newlines from each example; replace one or more newlines with a single space
