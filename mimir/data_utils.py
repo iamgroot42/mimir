@@ -51,6 +51,7 @@ class Data:
             max_length=self.config.max_words,
             n_samples=self.config.n_samples,
             max_tokens=self.config.max_tokens,
+            load_from_hf=self.config.load_from_hf
         )
         return data
 
@@ -102,6 +103,7 @@ class Data:
                 max_length=self.config.max_words,
                 n_samples=self.config.n_samples,
                 max_tokens=self.config.max_tokens,
+                load_from_hf=self.config.load_from_hf
             )
             return data
         else:
