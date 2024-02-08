@@ -52,7 +52,7 @@ class Model(nn.Module):
             except NameError:
                 pass
             if self.config.openai_config is None:
-                self.model.to(self.device)
+                self.model.to(self.device, non_blocking=True)
             if self.config.env_config.compile:
                 torch.compile(self.model)
             print(f'DONE ({time.time() - start:.2f}s)')
@@ -394,9 +394,9 @@ class LanguageModel(Model):
         # encode each text as a list of token ids
         if self.config.dataset_member == 'pubmed':
             texts = [t[:t.index(SEPARATOR)] for t in texts]
-            all_encoded = self.tokenizer(texts, return_tensors="pt", padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors="pt", padding=True).to(self.device, non_blocking=True)
         else:
-            all_encoded = self.tokenizer(texts, return_tensors="pt", padding=True).to(self.device)
+            all_encoded = self.tokenizer(texts, return_tensors="pt", padding=True).to(self.device, non_blocking=True)
             all_encoded = {key: value[:, :prompt_tokens] for key, value in all_encoded.items()}
 
         decoded = ['' for _ in range(len(texts))]
@@ -443,7 +443,7 @@ class LanguageModel(Model):
     
     @torch.no_grad()
     def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
-        # TODO: update like oher attacks
+        # TODO: update like other attacks
         tokenized = self.tokenizer(
             text, return_tensors="pt").to(self.device)
         labels = tokenized.input_ids

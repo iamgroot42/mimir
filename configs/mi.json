@@ -1,5 +1,5 @@
 {
-    "exp_name": "neo125_github_experiment",
+    "experiment_name": "neo125_github_experiment",
     "base_model": "EleutherAI/gpt-neo-125m",
     "dataset_member": "the_pile",
     "dataset_nonmember": "the_pile",
@@ -29,7 +29,8 @@
     },
     "env_config": {
         "results": "results_new",
-        "device_map": "balanced_low_0"
+        "device": "cuda:0",
+        "device_aux": "cuda:0"
     },
     "dump_cache": false,
     "load_from_cache": true

@@ -1,5 +1,5 @@
 {
-    "exp_name": "neo125_github_experiment_ne",
+    "experiment_name": "neo125_github_experiment_ne",
     "base_model": "EleutherAI/gpt-neo-125m",
     "dataset_member": "the_pile",
     "dataset_nonmember": "the_pile",

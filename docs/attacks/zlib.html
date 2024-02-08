@@ -49,6 +49,9 @@ class ZLIBAttack(Attack):
         tokens=None,
         **kwargs
     ):
+        &#34;&#34;&#34;
+        zlib-based attack score. Performs difficulty calibration in model likelihood by normalizing with zlib entropy.
+        &#34;&#34;&#34;
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
             loss = self.model.get_ll(document, probs=probs, tokens=tokens)
@@ -87,6 +90,9 @@ class ZLIBAttack(Attack):
         tokens=None,
         **kwargs
     ):
+        &#34;&#34;&#34;
+        zlib-based attack score. Performs difficulty calibration in model likelihood by normalizing with zlib entropy.
+        &#34;&#34;&#34;
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
             loss = self.model.get_ll(document, probs=probs, tokens=tokens)
