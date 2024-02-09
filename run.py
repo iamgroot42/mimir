@@ -57,12 +57,13 @@ def get_attackers(
         if attack != BlackBoxAttacks.REFERENCE_BASED:
             attackers[attack] = get_attacker(attack)(config, target_model)
 
-    # Initialize reference-based attackers
-    for name, ref_model in ref_models.items():
-        attacker = get_attacker(BlackBoxAttacks.REFERENCE_BASED)(
-            config, target_model, ref_model
-        )
-        attackers[f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"] = attacker
+    # Initialize reference-based attackers if specified
+    if ref_models is not None:
+        for name, ref_model in ref_models.items():
+            attacker = get_attacker(BlackBoxAttacks.REFERENCE_BASED)(
+                config, target_model, ref_model
+            )
+            attackers[f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"] = attacker
     return attackers
 
 
@@ -439,11 +440,14 @@ def main(config: ExperimentConfig):
 
     # Add pile source to suffix, if provided
     # TODO: Shift dataset-specific processing to their corresponding classes
+    # Results go under target model
+    sf = os.path.join(exp_name, config.base_model.replace("/", "_"))
     if config.specific_source is not None:
         processed_source = data_utils.sourcename_process(config.specific_source)
-    SAVE_FOLDER = os.path.join(env_config.tmp_results, exp_name)
+        sf = os.path.join(sf, processed_source)
+    SAVE_FOLDER = os.path.join(env_config.tmp_results, sf)
 
-    new_folder = os.path.join(env_config.results, exp_name)
+    new_folder = os.path.join(env_config.results, sf)
     ##don't run if exists!!!
     print(f"{new_folder}")
     if os.path.isdir((new_folder)):
@@ -677,7 +681,7 @@ def main(config: ExperimentConfig):
         exit(0)
 
     # Dump main config into SAVE_FOLDER
-    config.save(os.path.join(SAVE_FOLDER, 'config.json'), indent=4)
+    config.save_json(os.path.join(SAVE_FOLDER, 'config.json'), indent=4)
 
     for attack, output in blackbox_outputs.items():
         outputs.append(output)
@@ -696,7 +700,6 @@ def main(config: ExperimentConfig):
     plot_utils.save_llr_histograms(outputs, save_folder=SAVE_FOLDER)
 
     # move results folder from env_config.tmp_results to results/, making sure necessary directories exist
-    new_folder = os.path.join(env_config.results, exp_name)
     if not os.path.exists(os.path.dirname(new_folder)):
         os.makedirs(os.path.dirname(new_folder))
     os.rename(SAVE_FOLDER, new_folder)
