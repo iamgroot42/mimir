@@ -51,6 +51,7 @@ class Data:
             max_length=self.config.max_words,
             n_samples=self.config.n_samples,
             max_tokens=self.config.max_tokens,
+            load_from_hf=self.config.load_from_hf
         )
         return data
 
@@ -102,6 +103,7 @@ class Data:
                 max_length=self.config.max_words,
                 n_samples=self.config.n_samples,
                 max_tokens=self.config.max_tokens,
+                load_from_hf=self.config.load_from_hf
             )
             return data
         else:
@@ -258,25 +260,6 @@ class Data:
         else:
             filename = self.name
         return filename
-
-
-class HFCompatibleDataset(ch.utils.data.Dataset):
-    def __init__(self, records, neighbors=None):
-        self.records = records
-        self.neighbors = neighbors
-        if self.neighbors is not None:
-            assert len(self.records) == len(
-                self.neighbors
-            ), "Records and neighbors must be same length"
-
-    def __len__(self):
-        return len(self.records)
-
-    def __getitem__(self, idx):
-        if self.neighbors is None:
-            return self.records[idx]
-
-        return {"record": self.records[idx], "neighbors": self.neighbors[idx]}
 
 
 def strip_newlines(text):

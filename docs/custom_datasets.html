@@ -51,16 +51,36 @@ def load_pubmed(cache_dir):
     return data
 
 
-def load_cached(cache_dir, path: str, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int):
+def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
+                max_length: int, n_samples: int, max_tokens: int,
+                load_from_hf: bool = False):
     &#34;&#34;&#34;&#34;
         Read from cache if available. Used for certain pile sources and xsum
         to ensure fairness in comparison across attacks.runs.
     &#34;&#34;&#34;
-    file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, path, filename + &#34;.jsonl&#34;)
-    if not os.path.exists(file_path):
-        raise ValueError(f&#34;Requested cache file {file_path} does not exist&#34;)
-    data = load_data(file_path)
+    if load_from_hf:
+        print(&#34;Loading from HuggingFace!&#34;)
+        data_split = data_split.replace(&#34;train&#34;, &#34;member&#34;)
+        data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
+        ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=filename, split=data_split)
+        data = collect_hf_data(ds)
+        if len(data) != n_samples:
+            raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+    else:
+        file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, data_split, filename + &#34;.jsonl&#34;)
+        if not os.path.exists(file_path):
+            raise ValueError(f&#34;Requested cache file {file_path} does not exist&#34;)
+        data = load_data(file_path)
     return data
+
+
+def collect_hf_data(ds):
+    records = [x[&#34;text&#34;] for x in ds]
+    # Standard DS
+    if len(records[0]) == 1:
+        records = [x[0] for x in records]
+    # Neighbor data
+    return records
 
 
 def load_data(file_path):
@@ -168,6 +188,24 @@ def load(name, cache_dir, **kwargs):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="mimir.custom_datasets.collect_hf_data"><code class="name flex">
+<span>def <span class="ident">collect_hf_data</span></span>(<span>ds)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def collect_hf_data(ds):
+    records = [x[&#34;text&#34;] for x in ds]
+    # Standard DS
+    if len(records[0]) == 1:
+        records = [x[0] for x in records]
+    # Neighbor data
+    return records</code></pre>
+</details>
+</dd>
 <dt id="mimir.custom_datasets.dump_to_cache"><code class="name flex">
 <span>def <span class="ident">dump_to_cache</span></span>(<span>data: List, cache_dir, path, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int)</span>
 </code></dt>
@@ -207,7 +245,7 @@ def load(name, cache_dir, **kwargs):
 </details>
 </dd>
 <dt id="mimir.custom_datasets.load_cached"><code class="name flex">
-<span>def <span class="ident">load_cached</span></span>(<span>cache_dir, path: str, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int)</span>
+<span>def <span class="ident">load_cached</span></span>(<span>cache_dir, data_split: str, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int, load_from_hf: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>"
@@ -217,15 +255,26 @@ to ensure fairness in comparison across attacks.runs.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_cached(cache_dir, path: str, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int):
+<pre><code class="python">def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
+                max_length: int, n_samples: int, max_tokens: int,
+                load_from_hf: bool = False):
     &#34;&#34;&#34;&#34;
         Read from cache if available. Used for certain pile sources and xsum
         to ensure fairness in comparison across attacks.runs.
     &#34;&#34;&#34;
-    file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, path, filename + &#34;.jsonl&#34;)
-    if not os.path.exists(file_path):
-        raise ValueError(f&#34;Requested cache file {file_path} does not exist&#34;)
-    data = load_data(file_path)
+    if load_from_hf:
+        print(&#34;Loading from HuggingFace!&#34;)
+        data_split = data_split.replace(&#34;train&#34;, &#34;member&#34;)
+        data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
+        ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=filename, split=data_split)
+        data = collect_hf_data(ds)
+        if len(data) != n_samples:
+            raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+    else:
+        file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, data_split, filename + &#34;.jsonl&#34;)
+        if not os.path.exists(file_path):
+            raise ValueError(f&#34;Requested cache file {file_path} does not exist&#34;)
+        data = load_data(file_path)
     return data</code></pre>
 </details>
 </dd>
@@ -415,6 +464,7 @@ to ensure fairness in comparison across attacks.runs.</p></div>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
+<li><code><a title="mimir.custom_datasets.collect_hf_data" href="#mimir.custom_datasets.collect_hf_data">collect_hf_data</a></code></li>
 <li><code><a title="mimir.custom_datasets.dump_to_cache" href="#mimir.custom_datasets.dump_to_cache">dump_to_cache</a></code></li>
 <li><code><a title="mimir.custom_datasets.load" href="#mimir.custom_datasets.load">load</a></code></li>
 <li><code><a title="mimir.custom_datasets.load_cached" href="#mimir.custom_datasets.load_cached">load_cached</a></code></li>

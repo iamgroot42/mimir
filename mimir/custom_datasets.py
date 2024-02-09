@@ -22,16 +22,36 @@ def load_pubmed(cache_dir):
     return data
 
 
-def load_cached(cache_dir, path: str, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int):
+def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
+                max_length: int, n_samples: int, max_tokens: int,
+                load_from_hf: bool = False):
     """"
         Read from cache if available. Used for certain pile sources and xsum
         to ensure fairness in comparison across attacks.runs.
     """
-    file_path = os.path.join(cache_dir, f"cache_{min_length}_{max_length}_{n_samples}_{max_tokens}", path, filename + ".jsonl")
-    if not os.path.exists(file_path):
-        raise ValueError(f"Requested cache file {file_path} does not exist")
-    data = load_data(file_path)
+    if load_from_hf:
+        print("Loading from HuggingFace!")
+        data_split = data_split.replace("train", "member")
+        data_split = data_split.replace("test", "nonmember")
+        ds = datasets.load_dataset("iamgroot42/mimir", name=filename, split=data_split)
+        data = collect_hf_data(ds)
+        if len(data) != n_samples:
+            raise ValueError(f"Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.")
+    else:
+        file_path = os.path.join(cache_dir, f"cache_{min_length}_{max_length}_{n_samples}_{max_tokens}", data_split, filename + ".jsonl")
+        if not os.path.exists(file_path):
+            raise ValueError(f"Requested cache file {file_path} does not exist")
+        data = load_data(file_path)
     return data
+
+
+def collect_hf_data(ds):
+    records = [x["text"] for x in ds]
+    # Standard DS
+    if len(records[0]) == 1:
+        records = [x[0] for x in records]
+    # Neighbor data
+    return records
 
 
 def load_data(file_path):
