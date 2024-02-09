@@ -31,14 +31,18 @@
     Reference-based attacks.
 &#34;&#34;&#34;
 from mimir.attacks.blackbox_attacks import Attack
+from mimir.models import Model, ReferenceModel
+from mimir.config import ExperimentConfig
 
 
 class ReferenceAttack(Attack):
-    def __init__(self, config, model, reference_model):
-        super().__init__(config, model, reference_model)
 
-    def load(self):
-        self.ref_model.load()
+    def __init__(
+        self, config: ExperimentConfig,
+        model: Model,
+        reference_model: ReferenceModel
+    ):
+        super().__init__(config, model, reference_model)
 
     def _attack(self, document, probs, tokens=None, **kwargs):
         &#34;&#34;&#34;
@@ -62,7 +66,7 @@ class ReferenceAttack(Attack):
 <dl>
 <dt id="mimir.attacks.reference.ReferenceAttack"><code class="flex name class">
 <span>class <span class="ident">ReferenceAttack</span></span>
-<span>(</span><span>config, model, reference_model)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="../config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a>, reference_model: <a title="mimir.models.ReferenceModel" href="../models.html#mimir.models.ReferenceModel">ReferenceModel</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -71,11 +75,13 @@ class ReferenceAttack(Attack):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ReferenceAttack(Attack):
-    def __init__(self, config, model, reference_model):
-        super().__init__(config, model, reference_model)
 
-    def load(self):
-        self.ref_model.load()
+    def __init__(
+        self, config: ExperimentConfig,
+        model: Model,
+        reference_model: ReferenceModel
+    ):
+        super().__init__(config, model, reference_model)
 
     def _attack(self, document, probs, tokens=None, **kwargs):
         &#34;&#34;&#34;

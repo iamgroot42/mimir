@@ -33,10 +33,13 @@
 import torch as ch
 import numpy as np
 from mimir.attacks.blackbox_attacks import Attack
+from mimir.models import Model
+from mimir.config import ExperimentConfig
 
 
 class MinKProbAttack(Attack):
-    def __init__(self, config, model):
+
+    def __init__(self, config: ExperimentConfig, model: Model):
         super().__init__(config, model, ref_model=None)
 
     @ch.no_grad()
@@ -75,7 +78,7 @@ class MinKProbAttack(Attack):
 <dl>
 <dt id="mimir.attacks.min_k.MinKProbAttack"><code class="flex name class">
 <span>class <span class="ident">MinKProbAttack</span></span>
-<span>(</span><span>config, model)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="../config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -84,7 +87,8 @@ class MinKProbAttack(Attack):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MinKProbAttack(Attack):
-    def __init__(self, config, model):
+
+    def __init__(self, config: ExperimentConfig, model: Model):
         super().__init__(config, model, ref_model=None)
 
     @ch.no_grad()

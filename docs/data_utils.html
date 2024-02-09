@@ -32,29 +32,29 @@
 &#34;&#34;&#34;
 import datasets
 import numpy as np
-import torch as ch
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
 from nltk.tokenize import WhitespaceTokenizer
 
 
-NAME_KEY_MAPPING = {&#34;the_pile&#34;: &#34;text&#34;, &#34;xsum&#34;: &#34;document&#34;}
-
-
 class Data:
-    def __init__(self, name, config: ExperimentConfig, presampled: str = None):
+    def __init__(self, name,
+                 config: ExperimentConfig,
+                 presampled: str = None,
+                 name_key_mapping: dict = {&#34;the_pile&#34;: &#34;text&#34;, &#34;xsum&#34;: &#34;document&#34;}):
+        self.name_key_mapping = name_key_mapping
         self.config = config
         self.name = name
         self.presampled = presampled
         self.key = (
             config.dataset_key
             if config.dataset_key
-            else NAME_KEY_MAPPING.get(name, None)
+            else self.name_key_mapping.get(name, None)
         )
         if self.key is None:
             raise ValueError(
-                f&#34;Key for dataset {name} not provided or found in NAME_KEY_MAPPING&#34;
+                f&#34;Key for dataset {name} not provided or found inname_key_mapping&#34;
             )
         self.cache_dir = self.config.env_config.cache_dir
 
@@ -342,6 +342,9 @@ def sourcename_process(x: str):
 
 
 def drop_last_word(text):
+    &#34;&#34;&#34;
+        Drop the last word from a given text.
+    &#34;&#34;&#34;
     return &#34; &#34;.join(text.split(&#34; &#34;)[:-1])</code></pre>
 </details>
 </section>
@@ -356,12 +359,15 @@ def drop_last_word(text):
 <span>def <span class="ident">drop_last_word</span></span>(<span>text)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Drop the last word from a given text.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def drop_last_word(text):
+    &#34;&#34;&#34;
+        Drop the last word from a given text.
+    &#34;&#34;&#34;
     return &#34; &#34;.join(text.split(&#34; &#34;)[:-1])</code></pre>
 </details>
 </dd>
@@ -467,7 +473,7 @@ def drop_last_word(text):
 <dl>
 <dt id="mimir.data_utils.Data"><code class="flex name class">
 <span>class <span class="ident">Data</span></span>
-<span>(</span><span>name, config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, presampled: str = None)</span>
+<span>(</span><span>name, config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, presampled: str = None, name_key_mapping: dict = {'the_pile': 'text', 'xsum': 'document'})</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -476,18 +482,22 @@ def drop_last_word(text):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Data:
-    def __init__(self, name, config: ExperimentConfig, presampled: str = None):
+    def __init__(self, name,
+                 config: ExperimentConfig,
+                 presampled: str = None,
+                 name_key_mapping: dict = {&#34;the_pile&#34;: &#34;text&#34;, &#34;xsum&#34;: &#34;document&#34;}):
+        self.name_key_mapping = name_key_mapping
         self.config = config
         self.name = name
         self.presampled = presampled
         self.key = (
             config.dataset_key
             if config.dataset_key
-            else NAME_KEY_MAPPING.get(name, None)
+            else self.name_key_mapping.get(name, None)
         )
         if self.key is None:
             raise ValueError(
-                f&#34;Key for dataset {name} not provided or found in NAME_KEY_MAPPING&#34;
+                f&#34;Key for dataset {name} not provided or found inname_key_mapping&#34;
             )
         self.cache_dir = self.config.env_config.cache_dir
 
