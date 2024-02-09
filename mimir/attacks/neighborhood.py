@@ -127,10 +127,10 @@ class NeighborhoodAttack(Attack):
         substr_neighbors = kwargs.get("substr_neighbors", None)
         loss = kwargs.get("loss", None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
 
         # Only evaluate neighborhood attack when not caching neighbors
-        mean_substr_score = self.model.get_lls(
+        mean_substr_score = self.target_model.get_lls(
             substr_neighbors, batch_size=batch_size
         )
         d_based_score = loss - mean_substr_score

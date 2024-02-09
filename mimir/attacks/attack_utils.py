@@ -82,7 +82,7 @@ def get_roc_metrics(
     # While roc_auc is unaffected by which class we consider
     # positive/negative, the TPR@lowFPR calculation is.
     # Make sure the members are positive class (larger values, so negate the raw MIA scores)
-    total_preds = -1 * np.array(total_preds)
+    total_preds = np.array(total_preds) * -1
     # Assign label '0' to members for computation, since sklearn
     # expectes label '0' data to have lower values to get assigned that label
     # which is true for our attacks (lower loss for members, e.g.)
