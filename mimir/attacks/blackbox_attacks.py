@@ -13,7 +13,7 @@ class BlackBoxAttacks(str, Enum):
     ZLIB = "zlib" # Done
     MIN_K = "min_k" # Done
     NEIGHBOR = "ne" # Done
-    QUANTILE = "quantile"
+    # QUANTILE = "quantile" # Uncomment when tested implementation is available
 
 
 # Base attack class
@@ -28,7 +28,9 @@ class Attack:
         """
         Any attack-specific steps (one-time) preparation
         """
-        pass
+        if self.ref_model is not None:
+            self.ref_model.load()
+            self.is_loaded = True
 
     def unload(self):
         if self.ref_model is not None:

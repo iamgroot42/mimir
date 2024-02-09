@@ -13,27 +13,17 @@ from typing import List
 
 from mimir.config import ExperimentConfig
 from mimir.attacks.attack_utils import count_masks, apply_extracted_fills
-from mimir.models import Model
+from mimir.models import Model, ReferenceModel
 from mimir.attacks.blackbox_attacks import Attack
 
 
-# def get_mask_model(config: ExperimentConfig, **kwargs):
-#     if "t5" in config.neighborhood_config.model:
-#         mask_model = T5Model(
-#                 config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs
-#             )
-#         elif "bert" in config.neighborhood_config.model:
-#             mask_model = BertModel(config)
-#         else:
-#             raise ValueError(f"Unknown model {config.neighborhood_config.model}")
-
-
 class NeighborhoodAttack(Attack):
+
     def __init__(
         self,
         config: ExperimentConfig,
         target_model: Model,
-        ref_model: Model = None,
+        ref_model: ReferenceModel = None,
         **kwargs,
     ):
         super().__init__(config, target_model, ref_model=None)
@@ -41,9 +31,15 @@ class NeighborhoodAttack(Attack):
         assert issubclass(type(self.ref_model), MaskFillingModel), "ref_model must be MaskFillingModel for neighborhood attack"
 
     def get_mask_model(self):
+        """
+            Return the mask filling model.
+        """
         return self.ref_model
 
     def create_fill_dictionary(self, data):
+        """
+            (Only valid for T5 model) Create fill-fictionary used for random_fills
+        """
         neigh_config = self.config.neighborhood_config
         if "t5" in neigh_config.model and neigh_config.random_fills:
             if not self.config.pretokenized:
@@ -51,6 +47,9 @@ class NeighborhoodAttack(Attack):
                 self.ref_model.create_fill_dictionary(data)
 
     def _pick_neighbor_model(self):
+        """
+            Select and load the mask filling model requested in the config.
+        """
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
@@ -100,6 +99,9 @@ class NeighborhoodAttack(Attack):
         self.ref_model.load()
 
     def get_neighbors(self, documents, **kwargs):
+        """
+            Generate neighbors for given documents.
+        """
         n_perturbations = kwargs.get("n_perturbations", 1)
         span_length = kwargs.get("span_length", 10)
         neigh_config = self.config.neighborhood_config

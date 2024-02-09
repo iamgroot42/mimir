@@ -2,14 +2,18 @@
     Reference-based attacks.
 """
 from mimir.attacks.blackbox_attacks import Attack
+from mimir.models import Model, ReferenceModel
+from mimir.config import ExperimentConfig
 
 
 class ReferenceAttack(Attack):
-    def __init__(self, config, model, reference_model):
-        super().__init__(config, model, reference_model)
 
-    def load(self):
-        self.ref_model.load()
+    def __init__(
+        self, config: ExperimentConfig,
+        model: Model,
+        reference_model: ReferenceModel
+    ):
+        super().__init__(config, model, reference_model)
 
     def _attack(self, document, probs, tokens=None, **kwargs):
         """

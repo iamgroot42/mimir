@@ -22,8 +22,13 @@ def load_pubmed(cache_dir):
     return data
 
 
-def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
-                max_length: int, n_samples: int, max_tokens: int,
+def load_cached(cache_dir,
+                data_split: str,
+                filename: str,
+                min_length: int,
+                max_length: int,
+                n_samples: int,
+                max_tokens: int,
                 load_from_hf: bool = False):
     """"
         Read from cache if available. Used for certain pile sources and xsum
@@ -46,6 +51,9 @@ def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
 
 
 def collect_hf_data(ds):
+    """
+        Helper function to collect all data from a given HuggingFace dataset split.
+    """
     records = [x["text"] for x in ds]
     # Standard DS
     if len(records[0]) == 1:
@@ -55,6 +63,9 @@ def collect_hf_data(ds):
 
 
 def load_data(file_path):
+    """
+        Load data from a given filepath (.jsonl)
+    """
     with open(file_path, 'r') as f:
         data = [json.loads(line) for line in f.readlines()]
     return data

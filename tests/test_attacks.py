@@ -1,10 +1,27 @@
 """
     Test attack implementations. Consists of basic execution tests to make sure attack works as expected and returns values as expected.
 """
+import torch
 import pytest
+import numpy as np
+import torch.nn as nn
+
+from mimir.attacks.blackbox_attacks import BlackBoxAttacks
+from mimir.attacks.utils import get_attacker
 
 
 class TestAttack:
+    def test_attacks_exist(self):
+        """
+            Check if all known attacks can be loaded.
+        """
+        # Enumerate all "available" attacks and make sure they are available
+        for attack in BlackBoxAttacks:
+            attacker = get_attacker(attack)
+            assert attacker is not None, f"Attack {attack} not found"
+            # TODO: Use a 'testing' config and model to check if the attack can be loaded
+            # attacker_obj = attacker(None, None)
+
     def test_attack_shape(self):
         # Check 1 - attack accepts inputs in given shape, and works for both text-based and tokenized inputs
         pass

@@ -3,29 +3,29 @@
 """
 import datasets
 import numpy as np
-import torch as ch
 import os
 import mimir.custom_datasets as custom_datasets
 from mimir.config import ExperimentConfig
 from nltk.tokenize import WhitespaceTokenizer
 
 
-NAME_KEY_MAPPING = {"the_pile": "text", "xsum": "document"}
-
-
 class Data:
-    def __init__(self, name, config: ExperimentConfig, presampled: str = None):
+    def __init__(self, name,
+                 config: ExperimentConfig,
+                 presampled: str = None,
+                 name_key_mapping: dict = {"the_pile": "text", "xsum": "document"}):
+        self.name_key_mapping = name_key_mapping
         self.config = config
         self.name = name
         self.presampled = presampled
         self.key = (
             config.dataset_key
             if config.dataset_key
-            else NAME_KEY_MAPPING.get(name, None)
+            else self.name_key_mapping.get(name, None)
         )
         if self.key is None:
             raise ValueError(
-                f"Key for dataset {name} not provided or found in NAME_KEY_MAPPING"
+                f"Key for dataset {name} not provided or found inname_key_mapping"
             )
         self.cache_dir = self.config.env_config.cache_dir
 
@@ -313,4 +313,7 @@ def sourcename_process(x: str):
 
 
 def drop_last_word(text):
+    """
+        Drop the last word from a given text.
+    """
     return " ".join(text.split(" ")[:-1])

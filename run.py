@@ -689,7 +689,6 @@ def main(config: ExperimentConfig):
             json.dump(output, f)
 
     neighbor_model_name = neigh_config.model if neigh_config else None
-    # TODO: Fix TPR/FPR computation
     plot_utils.save_roc_curves(
         outputs,
         save_folder=SAVE_FOLDER,

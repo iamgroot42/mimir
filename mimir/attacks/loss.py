@@ -3,10 +3,13 @@
 """
 import torch as ch
 from mimir.attacks.blackbox_attacks import Attack
+from mimir.models import Model
+from mimir.config import ExperimentConfig
 
 
 class LOSSAttack(Attack):
-    def __init__(self, config, model):
+
+    def __init__(self, config: ExperimentConfig, model: Model):
         super().__init__(config, model, ref_model=None)
 
     @ch.no_grad()
