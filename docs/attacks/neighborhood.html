@@ -156,10 +156,10 @@ class NeighborhoodAttack(Attack):
         substr_neighbors = kwargs.get(&#34;substr_neighbors&#34;, None)
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
 
         # Only evaluate neighborhood attack when not caching neighbors
-        mean_substr_score = self.model.get_lls(
+        mean_substr_score = self.target_model.get_lls(
             substr_neighbors, batch_size=batch_size
         )
         d_based_score = loss - mean_substr_score
@@ -1252,10 +1252,10 @@ class BertModel(MaskFillingModel):
         substr_neighbors = kwargs.get(&#34;substr_neighbors&#34;, None)
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
 
         # Only evaluate neighborhood attack when not caching neighbors
-        mean_substr_score = self.model.get_lls(
+        mean_substr_score = self.target_model.get_lls(
             substr_neighbors, batch_size=batch_size
         )
         d_based_score = loss - mean_substr_score
