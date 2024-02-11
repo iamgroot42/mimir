@@ -494,7 +494,7 @@ def main(config: ExperimentConfig):
         and (BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks)
     ):
         attacker_ne = attackers_dict[BlackBoxAttacks.NEIGHBOR]
-        mask_model = attacker_ne.get_mask_model_tokenizer()
+        mask_model = attacker_ne.get_mask_model()
 
     print("MOVING BASE MODEL TO GPU...", end="", flush=True)
     base_model.load()
