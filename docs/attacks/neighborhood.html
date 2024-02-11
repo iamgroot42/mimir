@@ -42,27 +42,17 @@ from typing import List
 
 from mimir.config import ExperimentConfig
 from mimir.attacks.attack_utils import count_masks, apply_extracted_fills
-from mimir.models import Model
+from mimir.models import Model, ReferenceModel
 from mimir.attacks.blackbox_attacks import Attack
 
 
-# def get_mask_model(config: ExperimentConfig, **kwargs):
-#     if &#34;t5&#34; in config.neighborhood_config.model:
-#         mask_model = T5Model(
-#                 config, model_kwargs=model_kwargs, tokenizer_kwargs=tokenizer_kwargs
-#             )
-#         elif &#34;bert&#34; in config.neighborhood_config.model:
-#             mask_model = BertModel(config)
-#         else:
-#             raise ValueError(f&#34;Unknown model {config.neighborhood_config.model}&#34;)
-
-
 class NeighborhoodAttack(Attack):
+
     def __init__(
         self,
         config: ExperimentConfig,
         target_model: Model,
-        ref_model: Model = None,
+        ref_model: ReferenceModel = None,
         **kwargs,
     ):
         super().__init__(config, target_model, ref_model=None)
@@ -70,9 +60,15 @@ class NeighborhoodAttack(Attack):
         assert issubclass(type(self.ref_model), MaskFillingModel), &#34;ref_model must be MaskFillingModel for neighborhood attack&#34;
 
     def get_mask_model(self):
+        &#34;&#34;&#34;
+            Return the mask filling model.
+        &#34;&#34;&#34;
         return self.ref_model
 
     def create_fill_dictionary(self, data):
+        &#34;&#34;&#34;
+            (Only valid for T5 model) Create fill-fictionary used for random_fills
+        &#34;&#34;&#34;
         neigh_config = self.config.neighborhood_config
         if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
             if not self.config.pretokenized:
@@ -80,6 +76,9 @@ class NeighborhoodAttack(Attack):
                 self.ref_model.create_fill_dictionary(data)
 
     def _pick_neighbor_model(self):
+        &#34;&#34;&#34;
+            Select and load the mask filling model requested in the config.
+        &#34;&#34;&#34;
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
@@ -129,6 +128,9 @@ class NeighborhoodAttack(Attack):
         self.ref_model.load()
 
     def get_neighbors(self, documents, **kwargs):
+        &#34;&#34;&#34;
+            Generate neighbors for given documents.
+        &#34;&#34;&#34;
         n_perturbations = kwargs.get(&#34;n_perturbations&#34;, 1)
         span_length = kwargs.get(&#34;span_length&#34;, 10)
         neigh_config = self.config.neighborhood_config
@@ -1145,7 +1147,7 @@ class BertModel(MaskFillingModel):
 </dd>
 <dt id="mimir.attacks.neighborhood.NeighborhoodAttack"><code class="flex name class">
 <span>class <span class="ident">NeighborhoodAttack</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="../config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, target_model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a>, ref_model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a> = None, **kwargs)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="../config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, target_model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a>, ref_model: <a title="mimir.models.ReferenceModel" href="../models.html#mimir.models.ReferenceModel">ReferenceModel</a> = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1154,11 +1156,12 @@ class BertModel(MaskFillingModel):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NeighborhoodAttack(Attack):
+
     def __init__(
         self,
         config: ExperimentConfig,
         target_model: Model,
-        ref_model: Model = None,
+        ref_model: ReferenceModel = None,
         **kwargs,
     ):
         super().__init__(config, target_model, ref_model=None)
@@ -1166,9 +1169,15 @@ class BertModel(MaskFillingModel):
         assert issubclass(type(self.ref_model), MaskFillingModel), &#34;ref_model must be MaskFillingModel for neighborhood attack&#34;
 
     def get_mask_model(self):
+        &#34;&#34;&#34;
+            Return the mask filling model.
+        &#34;&#34;&#34;
         return self.ref_model
 
     def create_fill_dictionary(self, data):
+        &#34;&#34;&#34;
+            (Only valid for T5 model) Create fill-fictionary used for random_fills
+        &#34;&#34;&#34;
         neigh_config = self.config.neighborhood_config
         if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
             if not self.config.pretokenized:
@@ -1176,6 +1185,9 @@ class BertModel(MaskFillingModel):
                 self.ref_model.create_fill_dictionary(data)
 
     def _pick_neighbor_model(self):
+        &#34;&#34;&#34;
+            Select and load the mask filling model requested in the config.
+        &#34;&#34;&#34;
         # mask filling t5 model
         mask_model = None
         neigh_config = self.config.neighborhood_config
@@ -1225,6 +1237,9 @@ class BertModel(MaskFillingModel):
         self.ref_model.load()
 
     def get_neighbors(self, documents, **kwargs):
+        &#34;&#34;&#34;
+            Generate neighbors for given documents.
+        &#34;&#34;&#34;
         n_perturbations = kwargs.get(&#34;n_perturbations&#34;, 1)
         span_length = kwargs.get(&#34;span_length&#34;, 10)
         neigh_config = self.config.neighborhood_config
@@ -1271,12 +1286,15 @@ class BertModel(MaskFillingModel):
 <span>def <span class="ident">create_fill_dictionary</span></span>(<span>self, data)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>(Only valid for T5 model) Create fill-fictionary used for random_fills</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def create_fill_dictionary(self, data):
+    &#34;&#34;&#34;
+        (Only valid for T5 model) Create fill-fictionary used for random_fills
+    &#34;&#34;&#34;
     neigh_config = self.config.neighborhood_config
     if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
         if not self.config.pretokenized:
@@ -1288,12 +1306,15 @@ class BertModel(MaskFillingModel):
 <span>def <span class="ident">get_mask_model</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Return the mask filling model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_mask_model(self):
+    &#34;&#34;&#34;
+        Return the mask filling model.
+    &#34;&#34;&#34;
     return self.ref_model</code></pre>
 </details>
 </dd>
@@ -1301,12 +1322,15 @@ class BertModel(MaskFillingModel):
 <span>def <span class="ident">get_neighbors</span></span>(<span>self, documents, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Generate neighbors for given documents.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_neighbors(self, documents, **kwargs):
+    &#34;&#34;&#34;
+        Generate neighbors for given documents.
+    &#34;&#34;&#34;
     n_perturbations = kwargs.get(&#34;n_perturbations&#34;, 1)
     span_length = kwargs.get(&#34;span_length&#34;, 10)
     neigh_config = self.config.neighborhood_config

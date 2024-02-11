@@ -51,8 +51,13 @@ def load_pubmed(cache_dir):
     return data
 
 
-def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
-                max_length: int, n_samples: int, max_tokens: int,
+def load_cached(cache_dir,
+                data_split: str,
+                filename: str,
+                min_length: int,
+                max_length: int,
+                n_samples: int,
+                max_tokens: int,
                 load_from_hf: bool = False):
     &#34;&#34;&#34;&#34;
         Read from cache if available. Used for certain pile sources and xsum
@@ -75,6 +80,9 @@ def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
 
 
 def collect_hf_data(ds):
+    &#34;&#34;&#34;
+        Helper function to collect all data from a given HuggingFace dataset split.
+    &#34;&#34;&#34;
     records = [x[&#34;text&#34;] for x in ds]
     # Standard DS
     if len(records[0]) == 1:
@@ -84,6 +92,9 @@ def collect_hf_data(ds):
 
 
 def load_data(file_path):
+    &#34;&#34;&#34;
+        Load data from a given filepath (.jsonl)
+    &#34;&#34;&#34;
     with open(file_path, &#39;r&#39;) as f:
         data = [json.loads(line) for line in f.readlines()]
     return data
@@ -192,12 +203,15 @@ def load(name, cache_dir, **kwargs):
 <span>def <span class="ident">collect_hf_data</span></span>(<span>ds)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Helper function to collect all data from a given HuggingFace dataset split.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def collect_hf_data(ds):
+    &#34;&#34;&#34;
+        Helper function to collect all data from a given HuggingFace dataset split.
+    &#34;&#34;&#34;
     records = [x[&#34;text&#34;] for x in ds]
     # Standard DS
     if len(records[0]) == 1:
@@ -255,8 +269,13 @@ to ensure fairness in comparison across attacks.runs.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def load_cached(cache_dir, data_split: str, filename: str, min_length: int,
-                max_length: int, n_samples: int, max_tokens: int,
+<pre><code class="python">def load_cached(cache_dir,
+                data_split: str,
+                filename: str,
+                min_length: int,
+                max_length: int,
+                n_samples: int,
+                max_tokens: int,
                 load_from_hf: bool = False):
     &#34;&#34;&#34;&#34;
         Read from cache if available. Used for certain pile sources and xsum
@@ -282,12 +301,15 @@ to ensure fairness in comparison across attacks.runs.</p></div>
 <span>def <span class="ident">load_data</span></span>(<span>file_path)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Load data from a given filepath (.jsonl)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_data(file_path):
+    &#34;&#34;&#34;
+        Load data from a given filepath (.jsonl)
+    &#34;&#34;&#34;
     with open(file_path, &#39;r&#39;) as f:
         data = [json.loads(line) for line in f.readlines()]
     return data</code></pre>
