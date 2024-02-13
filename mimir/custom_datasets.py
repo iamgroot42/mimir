@@ -38,28 +38,53 @@ def load_cached(cache_dir,
         print("Loading from HuggingFace!")
         data_split = data_split.replace("train", "member")
         data_split = data_split.replace("test", "nonmember")
-        ds = datasets.load_dataset("iamgroot42/mimir", name=filename, split=data_split)
-        data = collect_hf_data(ds)
-        if len(data) != n_samples:
-            raise ValueError(f"Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.")
+        if not filename.startswith("the_pile"):
+            raise ValueError(f"HuggingFace data only available for The Pile.")
+
+        SOURCES_UPLOADED = [
+            "arxiv",
+            "dm_mathematics",
+            "github",
+            "hackernews",
+            "pile_cc",
+            "pubmed_central",
+            "wikipedia_(en)",
+            "full_pile",
+            "c4",
+            "temporal_arxiv",
+            "temporal_wiki"
+        ]
+
+        for source in SOURCES_UPLOADED:
+            # Got a match
+            if source in filename and filename.startswith(f"the_pile_{source}"):
+                split = filename.split(f"the_pile_{source}")[1]
+                if split == "":
+                    # The way HF data is uploaded, no split is recorded as "none"
+                    split = "none"
+                else:
+                    # remove the first underscore
+                    split = split[1:]
+                    # remove '<' , '>'
+                    split = split.replace("<", "").replace(">", "")
+                    # Remove "_truncated" from the end, if present
+                    split = split.rsplit("_truncated", 1)[0]
+
+                # Load corresponding dataset
+                ds = datasets.load_dataset("iamgroot42/mimir", name=source, split=split)
+                data = ds[data_split]
+                # Check if the number of samples is correct
+                if len(data) != n_samples:
+                    raise ValueError(f"Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.")
+                return data
+        # If got here, matching source was not found
+        raise ValueError(f"Requested source {filename} not found in HuggingFace data.")
     else:
         file_path = os.path.join(cache_dir, f"cache_{min_length}_{max_length}_{n_samples}_{max_tokens}", data_split, filename + ".jsonl")
         if not os.path.exists(file_path):
             raise ValueError(f"Requested cache file {file_path} does not exist")
         data = load_data(file_path)
     return data
-
-
-def collect_hf_data(ds):
-    """
-        Helper function to collect all data from a given HuggingFace dataset split.
-    """
-    records = [x["text"] for x in ds]
-    # Standard DS
-    if len(records[0]) == 1:
-        records = [x[0] for x in records]
-    # Neighbor data
-    return records
 
 
 def load_data(file_path):

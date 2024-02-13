@@ -92,7 +92,7 @@ class Data:
             assert not self.config.full_doc
             data = np.load(self.presampled)
             return data
-        elif self.config.load_from_cache:
+        elif (self.config.load_from_cache or self.config.load_from_hf):
             # Load from cache, if requested
             filename = self._get_name_to_save()
             data = custom_datasets.load_cached(

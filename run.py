@@ -527,7 +527,7 @@ def main(config: ExperimentConfig):
             other_objs.append(data_obj_nonmem_others)
             other_nonmembers.append(data_nonmember_others)
 
-    if config.dump_cache and not config.load_from_cache:
+    if config.dump_cache and not (config.load_from_cache or config.load_from_hf):
         print("Data dumped! Please re-run with load_from_cache set to True")
         exit(0)
 

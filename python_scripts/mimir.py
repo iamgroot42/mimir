@@ -14,6 +14,8 @@ import os
 
 import datasets
 
+from typing import List
+
 
 _HOMEPAGE = "http://github.com/iamgroot42/mimir"
 
@@ -23,11 +25,11 @@ We also cache neighbors (generated for the NE attack).
 """
 
 _CITATION = """\
-@article{duan2024do,
-  title={Do Membership Inference Attacks Work on Large Language Models?},
-  author={Duan*, Michael and \textbf{A. Suri*} and Mireshghallah, Niloofar and Min, Sewon and Shi, Weijia and Zettlemoyer, Luke and Tsvetkov, Yulia and Choi, Yejin and Evans, David and Hajishirzi, Hannaneh},
-  journal={arXiv preprint arXiv:???},
-  year={2024}
+@article{duan2024membership,
+      title={Do Membership Inference Attacks Work on Large Language Models?}, 
+      author={Michael Duan and Anshuman Suri and Niloofar Mireshghallah and Sewon Min and Weijia Shi and Luke Zettlemoyer and Yulia Tsvetkov and Yejin Choi and David Evans and Hannaneh Hajishirzi},
+      year={2024},
+      journal={arXiv:2402.07841},
 }
 """
 
@@ -37,27 +39,71 @@ _DOWNLOAD_URL = "https://huggingface.co/datasets/iamgroot42/mimir/resolve/main/"
 class MimirConfig(BuilderConfig):
     """BuilderConfig for Mimir dataset."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, subsets: List[str]=[], **kwargs):
         """Constructs a MimirConfig.
 
         Args:
             **kwargs: keyword arguments forwarded to super.
         """
         super(MimirConfig, self).__init__(**kwargs)
+        self.subsets = subsets
 
 
 class MimirDataset(GeneratorBasedBuilder):
     # Assuming 'VERSION' is defined
-    VERSION = datasets.Version("1.0.0")
+    VERSION = datasets.Version("1.3.0")
 
     # Define the builder configs
     BUILDER_CONFIG_CLASS = MimirConfig
     BUILDER_CONFIGS = [
         MimirConfig(
-            name="the_pile_arxiv", description="This split contains data from Arxiv"
+            name="arxiv",
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's Arxiv subset at various n-gram overlap thresholds"
         ),
         MimirConfig(
-            name="the_pile_full_pile", description="This split contains data from multiple sources in the Pile",
+            name="dm_mathematics",
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's DM Mathematics subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="github",
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's GitHub subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="hackernews", 
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's HackerNews subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="pile_cc", 
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's Pile CC subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="pubmed_central", 
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's PubMed Central subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="wikipedia_(en)",
+            subsets=["ngram_7_0.2", "ngram_13_0.2", "ngram_13_0.8"],
+            description="This split contains data from the Pile's Wikipedia subset at various n-gram overlap thresholds"
+        ),
+        MimirConfig(
+            name="full_pile", description="This split contains data from multiple sources in the Pile",
+        ),
+        MimirConfig(
+            name="c4", description="This split contains data the C4 dataset",
+        ),
+        MimirConfig(
+            name="temporal_arxiv", 
+            subsets=["2020_08", "2021_01", "2021_06", "2022_01", "2022_06", "2023_01", "2023_06"],
+            description="This split contains benchmarks where non-members are selected from various months from 2020-08 and onwards",
+        ),
+        MimirConfig(
+            name="temporal_wiki", description="This split contains benchmarks where non-members are selected from 2023-08 and onwards",
         ),
     ]
 
@@ -66,9 +112,12 @@ class MimirDataset(GeneratorBasedBuilder):
             # This is the description that will appear on the datasets page.
             description=_DESCRIPTION,
             # This defines the different columns of the dataset and their types
-            features=datasets.Features(
-                {"text": datasets.Sequence(datasets.Value("string"))}
-            ),
+            features=datasets.Features({
+                "member": datasets.Value("string"),
+                "nonmember": datasets.Value("string"),
+                "member_neighbors": datasets.Sequence(datasets.Value("string")),
+                "nonmember_neighbors": datasets.Sequence(datasets.Value("string"))
+            }),
             # If there's a common (input, target) tuple from the features,
             # specify them here. They'll be used if as_supervised=True in
             # builder.as_dataset.
@@ -76,7 +125,7 @@ class MimirDataset(GeneratorBasedBuilder):
             # Homepage of the dataset for documentation
             homepage=_HOMEPAGE,
             # Citation for the dataset
-            # citation=_CITATION,
+            citation=_CITATION,
         )
 
     def _split_generators(self, dl_manager: DownloadManager):
@@ -85,50 +134,61 @@ class MimirDataset(GeneratorBasedBuilder):
         NEIGHBOR_SUFFIX = "_neighbors_25_bert_in_place_swap"
         parent_dir = (
             "cache_100_200_10000_512"
-            if self.config.name == "the_pile_full_pile"
+            if self.config.name == "full_pile"
             else "cache_100_200_1000_512"
         )
 
-        file_paths = {
-            "member": os.path.join(parent_dir, "train", self.config.name + ".jsonl"),
-            "nonmember": os.path.join(parent_dir, "test", self.config.name + ".jsonl"),
-        }
-        # Load neighbor splits if they exist
-        # TODO: This is not correct (should be checking URL, not local file structure). Fix later
-        if os.path.exists(
-            os.path.join(
+        if len(self.config.subsets) > 0:
+            suffixes = [f"{subset}" for subset in self.config.subsets]
+        else:
+            suffixes = ["none"]
+
+        file_paths = {}
+        for subset_split_suffix in suffixes:
+            internal_fp = {}
+
+            subset_split_suffix_use = f"_{subset_split_suffix}" if subset_split_suffix != "none" else ""
+
+            # Add standard member and non-member paths
+            internal_fp['member'] = os.path.join(parent_dir, "train", f"{self.config.name}{subset_split_suffix_use}.jsonl")
+            internal_fp['nonmember'] = os.path.join(parent_dir, "test", f"{self.config.name}{subset_split_suffix_use}.jsonl")
+
+            # Load associated neighbors
+            internal_fp['member_neighbors'] = os.path.join(
                 parent_dir,
                 "train_neighbors",
-                self.config.name + f"{NEIGHBOR_SUFFIX}.jsonl",
+                f"{self.config.name}{subset_split_suffix_use}{NEIGHBOR_SUFFIX}.jsonl",
             )
-        ):
-            # Assume if train nieghbors exist, test neighbors also exist
-            file_paths["member_neighbors"] = os.path.join(
-                parent_dir,
-                "train_neighbors",
-                self.config.name + f"{NEIGHBOR_SUFFIX}.jsonl",
-            )
-            file_paths["nonmember_neighbors"] = os.path.join(
+            internal_fp['nonmember_neighbors'] = os.path.join(
                 parent_dir,
                 "test_neighbors",
-                self.config.name + f"{NEIGHBOR_SUFFIX}.jsonl",
+                f"{self.config.name}{subset_split_suffix_use}{NEIGHBOR_SUFFIX}.jsonl",
             )
+            file_paths[subset_split_suffix] = internal_fp
 
         # Now that we know which files to load, download them
-        download_paths = [_DOWNLOAD_URL + v for v in file_paths.values()]
-        data_dir = dl_manager.download_and_extract(download_paths)
+        data_dir = {}
+        for k, v_dict in file_paths.items():
+            download_paths = []
+            for v in v_dict.values():
+                download_paths.append(_DOWNLOAD_URL + v)
+            paths = dl_manager.download_and_extract(download_paths)
+            internal_dict = {k:v for k, v in zip(v_dict.keys(), paths)}
+            data_dir[k] = internal_dict
 
         splits = []
-        for i, k in enumerate(file_paths.keys()):
-            splits.append(SplitGenerator(name=k, gen_kwargs={"file_path": data_dir[i]}))
+        for k in suffixes:
+            splits.append(SplitGenerator(name=k, gen_kwargs={"file_path_dict": data_dir[k]}))
         return splits
 
-    def _generate_examples(self, file_path):
+    def _generate_examples(self, file_path_dict):
         """Yields examples."""
-        # Open the specified .jsonl file and read each line
-        with open(file_path, "r") as f:
-            for id, line in enumerate(f):
-                data = json.loads(line)
-                if type(data) != list:
-                    data = [data]
-                yield id, {"text": data}
+        # Open all four files in file_path_dict and yield examples (one from each file) simultaneously
+        with open(file_path_dict["member"], "r") as f_member, open(file_path_dict["nonmember"], "r") as f_nonmember, open(file_path_dict["member_neighbors"], "r") as f_member_neighbors, open(file_path_dict["nonmember_neighbors"], "r") as f_nonmember_neighbors:
+            for id, (member, nonmember, member_neighbors, nonmember_neighbors) in enumerate(zip(f_member, f_nonmember, f_member_neighbors, f_nonmember_neighbors)):
+                yield id, {
+                    "member": json.loads(member),
+                    "nonmember": json.loads(nonmember),
+                    "member_neighbors": json.loads(member_neighbors)[0],
+                    "nonmember_neighbors": json.loads(nonmember_neighbors)[0],
+                }

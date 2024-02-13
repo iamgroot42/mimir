@@ -202,14 +202,17 @@ class ExperimentConfig(Serializable):
     """OpenAI config"""
 
     def __post_init__(self):
-        if self.dump_cache and self.load_from_cache:
+        if self.dump_cache and (self.load_from_cache or self.load_from_hf):
             raise ValueError("Cannot dump and load cache at the same time")
 
         if self.neighborhood_config:
             if (
                 self.neighborhood_config.dump_cache
                 or self.neighborhood_config.load_from_cache
-            ) and not (self.load_from_cache or self.dump_cache):
+            ) and not (self.load_from_cache or self.dump_cache or self.load_from_hf):
                 raise ValueError(
                     "Using dump/load for neighborhood cache without dumping/loading main cache does not make sense"
                 )
+
+            if self.neighborhood_config.dump_cache and (self.neighborhood_config.load_from_cache or self.load_from_hf):
+                raise ValueError("Cannot dump and load neighborhood cache at the same time")    
