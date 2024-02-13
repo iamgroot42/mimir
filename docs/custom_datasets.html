@@ -67,28 +67,53 @@ def load_cached(cache_dir,
         print(&#34;Loading from HuggingFace!&#34;)
         data_split = data_split.replace(&#34;train&#34;, &#34;member&#34;)
         data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
-        ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=filename, split=data_split)
-        data = collect_hf_data(ds)
-        if len(data) != n_samples:
-            raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+        if not filename.startswith(&#34;the_pile&#34;):
+            raise ValueError(f&#34;HuggingFace data only available for The Pile.&#34;)
+
+        SOURCES_UPLOADED = [
+            &#34;arxiv&#34;,
+            &#34;dm_mathematics&#34;,
+            &#34;github&#34;,
+            &#34;hackernews&#34;,
+            &#34;pile_cc&#34;,
+            &#34;pubmed_central&#34;,
+            &#34;wikipedia_(en)&#34;,
+            &#34;full_pile&#34;,
+            &#34;c4&#34;,
+            &#34;temporal_arxiv&#34;,
+            &#34;temporal_wiki&#34;
+        ]
+
+        for source in SOURCES_UPLOADED:
+            # Got a match
+            if source in filename and filename.startswith(f&#34;the_pile_{source}&#34;):
+                split = filename.split(f&#34;the_pile_{source}&#34;)[1]
+                if split == &#34;&#34;:
+                    # The way HF data is uploaded, no split is recorded as &#34;none&#34;
+                    split = &#34;none&#34;
+                else:
+                    # remove the first underscore
+                    split = split[1:]
+                    # remove &#39;&lt;&#39; , &#39;&gt;&#39;
+                    split = split.replace(&#34;&lt;&#34;, &#34;&#34;).replace(&#34;&gt;&#34;, &#34;&#34;)
+                    # Remove &#34;_truncated&#34; from the end, if present
+                    split = split.rsplit(&#34;_truncated&#34;, 1)[0]
+
+                # Load corresponding dataset
+                ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=source, split=split)
+                data = ds[data_split]
+                # Check if the number of samples is correct
+                if len(data) != n_samples:
+                    raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+                return data
+        # If got here, matching source was not found
+        raise ValueError(f&#34;Requested source {filename} not found in HuggingFace data.&#34;)
     else:
         file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, data_split, filename + &#34;.jsonl&#34;)
         if not os.path.exists(file_path):
             raise ValueError(f&#34;Requested cache file {file_path} does not exist&#34;)
         data = load_data(file_path)
     return data
-
-
-def collect_hf_data(ds):
-    &#34;&#34;&#34;
-        Helper function to collect all data from a given HuggingFace dataset split.
-    &#34;&#34;&#34;
-    records = [x[&#34;text&#34;] for x in ds]
-    # Standard DS
-    if len(records[0]) == 1:
-        records = [x[0] for x in records]
-    # Neighbor data
-    return records
 
 
 def load_data(file_path):
@@ -199,27 +224,6 @@ def load(name, cache_dir, **kwargs):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="mimir.custom_datasets.collect_hf_data"><code class="name flex">
-<span>def <span class="ident">collect_hf_data</span></span>(<span>ds)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Helper function to collect all data from a given HuggingFace dataset split.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def collect_hf_data(ds):
-    &#34;&#34;&#34;
-        Helper function to collect all data from a given HuggingFace dataset split.
-    &#34;&#34;&#34;
-    records = [x[&#34;text&#34;] for x in ds]
-    # Standard DS
-    if len(records[0]) == 1:
-        records = [x[0] for x in records]
-    # Neighbor data
-    return records</code></pre>
-</details>
-</dd>
 <dt id="mimir.custom_datasets.dump_to_cache"><code class="name flex">
 <span>def <span class="ident">dump_to_cache</span></span>(<span>data: List, cache_dir, path, filename: str, min_length: int, max_length: int, n_samples: int, max_tokens: int)</span>
 </code></dt>
@@ -285,10 +289,47 @@ to ensure fairness in comparison across attacks.runs.</p></div>
         print(&#34;Loading from HuggingFace!&#34;)
         data_split = data_split.replace(&#34;train&#34;, &#34;member&#34;)
         data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
-        ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=filename, split=data_split)
-        data = collect_hf_data(ds)
-        if len(data) != n_samples:
-            raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+        if not filename.startswith(&#34;the_pile&#34;):
+            raise ValueError(f&#34;HuggingFace data only available for The Pile.&#34;)
+
+        SOURCES_UPLOADED = [
+            &#34;arxiv&#34;,
+            &#34;dm_mathematics&#34;,
+            &#34;github&#34;,
+            &#34;hackernews&#34;,
+            &#34;pile_cc&#34;,
+            &#34;pubmed_central&#34;,
+            &#34;wikipedia_(en)&#34;,
+            &#34;full_pile&#34;,
+            &#34;c4&#34;,
+            &#34;temporal_arxiv&#34;,
+            &#34;temporal_wiki&#34;
+        ]
+
+        for source in SOURCES_UPLOADED:
+            # Got a match
+            if source in filename and filename.startswith(f&#34;the_pile_{source}&#34;):
+                split = filename.split(f&#34;the_pile_{source}&#34;)[1]
+                if split == &#34;&#34;:
+                    # The way HF data is uploaded, no split is recorded as &#34;none&#34;
+                    split = &#34;none&#34;
+                else:
+                    # remove the first underscore
+                    split = split[1:]
+                    # remove &#39;&lt;&#39; , &#39;&gt;&#39;
+                    split = split.replace(&#34;&lt;&#34;, &#34;&#34;).replace(&#34;&gt;&#34;, &#34;&#34;)
+                    # Remove &#34;_truncated&#34; from the end, if present
+                    split = split.rsplit(&#34;_truncated&#34;, 1)[0]
+
+                # Load corresponding dataset
+                ds = datasets.load_dataset(&#34;iamgroot42/mimir&#34;, name=source, split=split)
+                data = ds[data_split]
+                # Check if the number of samples is correct
+                if len(data) != n_samples:
+                    raise ValueError(f&#34;Requested {n_samples} samples, but only {len(data)} samples available. Potential mismatch in HuggingFace data and requested data.&#34;)
+                return data
+        # If got here, matching source was not found
+        raise ValueError(f&#34;Requested source {filename} not found in HuggingFace data.&#34;)
     else:
         file_path = os.path.join(cache_dir, f&#34;cache_{min_length}_{max_length}_{n_samples}_{max_tokens}&#34;, data_split, filename + &#34;.jsonl&#34;)
         if not os.path.exists(file_path):
@@ -486,7 +527,6 @@ to ensure fairness in comparison across attacks.runs.</p></div>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="mimir.custom_datasets.collect_hf_data" href="#mimir.custom_datasets.collect_hf_data">collect_hf_data</a></code></li>
 <li><code><a title="mimir.custom_datasets.dump_to_cache" href="#mimir.custom_datasets.dump_to_cache">dump_to_cache</a></code></li>
 <li><code><a title="mimir.custom_datasets.load" href="#mimir.custom_datasets.load">load</a></code></li>
 <li><code><a title="mimir.custom_datasets.load_cached" href="#mimir.custom_datasets.load_cached">load_cached</a></code></li>
