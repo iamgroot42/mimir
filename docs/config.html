@@ -231,17 +231,20 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;OpenAI config&#34;&#34;&#34;
 
     def __post_init__(self):
-        if self.dump_cache and self.load_from_cache:
+        if self.dump_cache and (self.load_from_cache or self.load_from_hf):
             raise ValueError(&#34;Cannot dump and load cache at the same time&#34;)
 
         if self.neighborhood_config:
             if (
                 self.neighborhood_config.dump_cache
                 or self.neighborhood_config.load_from_cache
-            ) and not (self.load_from_cache or self.dump_cache):
+            ) and not (self.load_from_cache or self.dump_cache or self.load_from_hf):
                 raise ValueError(
                     &#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;
-                )</code></pre>
+                )
+
+            if self.neighborhood_config.dump_cache and (self.neighborhood_config.load_from_cache or self.load_from_hf):
+                raise ValueError(&#34;Cannot dump and load neighborhood cache at the same time&#34;)    </code></pre>
 </details>
 </section>
 <section>
@@ -456,17 +459,20 @@ class ExperimentConfig(Serializable):
     &#34;&#34;&#34;OpenAI config&#34;&#34;&#34;
 
     def __post_init__(self):
-        if self.dump_cache and self.load_from_cache:
+        if self.dump_cache and (self.load_from_cache or self.load_from_hf):
             raise ValueError(&#34;Cannot dump and load cache at the same time&#34;)
 
         if self.neighborhood_config:
             if (
                 self.neighborhood_config.dump_cache
                 or self.neighborhood_config.load_from_cache
-            ) and not (self.load_from_cache or self.dump_cache):
+            ) and not (self.load_from_cache or self.dump_cache or self.load_from_hf):
                 raise ValueError(
                     &#34;Using dump/load for neighborhood cache without dumping/loading main cache does not make sense&#34;
-                )</code></pre>
+                )
+
+            if self.neighborhood_config.dump_cache and (self.neighborhood_config.load_from_cache or self.load_from_hf):
+                raise ValueError(&#34;Cannot dump and load neighborhood cache at the same time&#34;)    </code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
