@@ -219,10 +219,16 @@ class ReferenceModel(Model):
         self.load_model_properties()
 
     def load(self):
+        """
+        Load reference model noto GPU(s)
+        """
         if "llama" not in self.name and "alpaca" not in self.name:
             super().load()
 
     def unload(self):
+        """
+        Unload reference model from GPU(s)
+        """
         if "llama" not in self.name and "alpaca" not in self.name:
             super().unload()
 
@@ -369,19 +375,6 @@ class LanguageModel(Model):
             del label_batch
             del attention_mask
         return losses #np.mean(losses)
-    
-    @torch.no_grad()
-    def get_min_k_prob(self, text: str, tokens=None, probs=None, k=.2, window=1, stride=1):
-        all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
-        # iterate through probabilities by ngram defined by window size at given stride
-        ngram_probs = []
-        for i in range(0, len(all_prob) - window + 1, stride):
-            ngram_prob = all_prob[i:i+window]
-            ngram_probs.append(np.mean(ngram_prob))
-        min_k_probs = sorted(ngram_probs)[:int(len(ngram_probs) * k)]
-
-        return -np.mean(min_k_probs)
-    
 
     def sample_from_model(self, texts: List[str], **kwargs):
         """
@@ -435,11 +428,6 @@ class LanguageModel(Model):
         logits = self.model(**tokenized).logits[:,:-1]
         neg_entropy = F.softmax(logits, dim=-1) * F.log_softmax(logits, dim=-1)
         return -neg_entropy.sum(-1).mean().item()
-
-    @torch.no_grad()
-    def get_zlib_entropy(self, text: str, tokens=None, probs=None):
-        zlib_entropy = len(zlib.compress(bytes(text, 'utf-8')))
-        return self.get_ll(text, tokens=tokens, probs=probs) / zlib_entropy
     
     @torch.no_grad()
     def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
@@ -496,6 +484,9 @@ class OpenAI_APIModel(LanguageModel):
     
     @property
     def api_calls(self):
+        """
+            Get the number of tokens used in API calls
+        """
         return self.API_TOKEN_COUNTER
 
     @torch.no_grad()

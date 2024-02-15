@@ -12,6 +12,9 @@ DATA_SOURCE = os.environ.get('MIMIR_DATA_SOURCE', None)
 
 
 def fix_seed(seed: int = 0):
+    """
+    Fix seed for reproducibility.
+    """
     ch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
