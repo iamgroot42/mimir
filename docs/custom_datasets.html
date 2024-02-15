@@ -41,6 +41,20 @@ SEPARATOR = &#39;&lt;&lt;&lt;SEP&gt;&gt;&gt;&#39;
 
 DATASETS = [&#39;writing&#39;, &#39;english&#39;, &#39;german&#39;, &#39;pubmed&#39;]
 
+SOURCES_UPLOADED = [
+    &#34;arxiv&#34;,
+    &#34;dm_mathematics&#34;,
+    &#34;github&#34;,
+    &#34;hackernews&#34;,
+    &#34;pile_cc&#34;,
+    &#34;pubmed_central&#34;,
+    &#34;wikipedia_(en)&#34;,
+    &#34;full_pile&#34;,
+    &#34;c4&#34;,
+    &#34;temporal_arxiv&#34;,
+    &#34;temporal_wiki&#34;
+]
+
 
 def load_pubmed(cache_dir):
     data = datasets.load_dataset(&#39;pubmed_qa&#39;, &#39;pqa_labeled&#39;, split=&#39;train&#39;, cache_dir=cache_dir)
@@ -69,20 +83,6 @@ def load_cached(cache_dir,
         data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
         if not filename.startswith(&#34;the_pile&#34;):
             raise ValueError(f&#34;HuggingFace data only available for The Pile.&#34;)
-
-        SOURCES_UPLOADED = [
-            &#34;arxiv&#34;,
-            &#34;dm_mathematics&#34;,
-            &#34;github&#34;,
-            &#34;hackernews&#34;,
-            &#34;pile_cc&#34;,
-            &#34;pubmed_central&#34;,
-            &#34;wikipedia_(en)&#34;,
-            &#34;full_pile&#34;,
-            &#34;c4&#34;,
-            &#34;temporal_arxiv&#34;,
-            &#34;temporal_wiki&#34;
-        ]
 
         for source in SOURCES_UPLOADED:
             # Got a match
@@ -291,20 +291,6 @@ to ensure fairness in comparison across attacks.runs.</p></div>
         data_split = data_split.replace(&#34;test&#34;, &#34;nonmember&#34;)
         if not filename.startswith(&#34;the_pile&#34;):
             raise ValueError(f&#34;HuggingFace data only available for The Pile.&#34;)
-
-        SOURCES_UPLOADED = [
-            &#34;arxiv&#34;,
-            &#34;dm_mathematics&#34;,
-            &#34;github&#34;,
-            &#34;hackernews&#34;,
-            &#34;pile_cc&#34;,
-            &#34;pubmed_central&#34;,
-            &#34;wikipedia_(en)&#34;,
-            &#34;full_pile&#34;,
-            &#34;c4&#34;,
-            &#34;temporal_arxiv&#34;,
-            &#34;temporal_wiki&#34;
-        ]
 
         for source in SOURCES_UPLOADED:
             # Got a match
