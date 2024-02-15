@@ -190,7 +190,7 @@ def get_mia_scores(
                                         else None
                                     ),
                                     loss=loss,
-                                    batch_siz=4,
+                                    batch_size=4,
                                     substr_neighbors=substr_neighbors,
                                 )
 

@@ -189,6 +189,6 @@ class MimirDataset(GeneratorBasedBuilder):
                 yield id, {
                     "member": json.loads(member),
                     "nonmember": json.loads(nonmember),
-                    "member_neighbors": json.loads(member_neighbors)[0],
-                    "nonmember_neighbors": json.loads(nonmember_neighbors)[0],
+                    "member_neighbors": json.loads(member_neighbors),
+                    "nonmember_neighbors": json.loads(nonmember_neighbors),
                 }

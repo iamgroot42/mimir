@@ -12,6 +12,20 @@ SEPARATOR = '<<<SEP>>>'
 
 DATASETS = ['writing', 'english', 'german', 'pubmed']
 
+SOURCES_UPLOADED = [
+    "arxiv",
+    "dm_mathematics",
+    "github",
+    "hackernews",
+    "pile_cc",
+    "pubmed_central",
+    "wikipedia_(en)",
+    "full_pile",
+    "c4",
+    "temporal_arxiv",
+    "temporal_wiki"
+]
+
 
 def load_pubmed(cache_dir):
     data = datasets.load_dataset('pubmed_qa', 'pqa_labeled', split='train', cache_dir=cache_dir)
@@ -40,20 +54,6 @@ def load_cached(cache_dir,
         data_split = data_split.replace("test", "nonmember")
         if not filename.startswith("the_pile"):
             raise ValueError(f"HuggingFace data only available for The Pile.")
-
-        SOURCES_UPLOADED = [
-            "arxiv",
-            "dm_mathematics",
-            "github",
-            "hackernews",
-            "pile_cc",
-            "pubmed_central",
-            "wikipedia_(en)",
-            "full_pile",
-            "c4",
-            "temporal_arxiv",
-            "temporal_wiki"
-        ]
 
         for source in SOURCES_UPLOADED:
             # Got a match

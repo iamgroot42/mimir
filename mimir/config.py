@@ -146,7 +146,7 @@ class ExperimentConfig(Serializable):
     "Dump data to cache? Exits program after dumping"
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
-    load_from_hf: Optional[bool] = False
+    load_from_hf: Optional[bool] = True
     """Load data from HuggingFace?"""
     blackbox_attacks: Optional[List[str]] = field(
         default_factory=lambda: None
