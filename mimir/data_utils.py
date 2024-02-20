@@ -10,6 +10,9 @@ from nltk.tokenize import WhitespaceTokenizer
 
 
 class Data:
+    """
+    Data class to load and cache datasets.
+    """
     def __init__(self, name,
                  config: ExperimentConfig,
                  presampled: str = None,
@@ -36,6 +39,9 @@ class Data:
         model: str = "bert",
         in_place_swap: bool = False,
     ):
+        """
+        Load neighbors from cache (local or from HF)
+        """
         data_split = "train" if train else "test"
         data_split += "_neighbors"
         filename = self._get_name_to_save() + "_neighbors_{}_{}".format(
@@ -63,6 +69,9 @@ class Data:
         model: str = "bert",
         in_place_swap: bool = False,
     ):
+        """
+        Dump neighbors to cache local cache.
+        """
         data_split = "train" if train else "test"
         data_split += "_neighbors"
         filename = self._get_name_to_save() + "_neighbors_{}_{}".format(
@@ -309,6 +318,9 @@ def pile_selection_utility(data, key: str, wanted_source: str = None):
 
 
 def sourcename_process(x: str):
+    """
+        Helper function to process source name.
+    """
     return x.replace(" ", "_").replace("-", "_").lower()
 
 

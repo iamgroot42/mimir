@@ -39,6 +39,9 @@ from nltk.tokenize import WhitespaceTokenizer
 
 
 class Data:
+    &#34;&#34;&#34;
+    Data class to load and cache datasets.
+    &#34;&#34;&#34;
     def __init__(self, name,
                  config: ExperimentConfig,
                  presampled: str = None,
@@ -65,6 +68,9 @@ class Data:
         model: str = &#34;bert&#34;,
         in_place_swap: bool = False,
     ):
+        &#34;&#34;&#34;
+        Load neighbors from cache (local or from HF)
+        &#34;&#34;&#34;
         data_split = &#34;train&#34; if train else &#34;test&#34;
         data_split += &#34;_neighbors&#34;
         filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
@@ -92,6 +98,9 @@ class Data:
         model: str = &#34;bert&#34;,
         in_place_swap: bool = False,
     ):
+        &#34;&#34;&#34;
+        Dump neighbors to cache local cache.
+        &#34;&#34;&#34;
         data_split = &#34;train&#34; if train else &#34;test&#34;
         data_split += &#34;_neighbors&#34;
         filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
@@ -338,6 +347,9 @@ def pile_selection_utility(data, key: str, wanted_source: str = None):
 
 
 def sourcename_process(x: str):
+    &#34;&#34;&#34;
+        Helper function to process source name.
+    &#34;&#34;&#34;
     return x.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;-&#34;, &#34;_&#34;).lower()
 
 
@@ -398,12 +410,15 @@ def drop_last_word(text):
 <span>def <span class="ident">sourcename_process</span></span>(<span>x: str)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Helper function to process source name.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def sourcename_process(x: str):
+    &#34;&#34;&#34;
+        Helper function to process source name.
+    &#34;&#34;&#34;
     return x.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;-&#34;, &#34;_&#34;).lower()</code></pre>
 </details>
 </dd>
@@ -476,12 +491,15 @@ def drop_last_word(text):
 <span>(</span><span>name, config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, presampled: str = None, name_key_mapping: dict = {'the_pile': 'text', 'xsum': 'document'})</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Data class to load and cache datasets.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Data:
+    &#34;&#34;&#34;
+    Data class to load and cache datasets.
+    &#34;&#34;&#34;
     def __init__(self, name,
                  config: ExperimentConfig,
                  presampled: str = None,
@@ -508,6 +526,9 @@ def drop_last_word(text):
         model: str = &#34;bert&#34;,
         in_place_swap: bool = False,
     ):
+        &#34;&#34;&#34;
+        Load neighbors from cache (local or from HF)
+        &#34;&#34;&#34;
         data_split = &#34;train&#34; if train else &#34;test&#34;
         data_split += &#34;_neighbors&#34;
         filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
@@ -535,6 +556,9 @@ def drop_last_word(text):
         model: str = &#34;bert&#34;,
         in_place_swap: bool = False,
     ):
+        &#34;&#34;&#34;
+        Dump neighbors to cache local cache.
+        &#34;&#34;&#34;
         data_split = &#34;train&#34; if train else &#34;test&#34;
         data_split += &#34;_neighbors&#34;
         filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
@@ -739,7 +763,7 @@ def drop_last_word(text):
 <span>def <span class="ident">dump_neighbors</span></span>(<span>self, data, train: bool, num_neighbors: int, model: str = 'bert', in_place_swap: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Dump neighbors to cache local cache.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -752,6 +776,9 @@ def drop_last_word(text):
     model: str = &#34;bert&#34;,
     in_place_swap: bool = False,
 ):
+    &#34;&#34;&#34;
+    Dump neighbors to cache local cache.
+    &#34;&#34;&#34;
     data_split = &#34;train&#34; if train else &#34;test&#34;
     data_split += &#34;_neighbors&#34;
     filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
@@ -967,7 +994,7 @@ def drop_last_word(text):
 <span>def <span class="ident">load_neighbors</span></span>(<span>self, train: bool, num_neighbors: int, model: str = 'bert', in_place_swap: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Load neighbors from cache (local or from HF)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -979,6 +1006,9 @@ def drop_last_word(text):
     model: str = &#34;bert&#34;,
     in_place_swap: bool = False,
 ):
+    &#34;&#34;&#34;
+    Load neighbors from cache (local or from HF)
+    &#34;&#34;&#34;
     data_split = &#34;train&#34; if train else &#34;test&#34;
     data_split += &#34;_neighbors&#34;
     filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(

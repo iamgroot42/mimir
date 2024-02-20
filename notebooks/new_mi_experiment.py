@@ -142,7 +142,7 @@ def run_blackbox_attacks(
                     # TODO: Instead of doing this outside, set config default to always include LOSS
                     sample_information[BlackBoxAttacks.LOSS].append(loss)
 
-                    # TODO: Shift functionality into each attack entirely, so that this is just a for loop
+                    # TODO: Change flow in same way as run.py
                     # For each attack
                     for attack in attacks:
                         if attack == BlackBoxAttacks.ZLIB:

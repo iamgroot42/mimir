@@ -41,6 +41,9 @@ DATA_SOURCE = os.environ.get(&#39;MIMIR_DATA_SOURCE&#39;, None)
 
 
 def fix_seed(seed: int = 0):
+    &#34;&#34;&#34;
+    Fix seed for reproducibility.
+    &#34;&#34;&#34;
     ch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
@@ -79,12 +82,15 @@ def get_data_source():
 <span>def <span class="ident">fix_seed</span></span>(<span>seed: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Fix seed for reproducibility.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fix_seed(seed: int = 0):
+    &#34;&#34;&#34;
+    Fix seed for reproducibility.
+    &#34;&#34;&#34;
     ch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)</code></pre>

@@ -175,7 +175,7 @@ class ExperimentConfig(Serializable):
     &#34;Dump data to cache? Exits program after dumping&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
-    load_from_hf: Optional[bool] = False
+    load_from_hf: Optional[bool] = True
     &#34;&#34;&#34;Load data from HuggingFace?&#34;&#34;&#34;
     blackbox_attacks: Optional[List[str]] = field(
         default_factory=lambda: None
@@ -352,7 +352,7 @@ class EnvironmentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig"><code class="flex name class">
 <span>class <span class="ident">ExperimentConfig</span></span>
-<span>(</span><span>experiment_name: str, base_model: str, dataset_member: str, dataset_nonmember: str, output_name: str = None, dataset_nonmember_other_sources: Optional[List[str]] = &lt;factory&gt;, pretokenized: Optional[bool] = False, revision: Optional[str] = None, presampled_dataset_member: Optional[str] = None, presampled_dataset_nonmember: Optional[str] = None, token_frequency_map: Optional[str] = None, dataset_key: Optional[str] = None, specific_source: Optional[str] = None, full_doc: Optional[bool] = False, max_substrs: Optional[int] = 20, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, load_from_hf: Optional[bool] = False, blackbox_attacks: Optional[List[str]] = &lt;factory&gt;, tokenization_attack: Optional[bool] = False, quantile_attack: Optional[bool] = False, n_samples: Optional[int] = 200, max_tokens: Optional[int] = 512, max_data: Optional[int] = 5000, min_words: Optional[int] = 100, max_words: Optional[int] = 200, max_words_cutoff: Optional[bool] = True, batch_size: Optional[int] = 50, chunk_size: Optional[int] = 20, scoring_model_name: Optional[str] = None, top_k: Optional[int] = 40, do_top_k: Optional[bool] = False, top_p: Optional[float] = 0.96, do_top_p: Optional[bool] = False, pre_perturb_pct: Optional[float] = 0.0, pre_perturb_span_length: Optional[int] = 5, tok_by_tok: Optional[bool] = False, fpr_list: Optional[List[float]] = &lt;factory&gt;, random_seed: Optional[int] = 0, ref_config: Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>] = None, neighborhood_config: Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>] = None, env_config: Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>] = None, openai_config: Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>] = None)</span>
+<span>(</span><span>experiment_name: str, base_model: str, dataset_member: str, dataset_nonmember: str, output_name: str = None, dataset_nonmember_other_sources: Optional[List[str]] = &lt;factory&gt;, pretokenized: Optional[bool] = False, revision: Optional[str] = None, presampled_dataset_member: Optional[str] = None, presampled_dataset_nonmember: Optional[str] = None, token_frequency_map: Optional[str] = None, dataset_key: Optional[str] = None, specific_source: Optional[str] = None, full_doc: Optional[bool] = False, max_substrs: Optional[int] = 20, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, load_from_hf: Optional[bool] = True, blackbox_attacks: Optional[List[str]] = &lt;factory&gt;, tokenization_attack: Optional[bool] = False, quantile_attack: Optional[bool] = False, n_samples: Optional[int] = 200, max_tokens: Optional[int] = 512, max_data: Optional[int] = 5000, min_words: Optional[int] = 100, max_words: Optional[int] = 200, max_words_cutoff: Optional[bool] = True, batch_size: Optional[int] = 50, chunk_size: Optional[int] = 20, scoring_model_name: Optional[str] = None, top_k: Optional[int] = 40, do_top_k: Optional[bool] = False, top_p: Optional[float] = 0.96, do_top_p: Optional[bool] = False, pre_perturb_pct: Optional[float] = 0.0, pre_perturb_span_length: Optional[int] = 5, tok_by_tok: Optional[bool] = False, fpr_list: Optional[List[float]] = &lt;factory&gt;, random_seed: Optional[int] = 0, ref_config: Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>] = None, neighborhood_config: Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>] = None, env_config: Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>] = None, openai_config: Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Config for attacks</p></div>
@@ -403,7 +403,7 @@ class ExperimentConfig(Serializable):
     &#34;Dump data to cache? Exits program after dumping&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
-    load_from_hf: Optional[bool] = False
+    load_from_hf: Optional[bool] = True
     &#34;&#34;&#34;Load data from HuggingFace?&#34;&#34;&#34;
     blackbox_attacks: Optional[List[str]] = field(
         default_factory=lambda: None
