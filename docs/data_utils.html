@@ -260,7 +260,7 @@ class Data:
                         new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                         assert new_len &lt;= self.config.max_tokens
                         new_data.append(x)
-            data = new_data
+                data = new_data
 
             # print stats about remainining data
             print(f&#34;Total number of samples: {len(data)}&#34;)
@@ -718,7 +718,7 @@ def drop_last_word(text):
                         new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                         assert new_len &lt;= self.config.max_tokens
                         new_data.append(x)
-            data = new_data
+                data = new_data
 
             # print stats about remainining data
             print(f&#34;Total number of samples: {len(data)}&#34;)
@@ -971,7 +971,7 @@ def drop_last_word(text):
                     new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
                     assert new_len &lt;= self.config.max_tokens
                     new_data.append(x)
-        data = new_data
+            data = new_data
 
         # print stats about remainining data
         print(f&#34;Total number of samples: {len(data)}&#34;)

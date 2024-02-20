@@ -43,6 +43,7 @@ from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import zlib
+from hf_olmo import *
 
 from mimir.config import ExperimentConfig
 from mimir.custom_datasets import SEPARATOR
@@ -171,10 +172,12 @@ class Model(nn.Module):
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
                 self.device = &#39;cuda:1&#39;
-            elif &#34;stablelm&#34; in self.name:
-                # stablelm requires confirmation of running custom code
+            elif &#34;stablelm&#34; in self.name.lower():  # models requiring custom code
                 model = transformers.AutoModelForCausalLM.from_pretrained(
                     self.name, **model_kwargs, trust_remote_code=True, device_map=device_map, cache_dir=self.cache_dir)
+            elif &#34;olmo&#34; in self.name.lower():
+                model = transformers.AutoModelForCausalLM.from_pretrained(
+                    self.name, **model_kwargs, trust_remote_code=True, cache_dir=self.cache_dir)
             else:
                 model = transformers.AutoModelForCausalLM.from_pretrained(
                     self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
@@ -626,7 +629,7 @@ class OpenAI_APIModel(LanguageModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Generic LM- used most often for target model</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1154,7 +1157,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
 </code></dt>
 <dd>
 <div class="desc"><p>Base class (for LLMs).</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1281,10 +1284,12 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
                 # llama is too big, gotta use device map
                 model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
                 self.device = &#39;cuda:1&#39;
-            elif &#34;stablelm&#34; in self.name:
-                # stablelm requires confirmation of running custom code
+            elif &#34;stablelm&#34; in self.name.lower():  # models requiring custom code
                 model = transformers.AutoModelForCausalLM.from_pretrained(
                     self.name, **model_kwargs, trust_remote_code=True, device_map=device_map, cache_dir=self.cache_dir)
+            elif &#34;olmo&#34; in self.name.lower():
+                model = transformers.AutoModelForCausalLM.from_pretrained(
+                    self.name, **model_kwargs, trust_remote_code=True, cache_dir=self.cache_dir)
             else:
                 model = transformers.AutoModelForCausalLM.from_pretrained(
                     self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
@@ -1365,7 +1370,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
 <span>def <span class="ident">forward</span></span>(<span>self, *input: Any) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Define the computation performed at every call.</p>
+<div class="desc"><p>Defines the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1379,7 +1384,7 @@ registered hooks while the latter silently ignores them.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def _forward_unimplemented(self, *input: Any) -&gt; None:
-    r&#34;&#34;&#34;Define the computation performed at every call.
+    r&#34;&#34;&#34;Defines the computation performed at every call.
 
     Should be overridden by all subclasses.
 
@@ -1521,10 +1526,12 @@ def get_probabilities(self, text: str, tokens=None):
             # llama is too big, gotta use device map
             model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
             self.device = &#39;cuda:1&#39;
-        elif &#34;stablelm&#34; in self.name:
-            # stablelm requires confirmation of running custom code
+        elif &#34;stablelm&#34; in self.name.lower():  # models requiring custom code
             model = transformers.AutoModelForCausalLM.from_pretrained(
                 self.name, **model_kwargs, trust_remote_code=True, device_map=device_map, cache_dir=self.cache_dir)
+        elif &#34;olmo&#34; in self.name.lower():
+            model = transformers.AutoModelForCausalLM.from_pretrained(
+                self.name, **model_kwargs, trust_remote_code=True, cache_dir=self.cache_dir)
         else:
             model = transformers.AutoModelForCausalLM.from_pretrained(
                 self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
@@ -1629,7 +1636,7 @@ def get_probabilities(self, text: str, tokens=None):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for OpenAI API calls</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1857,7 +1864,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for referenc model, specifically used for quantile regression</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1922,7 +1929,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </code></dt>
 <dd>
 <div class="desc"><p>Wrapper for reference model</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
+<p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
