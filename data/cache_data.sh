@@ -1,8 +1,8 @@
 #!/bin/bash
 ngram=7
-for date in "arxiv_2020-08" #"arxiv_2021-01" "arxiv_2021-06" "arxiv_2022-06" "arxiv_2023-06" #"full_pile"
+for subset in "wikipedia" "s2" #date in "arxiv_2020-08"
 do
-    # echo caching data for $subset
+    echo caching data for $subset
     # python run.py \
     #     --config configs/cache_data.json \
     #     --presampled_dataset_member "/gscratch/h2lab/micdun/mimir/data/full_pile/full_pile_10000/train_raw.jsonl" \
@@ -12,10 +12,9 @@ do
     #     --n_samples 10000
     python run.py \
         --config configs/cache_data.json \
-        --presampled_dataset_member "/gscratch/h2lab/micdun/mimir/data/pile_subsets/arxiv/train_raw.jsonl" \
-        --presampled_dataset_nonmember "/mmfs1/gscratch/h2lab/micdun/mimir/data/temporal_arxiv/${date}/${date}/test_raw.jsonl" \
-        --specific_source $date \
-        --n_samples 1000
+        --presampled_dataset_member "/mmfs1/gscratch/h2lab/micdun/mimir/data/dolma/member/$subset/train_raw.jsonl" \
+        --presampled_dataset_nonmember "/mmfs1/gscratch/h2lab/micdun/mimir/data/dolma/nonmember/$subset/test_raw.jsonl" \
+        --specific_source dolma_$subset
 done
  #"/gscratch/h2lab/micdun/mimir/data/ngram_overlap_thresholded_pile_subsets/truncated+ngram_$ngram/0.0-0.2/$subset/test_raw.jsonl"
 

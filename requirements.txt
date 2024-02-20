@@ -15,3 +15,5 @@ nltk
 scipy>=1.11.2
 pytest
 huggingface_hub
+ai2-olmo
+accelerate

@@ -231,7 +231,7 @@ class Data:
                         new_len = len(mask_tokenizer(x)["input_ids"])
                         assert new_len <= self.config.max_tokens
                         new_data.append(x)
-            data = new_data
+                data = new_data
 
             # print stats about remainining data
             print(f"Total number of samples: {len(data)}")
