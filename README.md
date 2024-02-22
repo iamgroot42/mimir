@@ -35,7 +35,7 @@ MIMIR_DATA_SOURCE: Path to data directory
 
 ## Using cached data
 
-The data we used for our experiments is available on [Huggingface Datasets](https://huggingface.co/datasets/iamgroot42/mimir). You can either choose to either load the data directly from Huggingface with the `load_from_hf` flag in the config (preferred), or download the `cache_100_200_....` folders into your `MIMIR_CACHE_PATH` directory.
+The data we used for our experiments is available on [Hugging Face Datasets](https://huggingface.co/datasets/iamgroot42/mimir). You can either choose to either load the data directly from Hugging Face with the `load_from_hf` flag in the config (preferred), or download the `cache_100_200_....` folders into your `MIMIR_CACHE_PATH` directory.
 
 ## MIA experiments how to run
 
