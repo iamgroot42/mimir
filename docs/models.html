@@ -38,11 +38,9 @@ import numpy as np
 import transformers
 import time
 from collections import defaultdict
-from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import zlib
 from hf_olmo import *
 
 from mimir.config import ExperimentConfig
@@ -99,9 +97,21 @@ class Model(nn.Module):
         print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
 
     @torch.no_grad()
-    def get_probabilities(self, text: str, tokens=None):
+    def get_probabilities(self,
+                          text: str,
+                          tokens: np.ndarray = None):
         &#34;&#34;&#34;
-            Get the probabilities or log-softmaxed logits for a text under the current model
+            Get the probabilities or log-softmaxed logits for a text under the current model.
+            Args:
+                text (str): The input text for which to calculate probabilities.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+
+            Raises:
+                ValueError: If the device or name attributes of the instance are not set.
+
+            Returns:
+                list: A list of probabilities.
         &#34;&#34;&#34;
         if self.device is None or self.name is None:
             raise ValueError(&#34;Please set self.device and self.name in child class&#34;)
@@ -134,7 +144,6 @@ class Model(nn.Module):
             del input_ids
             del target_ids
 
-
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
                     probability = probabilities[0, i, token_id].item()
@@ -145,9 +154,19 @@ class Model(nn.Module):
         return all_prob
 
     @torch.no_grad()
-    def get_ll(self, text: str, tokens=None, probs=None):
+    def get_ll(self,
+               text: str,
+               tokens: np.ndarray=None,
+               probs = None):
         &#34;&#34;&#34;
-            Get the log likelihood of each text under the base_model
+            Get the log likelihood of each text under the base_model.
+
+            Args:
+                text (str): The input text for which to calculate the log likelihood.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+                probs (list, optional): An optional list of probabilities. If provided, these probabilities
+                are used instead of calling the `get_probabilities` method. Defaults to None.
         &#34;&#34;&#34;
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
@@ -205,7 +224,8 @@ class Model(nn.Module):
                 &#34;stanford-crfm/BioMedLM&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
         else:
             tokenizer = transformers.AutoTokenizer.from_pretrained(
-                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir,
+                trust_remote_code=True if &#34;olmo&#34; in self.name.lower() else False)
         tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
 
         return model, tokenizer
@@ -1211,9 +1231,21 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
         print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)
 
     @torch.no_grad()
-    def get_probabilities(self, text: str, tokens=None):
+    def get_probabilities(self,
+                          text: str,
+                          tokens: np.ndarray = None):
         &#34;&#34;&#34;
-            Get the probabilities or log-softmaxed logits for a text under the current model
+            Get the probabilities or log-softmaxed logits for a text under the current model.
+            Args:
+                text (str): The input text for which to calculate probabilities.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+
+            Raises:
+                ValueError: If the device or name attributes of the instance are not set.
+
+            Returns:
+                list: A list of probabilities.
         &#34;&#34;&#34;
         if self.device is None or self.name is None:
             raise ValueError(&#34;Please set self.device and self.name in child class&#34;)
@@ -1246,7 +1278,6 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
             del input_ids
             del target_ids
 
-
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
                     probability = probabilities[0, i, token_id].item()
@@ -1257,9 +1288,19 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
         return all_prob
 
     @torch.no_grad()
-    def get_ll(self, text: str, tokens=None, probs=None):
+    def get_ll(self,
+               text: str,
+               tokens: np.ndarray=None,
+               probs = None):
         &#34;&#34;&#34;
-            Get the log likelihood of each text under the base_model
+            Get the log likelihood of each text under the base_model.
+
+            Args:
+                text (str): The input text for which to calculate the log likelihood.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+                probs (list, optional): An optional list of probabilities. If provided, these probabilities
+                are used instead of calling the `get_probabilities` method. Defaults to None.
         &#34;&#34;&#34;
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
@@ -1317,7 +1358,8 @@ def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None)
                 &#34;stanford-crfm/BioMedLM&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
         else:
             tokenizer = transformers.AutoTokenizer.from_pretrained(
-                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir,
+                trust_remote_code=True if &#34;olmo&#34; in self.name.lower() else False)
         tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
 
         return model, tokenizer
@@ -1398,36 +1440,87 @@ registered hooks while the latter silently ignores them.</p>
 </details>
 </dd>
 <dt id="mimir.models.Model.get_ll"><code class="name flex">
-<span>def <span class="ident">get_ll</span></span>(<span>self, text: str, tokens=None, probs=None)</span>
+<span>def <span class="ident">get_ll</span></span>(<span>self, text: str, tokens: numpy.ndarray = None, probs=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the log likelihood of each text under the base_model</p></div>
+<div class="desc"><p>Get the log likelihood of each text under the base_model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text</code></strong> :&ensp;<code>str</code></dt>
+<dd>The input text for which to calculate the log likelihood.</dd>
+<dt><strong><code>tokens</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
+<dd>An optional array of token ids. If provided, these tokens</dd>
+<dt>are used instead of tokenizing the input text. Defaults to None.</dt>
+<dt><strong><code>probs</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>An optional list of probabilities. If provided, these probabilities</dd>
+</dl>
+<p>are used instead of calling the <code>get_probabilities</code> method. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@torch.no_grad()
-def get_ll(self, text: str, tokens=None, probs=None):
+def get_ll(self,
+           text: str,
+           tokens: np.ndarray=None,
+           probs = None):
     &#34;&#34;&#34;
-        Get the log likelihood of each text under the base_model
+        Get the log likelihood of each text under the base_model.
+
+        Args:
+            text (str): The input text for which to calculate the log likelihood.
+            tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+            are used instead of tokenizing the input text. Defaults to None.
+            probs (list, optional): An optional list of probabilities. If provided, these probabilities
+            are used instead of calling the `get_probabilities` method. Defaults to None.
     &#34;&#34;&#34;
     all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
     return -np.mean(all_prob)</code></pre>
 </details>
 </dd>
 <dt id="mimir.models.Model.get_probabilities"><code class="name flex">
-<span>def <span class="ident">get_probabilities</span></span>(<span>self, text: str, tokens=None)</span>
+<span>def <span class="ident">get_probabilities</span></span>(<span>self, text: str, tokens: numpy.ndarray = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the probabilities or log-softmaxed logits for a text under the current model</p></div>
+<div class="desc"><p>Get the probabilities or log-softmaxed logits for a text under the current model.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text</code></strong> :&ensp;<code>str</code></dt>
+<dd>The input text for which to calculate probabilities.</dd>
+<dt><strong><code>tokens</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
+<dd>An optional array of token ids. If provided, these tokens</dd>
+</dl>
+<p>are used instead of tokenizing the input text. Defaults to None.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the device or name attributes of the instance are not set.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>A list of probabilities.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@torch.no_grad()
-def get_probabilities(self, text: str, tokens=None):
+def get_probabilities(self,
+                      text: str,
+                      tokens: np.ndarray = None):
     &#34;&#34;&#34;
-        Get the probabilities or log-softmaxed logits for a text under the current model
+        Get the probabilities or log-softmaxed logits for a text under the current model.
+        Args:
+            text (str): The input text for which to calculate probabilities.
+            tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+            are used instead of tokenizing the input text. Defaults to None.
+
+        Raises:
+            ValueError: If the device or name attributes of the instance are not set.
+
+        Returns:
+            list: A list of probabilities.
     &#34;&#34;&#34;
     if self.device is None or self.name is None:
         raise ValueError(&#34;Please set self.device and self.name in child class&#34;)
@@ -1459,7 +1552,6 @@ def get_probabilities(self, text: str, tokens=None):
 
         del input_ids
         del target_ids
-
 
         for i, token_id in enumerate(labels_processed):
             if token_id != -100:
@@ -1559,7 +1651,8 @@ def get_probabilities(self, text: str, tokens=None):
             &#34;stanford-crfm/BioMedLM&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
     else:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
-            self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+            self.name, **optional_tok_kwargs, cache_dir=self.cache_dir,
+            trust_remote_code=True if &#34;olmo&#34; in self.name.lower() else False)
     tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
 
     return model, tokenizer</code></pre>
@@ -1791,6 +1884,32 @@ def api_calls(self):
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="mimir.models.OpenAI_APIModel.get_ll"><code class="name flex">
+<span>def <span class="ident">get_ll</span></span>(<span>self, text: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the log likelihood of each text under the base_model</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_ll(self, text: str):
+    &#34;&#34;&#34;
+        Get the log likelihood of each text under the base_model
+    &#34;&#34;&#34;
+    openai_config = self.config.openai_config
+
+    kwargs = {&#34;engine&#34;: openai_config.model, &#34;temperature&#34;: 0, &#34;max_tokens&#34;: 0, &#34;echo&#34;: True, &#34;logprobs&#34;: 0}
+    r = openai.Completion.create(prompt=f&#34;&lt;|endoftext|&gt;{text}&#34;, **kwargs)
+    result = r[&#39;choices&#39;][0]
+    tokens, logprobs = result[&#34;logprobs&#34;][&#34;tokens&#34;][1:], result[&#34;logprobs&#34;][&#34;token_logprobs&#34;][1:]
+
+    assert len(tokens) == len(logprobs), f&#34;Expected {len(tokens)} logprobs, got {len(logprobs)}&#34;
+
+    return np.mean(logprobs)</code></pre>
+</details>
+</dd>
 <dt id="mimir.models.OpenAI_APIModel.get_lls"><code class="name flex">
 <span>def <span class="ident">get_lls</span></span>(<span>self, texts: str)</span>
 </code></dt>
@@ -1845,7 +1964,6 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 <ul class="hlist">
 <li><code><a title="mimir.models.LanguageModel.forward" href="#mimir.models.Model.forward">forward</a></code></li>
 <li><code><a title="mimir.models.LanguageModel.get_entropy" href="#mimir.models.LanguageModel.get_entropy">get_entropy</a></code></li>
-<li><code><a title="mimir.models.LanguageModel.get_ll" href="#mimir.models.Model.get_ll">get_ll</a></code></li>
 <li><code><a title="mimir.models.LanguageModel.get_probabilities" href="#mimir.models.Model.get_probabilities">get_probabilities</a></code></li>
 <li><code><a title="mimir.models.LanguageModel.get_rank" href="#mimir.models.LanguageModel.get_rank">get_rank</a></code></li>
 <li><code><a title="mimir.models.LanguageModel.load" href="#mimir.models.Model.load">load</a></code></li>
@@ -2046,6 +2164,11 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 </section>
 </article>
 <nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="MIMIR Home" href="https://iamgroot42.github.io/mimir/">
+<img src="https://raw.githubusercontent.com/iamgroot42/mimir/8ed6886fb6df7a72f2f0f398688f48b68c5f48b0/assets/logo.png" alt="MIMIR">
+</a>
+</header>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>
@@ -2094,6 +2217,7 @@ def get_ref(self, text: str, ref_model: ReferenceModel):
 <li><code><a title="mimir.models.OpenAI_APIModel.api_calls" href="#mimir.models.OpenAI_APIModel.api_calls">api_calls</a></code></li>
 <li><code><a title="mimir.models.OpenAI_APIModel.call_super_init" href="#mimir.models.OpenAI_APIModel.call_super_init">call_super_init</a></code></li>
 <li><code><a title="mimir.models.OpenAI_APIModel.dump_patches" href="#mimir.models.OpenAI_APIModel.dump_patches">dump_patches</a></code></li>
+<li><code><a title="mimir.models.OpenAI_APIModel.get_ll" href="#mimir.models.OpenAI_APIModel.get_ll">get_ll</a></code></li>
 <li><code><a title="mimir.models.OpenAI_APIModel.get_lls" href="#mimir.models.OpenAI_APIModel.get_lls">get_lls</a></code></li>
 <li><code><a title="mimir.models.OpenAI_APIModel.get_ref" href="#mimir.models.OpenAI_APIModel.get_ref">get_ref</a></code></li>
 <li><code><a title="mimir.models.OpenAI_APIModel.training" href="#mimir.models.OpenAI_APIModel.training">training</a></code></li>
