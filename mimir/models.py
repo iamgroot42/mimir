@@ -9,11 +9,9 @@ import numpy as np
 import transformers
 import time
 from collections import defaultdict
-from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import zlib
 from hf_olmo import *
 
 from mimir.config import ExperimentConfig
@@ -70,9 +68,21 @@ class Model(nn.Module):
         print(f'DONE ({time.time() - start:.2f}s)')
 
     @torch.no_grad()
-    def get_probabilities(self, text: str, tokens=None):
+    def get_probabilities(self,
+                          text: str,
+                          tokens: np.ndarray = None):
         """
-            Get the probabilities or log-softmaxed logits for a text under the current model
+            Get the probabilities or log-softmaxed logits for a text under the current model.
+            Args:
+                text (str): The input text for which to calculate probabilities.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+
+            Raises:
+                ValueError: If the device or name attributes of the instance are not set.
+
+            Returns:
+                list: A list of probabilities.
         """
         if self.device is None or self.name is None:
             raise ValueError("Please set self.device and self.name in child class")
@@ -105,7 +115,6 @@ class Model(nn.Module):
             del input_ids
             del target_ids
 
-
             for i, token_id in enumerate(labels_processed):
                 if token_id != -100:
                     probability = probabilities[0, i, token_id].item()
@@ -116,9 +125,19 @@ class Model(nn.Module):
         return all_prob
 
     @torch.no_grad()
-    def get_ll(self, text: str, tokens=None, probs=None):
+    def get_ll(self,
+               text: str,
+               tokens: np.ndarray=None,
+               probs = None):
         """
-            Get the log likelihood of each text under the base_model
+            Get the log likelihood of each text under the base_model.
+
+            Args:
+                text (str): The input text for which to calculate the log likelihood.
+                tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+                are used instead of tokenizing the input text. Defaults to None.
+                probs (list, optional): An optional list of probabilities. If provided, these probabilities
+                are used instead of calling the `get_probabilities` method. Defaults to None.
         """
         all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
         return -np.mean(all_prob)
@@ -176,7 +195,8 @@ class Model(nn.Module):
                 "stanford-crfm/BioMedLM", **optional_tok_kwargs, cache_dir=self.cache_dir)
         else:
             tokenizer = transformers.AutoTokenizer.from_pretrained(
-                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+                self.name, **optional_tok_kwargs, cache_dir=self.cache_dir,
+                trust_remote_code=True if "olmo" in self.name.lower() else False)
         tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
         return model, tokenizer
