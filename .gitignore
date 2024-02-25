@@ -17,6 +17,7 @@ new_neigh_mia/*
 # Ignore generated data, except gpt paraphrasing scripts
 data/*/
 !data/gpt_generated_paraphrases/
+data/*/out/*
 
 # Ignore local results files
 local/*results.json
