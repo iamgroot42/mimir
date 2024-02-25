@@ -2,7 +2,9 @@
 
 ![MIMIR logo](assets/logo.png)
 
-MIMIR - Python package for measuring memorization in LLMs. 
+MIMIR - Python package for measuring memorization in LLMs.
+
+Documentation is available [here](https://iamgroot42.github.io/mimir.github.io).
 
 [![Tests](https://github.com/iamgroot42/mimir/actions/workflows/test.yml/badge.svg)](https://github.com/iamgroot42/mimir/actions/workflows/test.yml)
 [![Documentation](https://github.com/iamgroot42/mimir/actions/workflows/documentation.yml/badge.svg)](https://github.com/iamgroot42/mimir/actions/workflows/documentation.yml)
@@ -35,7 +37,7 @@ MIMIR_DATA_SOURCE: Path to data directory
 
 ## Using cached data
 
-The data we used for our experiments is available on [Huggingface Datasets](https://huggingface.co/datasets/iamgroot42/mimir). You can either choose to either load the data directly from Huggingface with the `load_from_hf` flag in the config (preferred), or download the `cache_100_200_....` folders into your `MIMIR_CACHE_PATH` directory.
+The data we used for our experiments is available on [Hugging Face Datasets](https://huggingface.co/datasets/iamgroot42/mimir). You can either choose to either load the data directly from Hugging Face with the `load_from_hf` flag in the config (preferred), or download the `cache_100_200_....` folders into your `MIMIR_CACHE_PATH` directory.
 
 ## MIA experiments how to run
 

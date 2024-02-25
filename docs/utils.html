@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>mimir.utils API documentation</title>
-<meta name="description" content="Misc utils" />
+<meta name="description" content="utils.py
+This module provides utility functions …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,14 +23,24 @@
 <h1 class="title">Module <code>mimir.utils</code></h1>
 </header>
 <section id="section-intro">
-<p>Misc utils</p>
+<p>utils.py
+This module provides utility functions.</p>
+<p>Environment Variables:
+MIMIR_CACHE_PATH: The path to the cache directory. This should be set in the environment.
+MIMIR_DATA_SOURCE: The data source for the MIMIR project. This should be set in the environment.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
-    Misc utils
+utils.py
+This module provides utility functions.
+
+Environment Variables:
+    MIMIR_CACHE_PATH: The path to the cache directory. This should be set in the environment.
+    MIMIR_DATA_SOURCE: The data source for the MIMIR project. This should be set in the environment.
 &#34;&#34;&#34;
+
 import os
 import random
 import torch as ch
@@ -43,6 +54,9 @@ DATA_SOURCE = os.environ.get(&#39;MIMIR_DATA_SOURCE&#39;, None)
 def fix_seed(seed: int = 0):
     &#34;&#34;&#34;
     Fix seed for reproducibility.
+
+    Parameters:
+        seed (int): The seed to set. Default is 0.
     &#34;&#34;&#34;
     ch.manual_seed(seed)
     np.random.seed(seed)
@@ -51,9 +65,12 @@ def fix_seed(seed: int = 0):
 
 def get_cache_path():
     &#34;&#34;&#34;
-        Get path to cache directory.
-        Returns:
-            str: path to cache directory
+    Get path to cache directory.
+    Returns:
+        str: path to cache directory
+
+    Raises:
+        ValueError: If the MIMIR_CACHE_PATH environment variable is not set.
     &#34;&#34;&#34;
     if CACHE_PATH is None:
         raise ValueError(&#39;MIMIR_CACHE_PATH environment variable not set&#39;)
@@ -62,9 +79,12 @@ def get_cache_path():
 
 def get_data_source():
     &#34;&#34;&#34;
-        Get path to data source directory.
-        Returns:
-            str: path to data source directory
+    Get path to data source directory.
+    Returns:
+        str: path to data source directory
+
+    Raises:
+        ValueError: If the MIMIR_DATA_SOURCE environment variable is not set.
     &#34;&#34;&#34;
     if DATA_SOURCE is None:
         raise ValueError(&#39;MIMIR_DATA_SOURCE environment variable not set&#39;)
@@ -82,7 +102,9 @@ def get_data_source():
 <span>def <span class="ident">fix_seed</span></span>(<span>seed: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fix seed for reproducibility.</p></div>
+<div class="desc"><p>Fix seed for reproducibility.</p>
+<h2 id="parameters">Parameters</h2>
+<p>seed (int): The seed to set. Default is 0.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -90,6 +112,9 @@ def get_data_source():
 <pre><code class="python">def fix_seed(seed: int = 0):
     &#34;&#34;&#34;
     Fix seed for reproducibility.
+
+    Parameters:
+        seed (int): The seed to set. Default is 0.
     &#34;&#34;&#34;
     ch.manual_seed(seed)
     np.random.seed(seed)
@@ -105,6 +130,11 @@ def get_data_source():
 <dl>
 <dt><code>str</code></dt>
 <dd>path to cache directory</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the MIMIR_CACHE_PATH environment variable is not set.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -112,9 +142,12 @@ def get_data_source():
 </summary>
 <pre><code class="python">def get_cache_path():
     &#34;&#34;&#34;
-        Get path to cache directory.
-        Returns:
-            str: path to cache directory
+    Get path to cache directory.
+    Returns:
+        str: path to cache directory
+
+    Raises:
+        ValueError: If the MIMIR_CACHE_PATH environment variable is not set.
     &#34;&#34;&#34;
     if CACHE_PATH is None:
         raise ValueError(&#39;MIMIR_CACHE_PATH environment variable not set&#39;)
@@ -130,6 +163,11 @@ def get_data_source():
 <dl>
 <dt><code>str</code></dt>
 <dd>path to data source directory</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the MIMIR_DATA_SOURCE environment variable is not set.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -137,9 +175,12 @@ def get_data_source():
 </summary>
 <pre><code class="python">def get_data_source():
     &#34;&#34;&#34;
-        Get path to data source directory.
-        Returns:
-            str: path to data source directory
+    Get path to data source directory.
+    Returns:
+        str: path to data source directory
+
+    Raises:
+        ValueError: If the MIMIR_DATA_SOURCE environment variable is not set.
     &#34;&#34;&#34;
     if DATA_SOURCE is None:
         raise ValueError(&#39;MIMIR_DATA_SOURCE environment variable not set&#39;)
@@ -152,6 +193,11 @@ def get_data_source():
 </section>
 </article>
 <nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="MIMIR Home" href="https://iamgroot42.github.io/mimir/">
+<img src="https://raw.githubusercontent.com/iamgroot42/mimir/8ed6886fb6df7a72f2f0f398688f48b68c5f48b0/assets/logo.png" alt="MIMIR">
+</a>
+</header>
 <h1>Index</h1>
 <div class="toc">
 <ul></ul>

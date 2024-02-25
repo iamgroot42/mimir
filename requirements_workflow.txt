@@ -13,3 +13,4 @@ simple-parsing
 nltk
 scipy>=1.11.2
 pytest
+ai2-olmo

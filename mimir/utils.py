@@ -1,6 +1,12 @@
 """
-    Misc utils
+utils.py
+This module provides utility functions.
+
+Environment Variables:
+    MIMIR_CACHE_PATH: The path to the cache directory. This should be set in the environment.
+    MIMIR_DATA_SOURCE: The data source for the MIMIR project. This should be set in the environment.
 """
+
 import os
 import random
 import torch as ch
@@ -14,6 +20,9 @@ DATA_SOURCE = os.environ.get('MIMIR_DATA_SOURCE', None)
 def fix_seed(seed: int = 0):
     """
     Fix seed for reproducibility.
+
+    Parameters:
+        seed (int): The seed to set. Default is 0.
     """
     ch.manual_seed(seed)
     np.random.seed(seed)
@@ -22,9 +31,12 @@ def fix_seed(seed: int = 0):
 
 def get_cache_path():
     """
-        Get path to cache directory.
-        Returns:
-            str: path to cache directory
+    Get path to cache directory.
+    Returns:
+        str: path to cache directory
+
+    Raises:
+        ValueError: If the MIMIR_CACHE_PATH environment variable is not set.
     """
     if CACHE_PATH is None:
         raise ValueError('MIMIR_CACHE_PATH environment variable not set')
@@ -33,9 +45,12 @@ def get_cache_path():
 
 def get_data_source():
     """
-        Get path to data source directory.
-        Returns:
-            str: path to data source directory
+    Get path to data source directory.
+    Returns:
+        str: path to data source directory
+
+    Raises:
+        ValueError: If the MIMIR_DATA_SOURCE environment variable is not set.
     """
     if DATA_SOURCE is None:
         raise ValueError('MIMIR_DATA_SOURCE environment variable not set')
