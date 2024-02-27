@@ -1,4 +1,5 @@
 {
+    "experiment_name": "edited_members_exp",
     "base_model": "EleutherAI/gpt-neo-125m",
     "dataset_member": "the_pile",
     "dataset_nonmember": "the_pile",
@@ -15,20 +16,11 @@
             "stabilityai/stablelm-base-alpha-3b-v2"
         ]
     },
-    "neighborhood_config": {
-        "model": "bert",
-        "n_perturbation_list": [
-            25
-        ],
-        "pct_words_masked": 0.3,
-        "span_length": 2,
-        "dump_cache": false,
-        "load_from_cache": true
-    },
     "env_config": {
         "results": "results_new",
         "device_map": "balanced_low_0"
     },
     "dump_cache": false,
-    "load_from_cache": true
+    "load_from_cache": true,
+    "load_from_hf": false
 }
