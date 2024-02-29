@@ -326,7 +326,7 @@ if __name__ == "__main__":
     if config.load_from_cache and not config.dump_cache:
         # For NE neighbors, 30% is masked
         with open(
-            f"/mmfs1/gscratch/h2lab/micdun/mimir/data/gpt_generated_paraphrases/out/em_version_{config.specific_source}_paraphrases_1000_samples_5_trials.jsonl", #f"edit_distance_members/ne/{config.specific_source}.json",
+            f"/mmfs1/gscratch/h2lab/micdun/mimir/data/gpt_generated_paraphrases/out/analysis/gpt4_{config.specific_source}/em_version_{config.specific_source}_paraphrases_1000_samples_5_trials.jsonl", #f"edit_distance_members/ne/{config.specific_source}.json",
             "r",
         ) as f:
             other_members_data = json.load(f)
@@ -372,5 +372,5 @@ if __name__ == "__main__":
                 score_dict[attack][n][i] = other_blackbox_predictions[attack]
 
     pbar.close()
-    with open(f"edit_distance_members/scores/gpt_paraphrase_results_{config.specific_source}.json", "w") as f:
+    with open(f"edit_distance_members/scores/gpt4/gpt_paraphrase_results_{config.specific_source}.json", "w") as f:
         json.dump(score_dict, f, indent=4)
