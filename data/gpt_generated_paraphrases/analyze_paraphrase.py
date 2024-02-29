@@ -40,7 +40,7 @@ if __name__ == '__main__':
         for i, p in enumerate(pm['paraphrases']):
             em_version['gpt'][str(i)].append(p)
 
-    assert len(em_version['gpt']['0']) == 50
+    assert len(em_version['gpt']['0']) == 1000
     
     with open(os.path.join(output_dir, f"em_version_{os.path.basename(paraphrase_path)}"), 'w') as out:
         json.dump(em_version, out)
