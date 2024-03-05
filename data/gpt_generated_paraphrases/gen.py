@@ -50,6 +50,11 @@ def load(path):
         data = [line for line in f]
     return data
 
+def load_jsonl(path):
+    with open(path, 'r') as f:
+        data = [json.loads(line) for line in f]
+    return data
+
 def write(outputs, path):
     with open(path, "w") as f:
         for d in outputs:
@@ -75,10 +80,27 @@ if __name__ == '__main__':
     # Load in our member samples
     members = load(benchmark_path)
 
-    # Only paraphrase the first n
-    members_sample = members[:n]
+    # check if output file already exists
+    output_file = os.path.join(output_dir, f"{domain}_paraphrases_{n}_samples_{trials}_trials.jsonl")
+    if os.path.exists(output_file):
+        print("using checkpoint")
+        paraphrased_members = load_jsonl(output_file)
+        existing_len = len(paraphrased_members)
+        print(f"{existing_len} existing paraphrases")
 
-    paraphrased_members = []
+        # Make sure there isn't mismatch in checkpoint length
+        assert existing_len <= n
+
+        # Only need to paraphrase remainder of samples
+        members_sample = members[existing_len:n]
+
+    else:
+        print("generating from scratch")
+        paraphrased_members = []
+
+        # Only paraphrase the first n
+        members_sample = members[:n]
+    
     for m in tqdm(members_sample, desc='paraphrasing members'):
         paraphrases = api_inference(m, domain, trials)
         paraphrased_members.append({
@@ -86,7 +108,8 @@ if __name__ == '__main__':
             "paraphrases": paraphrases
         })
     
-    write(paraphrased_members, os.path.join(output_dir, f"{domain}_paraphrases_{n}_samples_{trials}_trials.jsonl"))
+        # Write every generated paraphrase to output_file
+        write(paraphrased_members, output_file)
     
 
     # Write a version compatible with edited members script
