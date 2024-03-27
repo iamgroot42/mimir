@@ -40,7 +40,7 @@ from sklearn.metrics import mean_squared_error
 from transformers import TrainingArguments, Trainer
 from datasets import Dataset
 
-from mimir.attacks.blackbox_attacks import Attack
+from mimir.attacks.all_attacks import Attack
 
 
 class CustomTrainer(Trainer):
@@ -388,7 +388,7 @@ by this function will be reflected in the predictions received by <code>compute_
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="mimir.attacks.blackbox_attacks.Attack" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack">Attack</a></li>
+<li><a title="mimir.attacks.all_attacks.Attack" href="all_attacks.html#mimir.attacks.all_attacks.Attack">Attack</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -425,10 +425,10 @@ Step 3: Test by checking if member: score is higher than output of quantile regr
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="mimir.attacks.blackbox_attacks.Attack" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack">Attack</a></b></code>:
+<li><code><b><a title="mimir.attacks.all_attacks.Attack" href="all_attacks.html#mimir.attacks.all_attacks.Attack">Attack</a></b></code>:
 <ul class="hlist">
-<li><code><a title="mimir.attacks.blackbox_attacks.Attack.attack" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack.attack">attack</a></code></li>
-<li><code><a title="mimir.attacks.blackbox_attacks.Attack.load" href="blackbox_attacks.html#mimir.attacks.blackbox_attacks.Attack.load">load</a></code></li>
+<li><code><a title="mimir.attacks.all_attacks.Attack.attack" href="all_attacks.html#mimir.attacks.all_attacks.Attack.attack">attack</a></code></li>
+<li><code><a title="mimir.attacks.all_attacks.Attack.load" href="all_attacks.html#mimir.attacks.all_attacks.Attack.load">load</a></code></li>
 </ul>
 </li>
 </ul>
