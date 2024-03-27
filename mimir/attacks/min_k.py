@@ -16,7 +16,7 @@ class MinKProbAttack(Attack):
     @ch.no_grad()
     def _attack(self, document, probs, tokens=None, **kwargs):
         """
-        Min-k % Prob Attack. Gets model praobbilities and returns likelihood when computed over top k% of ngrams.
+        Min-k % Prob Attack. Gets model probabilities and returns likelihood when computed over top k% of ngrams.
         """
         # Hyper-params specific to min-k attack
         k: float = kwargs.get("k", 0.2)

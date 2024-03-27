@@ -42,7 +42,7 @@ The data we used for our experiments is available on [Hugging Face Datasets](htt
 ## MIA experiments how to run
 
 ```
-python run.py --config configs/mi_readme.json
+python run.py --config configs/mi.json
 ```
 
 # Attacks
