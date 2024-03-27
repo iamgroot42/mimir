@@ -107,10 +107,15 @@ class Model(nn.Module):
                 target_ids = input_ids.clone()
                 target_ids[:, :-trg_len] = -100
 
-                logits = self.model(input_ids, labels=target_ids).logits.cpu()
+                logits = self.model(input_ids, labels=target_ids).logits
+                if no_grads:
+                    logits = logits.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
                 probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-                shift_labels = target_ids[..., 1:].cpu().contiguous()
+                shift_labels = target_ids[..., 1:]
+                if no_grads:
+                    shift_labels = shift_labels.cpu()
+                shift_labels = shift_labels.contiguous()
                 labels_processed = shift_labels[0]
 
                 del input_ids
@@ -125,9 +130,10 @@ class Model(nn.Module):
             # Should be equal to # of tokens - 1 to account for shift
             assert len(all_prob) == labels.size(1) - 1
 
-            if no_grads:
-                return all_prob
-            return torch.tensor(all_prob)
+        if not no_grads:
+            all_prob = torch.stack(all_prob)
+
+        return all_prob
 
     @torch.no_grad()
     def get_ll(self,

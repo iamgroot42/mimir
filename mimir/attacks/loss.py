@@ -2,7 +2,7 @@
     Straight-forward LOSS attack, as described in https://ieeexplore.ieee.org/abstract/document/8429311
 """
 import torch as ch
-from mimir.attacks.blackbox_attacks import Attack
+from mimir.attacks.all_attacks import Attack
 from mimir.models import Model
 from mimir.config import ExperimentConfig
 

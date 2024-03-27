@@ -7,22 +7,24 @@ from mimir.models import Model
 
 
 # Attack definitions
-class BlackBoxAttacks(str, Enum):
+class AllAttacks(str, Enum):
     LOSS = "loss" # Done
     REFERENCE_BASED = "ref" # Done
     ZLIB = "zlib" # Done
     MIN_K = "min_k" # Done
     NEIGHBOR = "ne" # Done
+    GRADNORM = "gradnorm" # Done
     # QUANTILE = "quantile" # Uncomment when tested implementation is available
 
 
 # Base attack class
 class Attack:
-    def __init__(self, config, target_model: Model, ref_model: Model = None):
+    def __init__(self, config, target_model: Model, ref_model: Model = None, is_blackbox: bool = True):
         self.config = config
         self.target_model = target_model
         self.ref_model = ref_model
         self.is_loaded = False
+        self.is_blackbox = is_blackbox
 
     def load(self):
         """

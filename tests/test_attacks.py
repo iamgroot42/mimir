@@ -6,7 +6,7 @@ import pytest
 import numpy as np
 import torch.nn as nn
 
-from mimir.attacks.blackbox_attacks import BlackBoxAttacks
+from mimir.attacks.all_attacks import AllAttacks
 from mimir.attacks.utils import get_attacker
 
 
@@ -16,7 +16,7 @@ class TestAttack:
             Check if all known attacks can be loaded.
         """
         # Enumerate all "available" attacks and make sure they are available
-        for attack in BlackBoxAttacks:
+        for attack in AllAttacks:
             attacker = get_attacker(attack)
             assert attacker is not None, f"Attack {attack} not found"
             # TODO: Use a 'testing' config and model to check if the attack can be loaded

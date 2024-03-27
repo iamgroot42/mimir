@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 from transformers import TrainingArguments, Trainer
 from datasets import Dataset
 
-from mimir.attacks.blackbox_attacks import Attack
+from mimir.attacks.all_attacks import Attack
 
 
 class CustomTrainer(Trainer):

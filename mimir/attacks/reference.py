@@ -1,7 +1,7 @@
 """
     Reference-based attacks.
 """
-from mimir.attacks.blackbox_attacks import Attack
+from mimir.attacks.all_attacks import Attack
 from mimir.models import Model, ReferenceModel
 from mimir.config import ExperimentConfig
 

@@ -29,7 +29,7 @@ import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
 from mimir.utils import fix_seed
 from mimir.models import LanguageModel, ReferenceModel
-from mimir.attacks.blackbox_attacks import BlackBoxAttacks, Attack
+from mimir.attacks.all_attacks import AllAttacks, Attack
 from mimir.attacks.neighborhood import T5Model, BertModel, NeighborhoodAttack
 from mimir.attacks.utils import get_attacker
 
@@ -44,7 +44,7 @@ def get_attackers(
 ):
     # Look at all attacks, and attacks that we have implemented
     attacks = config.blackbox_attacks
-    implemented_blackbox_attacks = [a.value for a in BlackBoxAttacks]
+    implemented_blackbox_attacks = [a.value for a in AllAttacks]
     # check for unimplemented attacks
     runnable_attacks = []
     for a in attacks:
@@ -57,16 +57,16 @@ def get_attackers(
     # Initialize attackers
     attackers = {}
     for attack in attacks:
-        if attack != BlackBoxAttacks.REFERENCE_BASED:
+        if attack != AllAttacks.REFERENCE_BASED:
             attackers[attack] = get_attacker(attack)(config, target_model)
 
     # Initialize reference-based attackers if specified
     if ref_models is not None:
         for name, ref_model in ref_models.items():
-            attacker = get_attacker(BlackBoxAttacks.REFERENCE_BASED)(
+            attacker = get_attacker(AllAttacks.REFERENCE_BASED)(
                 config, target_model, ref_model
             )
-            attackers[f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"] = attacker
+            attackers[f"{AllAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"] = attacker
     return attackers
 
 
@@ -93,7 +93,7 @@ def get_mia_scores(
 
     results = []
     neighbors = None
-    if BlackBoxAttacks.NEIGHBOR in attackers_dict.keys() and neigh_config.load_from_cache:
+    if AllAttacks.NEIGHBOR in attackers_dict.keys() and neigh_config.load_from_cache:
         neighbors = data[f"neighbors"]
         print("Loaded neighbors from cache!")
 
@@ -136,16 +136,16 @@ def get_mia_scores(
                         detokenized_sample[i], tokens=substr, probs=s_tk_probs
                     )
                 )
-                sample_information[BlackBoxAttacks.LOSS].append(loss)
+                sample_information[AllAttacks.LOSS].append(loss)
 
                 # TODO: Shift functionality into each attack entirely, so that this is just a for loop
                 # For each attack
                 for attack, attacker in attackers_dict.items():
                     # LOSS already added above, Reference handled later
-                    if attack.startswith(BlackBoxAttacks.REFERENCE_BASED) or attack == BlackBoxAttacks.LOSS:
+                    if attack.startswith(AllAttacks.REFERENCE_BASED) or attack == AllAttacks.LOSS:
                         continue
 
-                    if attack != BlackBoxAttacks.NEIGHBOR:
+                    if attack != AllAttacks.NEIGHBOR:
                         score = attacker.attack(
                             substr,
                             probs=s_tk_probs,
@@ -191,7 +191,7 @@ def get_mia_scores(
     # Perform reference-based attacks
     if ref_models is not None:
         for name, _ in ref_models.items():
-            ref_key = f"{BlackBoxAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
+            ref_key = f"{AllAttacks.REFERENCE_BASED}-{name.split('/')[-1]}"
             attacker = attackers_dict.get(ref_key, None)
             if attacker is None:
                 continue
@@ -202,8 +202,7 @@ def get_mia_scores(
                 for i, s in enumerate(r["sample"]):
                     if config.pretokenized:
                         s = r["detokenized"][i]
-                    score = attacker.attack(s, probs=None,
-                                                loss=r[BlackBoxAttacks.LOSS][i])
+                    score = attacker.attack(s, probs=None, loss=r[AllAttacks.LOSS][i])
                     ref_model_scores.append(score)
                 r[ref_key].extend(ref_model_scores)
 
@@ -275,7 +274,7 @@ if __name__ == "__main__":
     ref_models = None
     if (
         ref_config is not None
-        and BlackBoxAttacks.REFERENCE_BASED in config.blackbox_attacks
+        and AllAttacks.REFERENCE_BASED in config.blackbox_attacks
     ):
         ref_models = {
             model: ReferenceModel(config, model) for model in ref_config.models
@@ -289,9 +288,9 @@ if __name__ == "__main__":
     if (
         neigh_config
         and (not neigh_config.load_from_cache)
-        and (BlackBoxAttacks.NEIGHBOR in config.blackbox_attacks)
+        and (AllAttacks.NEIGHBOR in config.blackbox_attacks)
     ):
-        attacker_ne = attackers_dict[BlackBoxAttacks.NEIGHBOR]
+        attacker_ne = attackers_dict[AllAttacks.NEIGHBOR]
         mask_model = attacker_ne.get_mask_model()
 
     print("MOVING BASE MODEL TO GPU...", end="", flush=True)
