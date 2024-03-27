@@ -59,7 +59,7 @@ class ZLIBAttack(Attack):
         &#34;&#34;&#34;
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
         zlib_entropy = len(zlib.compress(bytes(document, &#34;utf-8&#34;)))
         return loss / zlib_entropy</code></pre>
 </details>
@@ -103,7 +103,7 @@ class ZLIBAttack(Attack):
         &#34;&#34;&#34;
         loss = kwargs.get(&#34;loss&#34;, None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
         zlib_entropy = len(zlib.compress(bytes(document, &#34;utf-8&#34;)))
         return loss / zlib_entropy</code></pre>
 </details>

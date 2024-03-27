@@ -121,7 +121,7 @@ class QuantileAttack(Attack):
         # Step 1: Use non-member dataset, collect confidence scores for correct label.
         # Get likelihood scores from target model for known_non_members
         # Note that these non-members should be different from the ones in testing
-        scores = [self.model.get_ll(x) for x in known_non_members]
+        scores = [self.target_model.get_ll(x) for x in known_non_members]
         # Construct a dataset out of this to be used in Huggingface, with
         # &#34;text&#34; containing the actual data, and &#34;labels&#34; containing the scores
         dataset = Dataset.from_dict({&#34;text&#34;: known_non_members, &#34;labels&#34;: scores})
@@ -133,7 +133,7 @@ class QuantileAttack(Attack):
         # Step 3: Test by checking if member: score is higher than output of quantile regression model.
 
         # Get likelihood score from target model for doc
-        ll = self.model.get_ll(document)
+        ll = self.target_model.get_ll(document)
 
         # Return ll - quantile_model(doc)
         tokenized = self.ref_model.tokenizer(document, return_tensors=&#34;pt&#34;)
@@ -361,7 +361,7 @@ by this function will be reflected in the predictions received by <code>compute_
         # Step 1: Use non-member dataset, collect confidence scores for correct label.
         # Get likelihood scores from target model for known_non_members
         # Note that these non-members should be different from the ones in testing
-        scores = [self.model.get_ll(x) for x in known_non_members]
+        scores = [self.target_model.get_ll(x) for x in known_non_members]
         # Construct a dataset out of this to be used in Huggingface, with
         # &#34;text&#34; containing the actual data, and &#34;labels&#34; containing the scores
         dataset = Dataset.from_dict({&#34;text&#34;: known_non_members, &#34;labels&#34;: scores})
@@ -373,7 +373,7 @@ by this function will be reflected in the predictions received by <code>compute_
         # Step 3: Test by checking if member: score is higher than output of quantile regression model.
 
         # Get likelihood score from target model for doc
-        ll = self.model.get_ll(document)
+        ll = self.target_model.get_ll(document)
 
         # Return ll - quantile_model(doc)
         tokenized = self.ref_model.tokenizer(document, return_tensors=&#34;pt&#34;)
@@ -413,7 +413,7 @@ Step 3: Test by checking if member: score is higher than output of quantile regr
     # Step 1: Use non-member dataset, collect confidence scores for correct label.
     # Get likelihood scores from target model for known_non_members
     # Note that these non-members should be different from the ones in testing
-    scores = [self.model.get_ll(x) for x in known_non_members]
+    scores = [self.target_model.get_ll(x) for x in known_non_members]
     # Construct a dataset out of this to be used in Huggingface, with
     # &#34;text&#34; containing the actual data, and &#34;labels&#34; containing the scores
     dataset = Dataset.from_dict({&#34;text&#34;: known_non_members, &#34;labels&#34;: scores})

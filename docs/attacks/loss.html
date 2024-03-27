@@ -46,7 +46,7 @@ class LOSSAttack(Attack):
         &#34;&#34;&#34;
             LOSS-score. Use log-likelihood from model.
         &#34;&#34;&#34;
-        return self.model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
+        return self.target_model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
 </details>
 </section>
 <section>
@@ -78,7 +78,7 @@ class LOSSAttack(Attack):
         &#34;&#34;&#34;
             LOSS-score. Use log-likelihood from model.
         &#34;&#34;&#34;
-        return self.model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
+        return self.target_model.get_ll(document, probs=probs, tokens=tokens)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
