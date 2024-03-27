@@ -17,4 +17,4 @@ class LOSSAttack(Attack):
         """
             LOSS-score. Use log-likelihood from model.
         """
-        return self.model.get_ll(document, probs=probs, tokens=tokens)
+        return self.target_model.get_ll(document, probs=probs, tokens=tokens)

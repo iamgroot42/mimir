@@ -30,6 +30,6 @@ class ZLIBAttack(Attack):
         """
         loss = kwargs.get("loss", None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
         zlib_entropy = len(zlib.compress(bytes(document, "utf-8")))
         return loss / zlib_entropy

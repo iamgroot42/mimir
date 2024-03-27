@@ -90,7 +90,7 @@ class QuantileAttack(Attack):
         # Step 1: Use non-member dataset, collect confidence scores for correct label.
         # Get likelihood scores from target model for known_non_members
         # Note that these non-members should be different from the ones in testing
-        scores = [self.model.get_ll(x) for x in known_non_members]
+        scores = [self.target_model.get_ll(x) for x in known_non_members]
         # Construct a dataset out of this to be used in Huggingface, with
         # "text" containing the actual data, and "labels" containing the scores
         dataset = Dataset.from_dict({"text": known_non_members, "labels": scores})
@@ -102,7 +102,7 @@ class QuantileAttack(Attack):
         # Step 3: Test by checking if member: score is higher than output of quantile regression model.
 
         # Get likelihood score from target model for doc
-        ll = self.model.get_ll(document)
+        ll = self.target_model.get_ll(document)
 
         # Return ll - quantile_model(doc)
         tokenized = self.ref_model.tokenizer(document, return_tensors="pt")

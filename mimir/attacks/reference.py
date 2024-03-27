@@ -21,6 +21,6 @@ class ReferenceAttack(Attack):
         """
         loss = kwargs.get('loss', None)
         if loss is None:
-            loss = self.model.get_ll(document, probs=probs, tokens=tokens)
+            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
         ref_loss = self.ref_model.get_ll(document, probs=probs, tokens=tokens)
         return loss - ref_loss

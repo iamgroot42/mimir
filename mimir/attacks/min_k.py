@@ -26,7 +26,7 @@ class MinKProbAttack(Attack):
         all_prob = (
             probs
             if probs is not None
-            else self.model.get_probabilities(document, tokens=tokens)
+            else self.target_model.get_probabilities(document, tokens=tokens)
         )
         # iterate through probabilities by ngram defined by window size at given stride
         ngram_probs = []

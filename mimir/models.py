@@ -67,10 +67,10 @@ class Model(nn.Module):
             pass
         print(f'DONE ({time.time() - start:.2f}s)')
 
-    @torch.no_grad()
     def get_probabilities(self,
                           text: str,
-                          tokens: np.ndarray = None):
+                          tokens: np.ndarray = None,
+                          no_grads: bool = True):
         """
             Get the probabilities or log-softmaxed logits for a text under the current model.
             Args:
@@ -84,45 +84,50 @@ class Model(nn.Module):
             Returns:
                 list: A list of probabilities.
         """
-        if self.device is None or self.name is None:
-            raise ValueError("Please set self.device and self.name in child class")
+        with torch.set_grad_enabled(not no_grads):
+            if self.device is None or self.name is None:
+                raise ValueError("Please set self.device and self.name in child class")
 
-        if tokens is not None:
-            labels = torch.from_numpy(tokens.astype(np.int64)).type(torch.LongTensor)
-            if labels.shape[0] != 1:
-                # expand first dimension
-                labels = labels.unsqueeze(0)
-        else:
-            tokenized = self.tokenizer(
-                text, return_tensors="pt")
-            labels = tokenized.input_ids
+            if tokens is not None:
+                labels = torch.from_numpy(tokens.astype(np.int64)).type(torch.LongTensor)
+                if labels.shape[0] != 1:
+                    # expand first dimension
+                    labels = labels.unsqueeze(0)
+            else:
+                tokenized = self.tokenizer(
+                    text, return_tensors="pt")
+                labels = tokenized.input_ids
 
-        all_prob = []
-        for i in range(0, labels.size(1), self.stride):
-            begin_loc = max(i + self.stride - self.max_length, 0)
-            end_loc = min(i + self.stride, labels.size(1))
-            trg_len = end_loc - i  # may be different from stride on last loop
-            input_ids = labels[:, begin_loc:end_loc].to(self.device)
-            target_ids = input_ids.clone()
-            target_ids[:, :-trg_len] = -100
+            all_prob = []
+            for i in range(0, labels.size(1), self.stride):
+                begin_loc = max(i + self.stride - self.max_length, 0)
+                end_loc = min(i + self.stride, labels.size(1))
+                trg_len = end_loc - i  # may be different from stride on last loop
+                input_ids = labels[:, begin_loc:end_loc].to(self.device)
+                target_ids = input_ids.clone()
+                target_ids[:, :-trg_len] = -100
 
-            logits = self.model(input_ids, labels=target_ids).logits.cpu()
-            shift_logits = logits[..., :-1, :].contiguous()
-            probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-            shift_labels = target_ids[..., 1:].cpu().contiguous()
-            labels_processed = shift_labels[0]
+                logits = self.model(input_ids, labels=target_ids).logits.cpu()
+                shift_logits = logits[..., :-1, :].contiguous()
+                probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+                shift_labels = target_ids[..., 1:].cpu().contiguous()
+                labels_processed = shift_labels[0]
 
-            del input_ids
-            del target_ids
+                del input_ids
+                del target_ids
 
-            for i, token_id in enumerate(labels_processed):
-                if token_id != -100:
-                    probability = probabilities[0, i, token_id].item()
-                    all_prob.append(probability)
-        # Should be equal to # of tokens - 1 to account for shift
-        assert len(all_prob) == labels.size(1) - 1
+                for i, token_id in enumerate(labels_processed):
+                    if token_id != -100:
+                        probability = probabilities[0, i, token_id]
+                        if no_grads:
+                            probability = probability.item()
+                        all_prob.append(probability)
+            # Should be equal to # of tokens - 1 to account for shift
+            assert len(all_prob) == labels.size(1) - 1
 
-        return all_prob
+            if no_grads:
+                return all_prob
+            return torch.tensor(all_prob)
 
     @torch.no_grad()
     def get_ll(self,
