@@ -124,11 +124,11 @@ def get_mia_scores(
             neighbors_within = {n_perturbation: [] for n_perturbation in n_perturbation_list}
             for i, substr in enumerate(sample):
                 # compute token probabilities for sample
-                s_tk_probs = (
-                    target_model.get_probabilities(substr)
+                s_tk_probs, s_all_probs = (
+                    target_model.get_probabilities(substr, return_all_probs=True)
                     if not config.pretokenized
                     else target_model.get_probabilities(
-                        detokenized_sample[i], tokens=substr
+                        detokenized_sample[i], tokens=substr, return_all_probs=True
                     )
                 )
 
@@ -150,17 +150,38 @@ def get_mia_scores(
                         continue
 
                     if attack != AllAttacks.NEIGHBOR:
-                        score = attacker.attack(
-                            substr,
-                            probs=s_tk_probs,
-                            detokenized_sample=(
-                                detokenized_sample[i]
-                                if config.pretokenized
-                                else None
-                            ),
-                            loss=loss,
-                        )
-                        sample_information[attack].append(score)
+                        if attack in [AllAttacks.MIN_K, AllAttacks.MIN_K_PLUS_PLUS]:
+                            # For Min-K and Min-K++
+                            # iterate over k
+                            for k in [
+                                0.1, 0.2, 0.3, 0.4, 0.5,
+                                0.6, 0.7, 0.8, 0.9, 1.0    
+                            ]:
+                                score = attacker.attack(
+                                    substr,
+                                    probs=s_tk_probs,
+                                    detokenized_sample=(
+                                        detokenized_sample[i]
+                                        if config.pretokenized
+                                        else None
+                                    ),
+                                    loss=loss,
+                                    all_probs=s_all_probs, # for Min-K%++,
+                                    k=k
+                                )
+                                sample_information[f"{attack}_{k}"].append(score)
+                        else:
+                            score = attacker.attack(
+                                substr,
+                                probs=s_tk_probs,
+                                detokenized_sample=(
+                                    detokenized_sample[i]
+                                    if config.pretokenized
+                                    else None
+                                ),
+                                loss=loss,
+                            )
+                            sample_information[attack].append(score)
                     else:
                         # For each 'number of neighbors'
                         for n_perturbation in n_perturbation_list:

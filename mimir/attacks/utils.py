@@ -4,6 +4,7 @@ from mimir.attacks.loss import LOSSAttack
 from mimir.attacks.reference import ReferenceAttack
 from mimir.attacks.zlib import ZLIBAttack
 from mimir.attacks.min_k import MinKProbAttack
+from mimir.attacks.min_k_plus_plus import MinKPlusPlusAttack
 from mimir.attacks.neighborhood import NeighborhoodAttack
 from mimir.attacks.gradnorm import GradNormAttack
 
@@ -15,6 +16,7 @@ def get_attacker(attack: str):
         AllAttacks.REFERENCE_BASED: ReferenceAttack,
         AllAttacks.ZLIB: ZLIBAttack,
         AllAttacks.MIN_K: MinKProbAttack,
+        AllAttacks.MIN_K_PLUS_PLUS: MinKPlusPlusAttack,
         AllAttacks.NEIGHBOR: NeighborhoodAttack,
         AllAttacks.GRADNORM: GradNormAttack,
     }
