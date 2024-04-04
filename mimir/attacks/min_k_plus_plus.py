@@ -24,14 +24,15 @@ class MinKPlusPlusAttack(Attack):
         k: float = kwargs.get("k", 0.2)
         all_probs = kwargs.get("all_probs", None)
 
-        target_prob, all_prob = (
+        # these are all log probabilites
+        target_prob, all_probs = (
             (probs, all_probs)
             if (probs is not None and all_probs is not None)
             else self.model.get_probabilities(document, tokens=tokens, return_all_probs=True)
         )
         
-        mu = (all_prob['prob'] * all_prob['log_prob']).sum(-1)
-        sigma = (all_prob['prob'] * ch.square(all_prob['log_prob'])).sum(-1) - ch.square(mu)
+        mu = (ch.exp(all_probs) * all_probs).sum(-1)
+        sigma = (ch.exp(all_probs) * ch.square(all_probs)).sum(-1) - ch.square(mu)
         scores = (np.array(target_prob) - mu.numpy()) / sigma.sqrt().numpy()
         
         return -np.mean(sorted(scores)[:int(len(scores) * k)])

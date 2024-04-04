@@ -100,10 +100,7 @@ class Model(nn.Module):
                 labels = tokenized.input_ids
 
             target_token_log_prob = []
-            all_token_prob = {
-                'log_prob': [],
-                'prob': []
-            }
+            all_token_log_prob = []
             for i in range(0, labels.size(1), self.stride):
                 begin_loc = max(i + self.stride - self.max_length, 0)
                 end_loc = min(i + self.stride, labels.size(1))
@@ -116,7 +113,6 @@ class Model(nn.Module):
                 if no_grads:
                     logits = logits.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
-                probabilities = torch.nn.functional.softmax(shift_logits, dim=-1)
                 log_probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
                 shift_labels = target_ids[..., 1:]
                 if no_grads:
@@ -133,22 +129,19 @@ class Model(nn.Module):
                         if no_grads:
                             log_probability = log_probability.item()
                         target_token_log_prob.append(log_probability)
-                        all_token_prob['log_prob'].append(log_probabilities[0, i])
-                        all_token_prob["prob"].append(probabilities[0, i])
+                        all_token_log_prob.append(log_probabilities[0, i])
             
             # Should be equal to # of tokens - 1 to account for shift
             assert len(target_token_log_prob) == labels.size(1) - 1
-            all_token_prob['log_prob'] = torch.stack(all_token_prob['log_prob'], dim=0)
-            all_token_prob['prob'] = torch.stack(all_token_prob['prob'], dim=0)
-            assert len(target_token_log_prob) == len(all_token_prob['log_prob'])
-            assert len(target_token_log_prob) == len(all_token_prob['prob'])
+            all_token_log_prob = torch.stack(all_token_log_prob, dim=0)
+            assert len(target_token_log_prob) == len(all_token_log_prob)
 
         if not no_grads:
             target_token_log_prob = torch.stack(target_token_log_prob)
 
         if not return_all_probs:
             return target_token_log_prob
-        return target_token_log_prob, all_token_prob
+        return target_token_log_prob, all_token_log_prob
 
     @torch.no_grad()
     def get_ll(self,
