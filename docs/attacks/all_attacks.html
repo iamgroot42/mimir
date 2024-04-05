@@ -41,6 +41,7 @@ class AllAttacks(str, Enum):
     REFERENCE_BASED = &#34;ref&#34; # Done
     ZLIB = &#34;zlib&#34; # Done
     MIN_K = &#34;min_k&#34; # Done
+    MIN_K_PLUS_PLUS = &#34;min_k++&#34; # Done
     NEIGHBOR = &#34;ne&#34; # Done
     GRADNORM = &#34;gradnorm&#34; # Done
     # QUANTILE = &#34;quantile&#34; # Uncomment when tested implementation is available
@@ -122,6 +123,7 @@ class Attack:
     REFERENCE_BASED = &#34;ref&#34; # Done
     ZLIB = &#34;zlib&#34; # Done
     MIN_K = &#34;min_k&#34; # Done
+    MIN_K_PLUS_PLUS = &#34;min_k++&#34; # Done
     NEIGHBOR = &#34;ne&#34; # Done
     GRADNORM = &#34;gradnorm&#34; # Done
     # QUANTILE = &#34;quantile&#34; # Uncomment when tested implementation is available</code></pre>
@@ -142,6 +144,10 @@ class Attack:
 <div class="desc"></div>
 </dd>
 <dt id="mimir.attacks.all_attacks.AllAttacks.MIN_K"><code class="name">var <span class="ident">MIN_K</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="mimir.attacks.all_attacks.AllAttacks.MIN_K_PLUS_PLUS"><code class="name">var <span class="ident">MIN_K_PLUS_PLUS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -224,6 +230,7 @@ class Attack:
 <li><a title="mimir.attacks.gradnorm.GradNormAttack" href="gradnorm.html#mimir.attacks.gradnorm.GradNormAttack">GradNormAttack</a></li>
 <li><a title="mimir.attacks.loss.LOSSAttack" href="loss.html#mimir.attacks.loss.LOSSAttack">LOSSAttack</a></li>
 <li><a title="mimir.attacks.min_k.MinKProbAttack" href="min_k.html#mimir.attacks.min_k.MinKProbAttack">MinKProbAttack</a></li>
+<li><a title="mimir.attacks.min_k_plus_plus.MinKPlusPlusAttack" href="min_k_plus_plus.html#mimir.attacks.min_k_plus_plus.MinKPlusPlusAttack">MinKPlusPlusAttack</a></li>
 <li><a title="mimir.attacks.neighborhood.NeighborhoodAttack" href="neighborhood.html#mimir.attacks.neighborhood.NeighborhoodAttack">NeighborhoodAttack</a></li>
 <li><a title="mimir.attacks.quantile.QuantileAttack" href="quantile.html#mimir.attacks.quantile.QuantileAttack">QuantileAttack</a></li>
 <li><a title="mimir.attacks.reference.ReferenceAttack" href="reference.html#mimir.attacks.reference.ReferenceAttack">ReferenceAttack</a></li>
@@ -326,6 +333,7 @@ class Attack:
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.GRADNORM" href="#mimir.attacks.all_attacks.AllAttacks.GRADNORM">GRADNORM</a></code></li>
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.LOSS" href="#mimir.attacks.all_attacks.AllAttacks.LOSS">LOSS</a></code></li>
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.MIN_K" href="#mimir.attacks.all_attacks.AllAttacks.MIN_K">MIN_K</a></code></li>
+<li><code><a title="mimir.attacks.all_attacks.AllAttacks.MIN_K_PLUS_PLUS" href="#mimir.attacks.all_attacks.AllAttacks.MIN_K_PLUS_PLUS">MIN_K_PLUS_PLUS</a></code></li>
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.NEIGHBOR" href="#mimir.attacks.all_attacks.AllAttacks.NEIGHBOR">NEIGHBOR</a></code></li>
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.REFERENCE_BASED" href="#mimir.attacks.all_attacks.AllAttacks.REFERENCE_BASED">REFERENCE_BASED</a></code></li>
 <li><code><a title="mimir.attacks.all_attacks.AllAttacks.ZLIB" href="#mimir.attacks.all_attacks.AllAttacks.ZLIB">ZLIB</a></code></li>
