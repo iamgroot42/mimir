@@ -12,6 +12,7 @@ class AllAttacks(str, Enum):
     REFERENCE_BASED = "ref" # Done
     ZLIB = "zlib" # Done
     MIN_K = "min_k" # Done
+    MIN_K_PLUS_PLUS = "min_k++" # Done
     NEIGHBOR = "ne" # Done
     GRADNORM = "gradnorm" # Done
     # QUANTILE = "quantile" # Uncomment when tested implementation is available

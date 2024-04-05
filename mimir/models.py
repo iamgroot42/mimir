@@ -70,7 +70,8 @@ class Model(nn.Module):
     def get_probabilities(self,
                           text: str,
                           tokens: np.ndarray = None,
-                          no_grads: bool = True):
+                          no_grads: bool = True,
+                          return_all_probs: bool = False):
         """
             Get the probabilities or log-softmaxed logits for a text under the current model.
             Args:
@@ -98,7 +99,8 @@ class Model(nn.Module):
                     text, return_tensors="pt")
                 labels = tokenized.input_ids
 
-            all_prob = []
+            target_token_log_prob = []
+            all_token_log_prob = []
             for i in range(0, labels.size(1), self.stride):
                 begin_loc = max(i + self.stride - self.max_length, 0)
                 end_loc = min(i + self.stride, labels.size(1))
@@ -111,7 +113,7 @@ class Model(nn.Module):
                 if no_grads:
                     logits = logits.cpu()
                 shift_logits = logits[..., :-1, :].contiguous()
-                probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+                log_probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
                 shift_labels = target_ids[..., 1:]
                 if no_grads:
                     shift_labels = shift_labels.cpu()
@@ -123,17 +125,23 @@ class Model(nn.Module):
 
                 for i, token_id in enumerate(labels_processed):
                     if token_id != -100:
-                        probability = probabilities[0, i, token_id]
+                        log_probability = log_probabilities[0, i, token_id]
                         if no_grads:
-                            probability = probability.item()
-                        all_prob.append(probability)
+                            log_probability = log_probability.item()
+                        target_token_log_prob.append(log_probability)
+                        all_token_log_prob.append(log_probabilities[0, i])
+            
             # Should be equal to # of tokens - 1 to account for shift
-            assert len(all_prob) == labels.size(1) - 1
+            assert len(target_token_log_prob) == labels.size(1) - 1
+            all_token_log_prob = torch.stack(all_token_log_prob, dim=0)
+            assert len(target_token_log_prob) == len(all_token_log_prob)
 
         if not no_grads:
-            all_prob = torch.stack(all_prob)
+            target_token_log_prob = torch.stack(target_token_log_prob)
 
-        return all_prob
+        if not return_all_probs:
+            return target_token_log_prob
+        return target_token_log_prob, all_token_log_prob
 
     @torch.no_grad()
     def get_ll(self,

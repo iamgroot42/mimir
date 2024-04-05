@@ -124,11 +124,11 @@ def get_mia_scores(
             neighbors_within = {n_perturbation: [] for n_perturbation in n_perturbation_list}
             for i, substr in enumerate(sample):
                 # compute token probabilities for sample
-                s_tk_probs = (
-                    target_model.get_probabilities(substr)
+                s_tk_probs, s_all_probs = (
+                    target_model.get_probabilities(substr, return_all_probs=True)
                     if not config.pretokenized
                     else target_model.get_probabilities(
-                        detokenized_sample[i], tokens=substr
+                        detokenized_sample[i], tokens=substr, return_all_probs=True
                     )
                 )
 
@@ -159,6 +159,7 @@ def get_mia_scores(
                                 else None
                             ),
                             loss=loss,
+                            all_probs=s_all_probs,
                         )
                         sample_information[attack].append(score)
                     else:
