@@ -143,7 +143,7 @@ class ExperimentConfig(Serializable):
     max_substrs: Optional[int] = 20
     """If full_doc, determines the maximum number of sample substrs to evaluate on"""
     dump_cache: Optional[bool] = False
-    "Dump data to cache? Exits program after dumping"
+    """Dump data to cache? Exits program after dumping"""
     load_from_cache: Optional[bool] = False
     """Load data from cache?"""
     load_from_hf: Optional[bool] = True
@@ -187,9 +187,9 @@ class ExperimentConfig(Serializable):
     pre_perturb_span_length: Optional[int] = 5
     """Span length for pre-perturbation"""
     tok_by_tok: Optional[bool] = False
-    """FPRs at which to compute TPR"""
-    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
     """Process data token-wise?"""
+    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
+    """FPRs at which to compute TPR"""
     random_seed: Optional[int] = 0
     """Random seed"""
     ref_config: Optional[ReferenceConfig] = None
