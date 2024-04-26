@@ -180,7 +180,7 @@ data_collator (<code>DataCollator</code>, <em>optional</em>):
 The function to use to form a batch from a list of elements of <code>train_dataset</code> or <code>eval_dataset</code>. Will
 default to [<code>default_data_collator</code>] if no <code>tokenizer</code> is provided, an instance of
 [<code>DataCollatorWithPadding</code>] otherwise.
-train_dataset (<code>torch.utils.data.Dataset</code> or <code>torch.utils.data.IterableDataset</code>, <em>optional</em>):
+train_dataset (Union[<code>torch.utils.data.Dataset</code>, <code>torch.utils.data.IterableDataset</code>, <code>datasets.Dataset</code>], <em>optional</em>):
 The dataset to use for training. If it is a [<code>~datasets.Dataset</code>], columns not accepted by the
 <code>model.forward()</code> method are automatically removed.</p>
 <pre><code>Note that if it's a &lt;code&gt;torch.utils.data.IterableDataset&lt;/code&gt; with some randomization and you are training in a
@@ -189,7 +189,7 @@ distributed fashion, your iterable dataset should either use a internal attribut
 manually set the seed of this &lt;code&gt;generator&lt;/code&gt; at each epoch) or have a &lt;code&gt;set\_epoch()&lt;/code&gt; method that internally
 sets the seed of the RNGs used.
 </code></pre>
-<p>eval_dataset (Union[<code>torch.utils.data.Dataset</code>, Dict[str, <code>torch.utils.data.Dataset</code>]), <em>optional</em>):
+<p>eval_dataset (Union[<code>torch.utils.data.Dataset</code>, Dict[str, <code>torch.utils.data.Dataset</code>, <code>datasets.Dataset</code>]), <em>optional</em>):
 The dataset to use for evaluation. If it is a [<code>~datasets.Dataset</code>], columns not accepted by the
 <code>model.forward()</code> method are automatically removed. If it is a dictionary, it will evaluate on each
 dataset prepending the dictionary key to the metric name.

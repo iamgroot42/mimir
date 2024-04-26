@@ -172,7 +172,7 @@ class ExperimentConfig(Serializable):
     max_substrs: Optional[int] = 20
     &#34;&#34;&#34;If full_doc, determines the maximum number of sample substrs to evaluate on&#34;&#34;&#34;
     dump_cache: Optional[bool] = False
-    &#34;Dump data to cache? Exits program after dumping&#34;
+    &#34;&#34;&#34;Dump data to cache? Exits program after dumping&#34;&#34;&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
     load_from_hf: Optional[bool] = True
@@ -216,9 +216,9 @@ class ExperimentConfig(Serializable):
     pre_perturb_span_length: Optional[int] = 5
     &#34;&#34;&#34;Span length for pre-perturbation&#34;&#34;&#34;
     tok_by_tok: Optional[bool] = False
-    &#34;&#34;&#34;FPRs at which to compute TPR&#34;&#34;&#34;
-    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
     &#34;&#34;&#34;Process data token-wise?&#34;&#34;&#34;
+    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
+    &#34;&#34;&#34;FPRs at which to compute TPR&#34;&#34;&#34;
     random_seed: Optional[int] = 0
     &#34;&#34;&#34;Random seed&#34;&#34;&#34;
     ref_config: Optional[ReferenceConfig] = None
@@ -400,7 +400,7 @@ class ExperimentConfig(Serializable):
     max_substrs: Optional[int] = 20
     &#34;&#34;&#34;If full_doc, determines the maximum number of sample substrs to evaluate on&#34;&#34;&#34;
     dump_cache: Optional[bool] = False
-    &#34;Dump data to cache? Exits program after dumping&#34;
+    &#34;&#34;&#34;Dump data to cache? Exits program after dumping&#34;&#34;&#34;
     load_from_cache: Optional[bool] = False
     &#34;&#34;&#34;Load data from cache?&#34;&#34;&#34;
     load_from_hf: Optional[bool] = True
@@ -444,9 +444,9 @@ class ExperimentConfig(Serializable):
     pre_perturb_span_length: Optional[int] = 5
     &#34;&#34;&#34;Span length for pre-perturbation&#34;&#34;&#34;
     tok_by_tok: Optional[bool] = False
-    &#34;&#34;&#34;FPRs at which to compute TPR&#34;&#34;&#34;
-    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
     &#34;&#34;&#34;Process data token-wise?&#34;&#34;&#34;
+    fpr_list: Optional[List[float]] = field(default_factory=lambda: [0.001, 0.01])
+    &#34;&#34;&#34;FPRs at which to compute TPR&#34;&#34;&#34;
     random_seed: Optional[int] = 0
     &#34;&#34;&#34;Random seed&#34;&#34;&#34;
     ref_config: Optional[ReferenceConfig] = None
@@ -539,7 +539,7 @@ class ExperimentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig.fpr_list"><code class="name">var <span class="ident">fpr_list</span> : Optional[List[float]]</code></dt>
 <dd>
-<div class="desc"><p>Process data token-wise?</p></div>
+<div class="desc"><p>FPRs at which to compute TPR</p></div>
 </dd>
 <dt id="mimir.config.ExperimentConfig.full_doc"><code class="name">var <span class="ident">full_doc</span> : Optional[bool]</code></dt>
 <dd>
@@ -639,7 +639,7 @@ class ExperimentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig.tok_by_tok"><code class="name">var <span class="ident">tok_by_tok</span> : Optional[bool]</code></dt>
 <dd>
-<div class="desc"><p>FPRs at which to compute TPR</p></div>
+<div class="desc"><p>Process data token-wise?</p></div>
 </dd>
 <dt id="mimir.config.ExperimentConfig.token_frequency_map"><code class="name">var <span class="ident">token_frequency_map</span> : Optional[str]</code></dt>
 <dd>
