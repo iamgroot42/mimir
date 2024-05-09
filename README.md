@@ -62,8 +62,8 @@ To extend the package for your own dataset, you can directly load your data insi
 
 ## Adding your own attack
 
-To add an attack, create a file for your attack (e.g. `attacks/my_attack.py`) and implement the interface described in `attacks/blackbox_attack.py`.
-Then, add a name for your attack to the dictionary in `attacks/blackbox_attack.py`.
+To add an attack, create a file for your attack (e.g. `attacks/my_attack.py`) and implement the interface described in `attacks/all_attacks.py`.
+Then, add a name for your attack to the dictionary in `attacks/utils.py`.
 
 If you would like to submit your attack to the repository, please open a pull request describing your attack and the paper it is based on.
 
