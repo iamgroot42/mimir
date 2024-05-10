@@ -15,7 +15,7 @@ class GradNormAttack(Attack):
 
     def _attack(self, document, probs, tokens=None, **kwargs):
         """
-        Gradient Norm Attack. Computes p-norm of gradients w.r.t. input tokens.
+        Gradient Norm Attack. Computes p-norm of gradients w.r.t. model parameters.
         """
         # We ignore probs here since they are computed in the general case without gradient-tracking (to save memory)
 
