@@ -6,7 +6,7 @@ for model in "pythia-160m" "pythia-1.4b" "pythia-2.8b" "pythia-6.9b" "pythia-12b
 do
     for subset in "wikipedia_(en)" "github" "pile_cc" "pubmed_central" "arxiv" "dm_mathematics" "hackernews"
     do
-        knocky python run.py \
+        python run.py \
             --config configs/mi.json \
             --revision step99000 \
             --base_model "EleutherAI/${model}-deduped" \
