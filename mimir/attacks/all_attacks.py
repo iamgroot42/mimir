@@ -15,6 +15,7 @@ class AllAttacks(str, Enum):
     MIN_K_PLUS_PLUS = "min_k++" # Done
     NEIGHBOR = "ne" # Done
     GRADNORM = "gradnorm" # Done
+    RECALL = "recall"
     # QUANTILE = "quantile" # Uncomment when tested implementation is available
 
 
