@@ -7,7 +7,7 @@ from mimir.attacks.min_k import MinKProbAttack
 from mimir.attacks.min_k_plus_plus import MinKPlusPlusAttack
 from mimir.attacks.neighborhood import NeighborhoodAttack
 from mimir.attacks.gradnorm import GradNormAttack
-from mimir.attacks.recall import ReCallAttack
+from mimir.attacks.recall import ReCaLLAttack
 
 
 # TODO Use decorators to link attack implementations with enum above
