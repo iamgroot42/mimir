@@ -77,6 +77,7 @@ def get_mia_scores(
     is_train: bool,
     n_samples: int = None,
     batch_size: int = 50,
+    **kwargs
 ):
     # Fix randomness
     fix_seed(config.random_seed)
@@ -100,6 +101,11 @@ def get_mia_scores(
         n_perturbation: [] for n_perturbation in n_perturbation_list
     }
 
+    nonmember_prefix = kwargs.get("nonmember_prefix", None)
+    if AllAttacks.RECALL in attackers_dict.keys():
+        if nonmember_prefix is None:
+            raise ValueError("Must include a prefix for ReCaLL attack")
+        
     # For each batch of data
     # TODO: Batch-size isn't really "batching" data - change later
     for batch in tqdm(range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"):
@@ -160,8 +166,10 @@ def get_mia_scores(
                             ),
                             loss=loss,
                             all_probs=s_all_probs,
+                            nonmember_prefix = nonmember_prefix
                         )
                         sample_information[attack].append(score)
+                        
                     else:
                         # For each 'number of neighbors'
                         for n_perturbation in n_perturbation_list:
@@ -515,6 +523,21 @@ def main(config: ExperimentConfig):
         mask_model_tokenizer=mask_model.tokenizer if mask_model else None,
     )
 
+    #* ReCaLL Specific
+    if AllAttacks.RECALL in config.blackbox_attacks:
+        num_shots = config.recall_num_shots
+        nonmember_prefix = data_nonmember[:num_shots]
+        nonmember_data = data_nonmember[num_shots:]
+    
+        member_prefix = data_member[:num_shots]
+        member_data = data_member[num_shots:]
+
+        data_nonmember = nonmember_data
+        data_member = member_data
+    else:
+        nonmember_prefix = None
+
+
     other_objs, other_nonmembers = None, None
     if config.dataset_nonmember_other_sources is not None:
         other_objs, other_nonmembers = [], []
@@ -628,7 +651,8 @@ def main(config: ExperimentConfig):
         ref_models=ref_models,
         config=config,
         is_train=True,
-        n_samples=n_samples
+        n_samples=n_samples,
+        nonmember_prefix = nonmember_prefix
     )
     # Collect scores for non-members
     nonmember_preds, nonmember_samples = get_mia_scores(
@@ -640,6 +664,7 @@ def main(config: ExperimentConfig):
         config=config,
         is_train=False,
         n_samples=n_samples,
+        nonmember_prefix = nonmember_prefix
     )
     blackbox_outputs = compute_metrics_from_scores(
         member_preds,

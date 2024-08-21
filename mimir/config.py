@@ -174,6 +174,8 @@ class ExperimentConfig(Serializable):
     """Chunk size"""
     scoring_model_name: Optional[str] = None
     """Scoring model (if different from base model)"""
+    recall_num_shots: Optional[int] = 1
+    """Number of shots for ReCaLL Attacks"""
     top_k: Optional[int] = 40
     """Consider only top-k tokens"""
     do_top_k: Optional[bool] = False
