@@ -105,7 +105,10 @@ def get_mia_scores(
     if AllAttacks.RECALL in attackers_dict.keys():
         if nonmember_prefix is None:
             raise ValueError("Must include a prefix for ReCaLL attack")
-        
+        num_shots = config.recall_num_shots
+        avg_length = int(np.mean([len(target_model.tokenizer.encode(ex)) for ex in data["records"]]))
+        recall_dict = {"prefix":nonmember_prefix, "num_shots":num_shots, "avg_length":avg_length}
+
     # For each batch of data
     # TODO: Batch-size isn't really "batching" data - change later
     for batch in tqdm(range(math.ceil(n_samples / batch_size)), desc=f"Computing criterion"):
@@ -166,7 +169,7 @@ def get_mia_scores(
                             ),
                             loss=loss,
                             all_probs=s_all_probs,
-                            nonmember_prefix = nonmember_prefix
+                            recall_dict = recall_dict
                         )
                         sample_information[attack].append(score)
                         
