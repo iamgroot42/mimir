@@ -11,6 +11,7 @@ class ReCaLLAttack(Attack):
 
     def __init__(self, config: ExperimentConfig, target_model: Model):
         super().__init__(config, target_model, ref_model = None)
+        self.prefix = None
 
     @torch.no_grad()
     def _attack(self, document, probs, tokens = None, **kwargs):        
@@ -28,11 +29,16 @@ class ReCaLLAttack(Attack):
                                                   tokens = tokens)
         recall = ll_nonmember / lls
 
+        assert not np.isnan(recall)
         return recall
     
     def process_prefix(self, prefix, avg_length, total_shots):
         model = self.target_model
         tokenizer = self.target_model.tokenizer
+
+        if self.prefix is not None:
+            # We only need to process the prefix once, after that we can just return
+            return self.prefix
 
         max_length = model.max_length
         token_counts = [len(tokenizer.encode(shot)) for shot in prefix]
@@ -40,7 +46,8 @@ class ReCaLLAttack(Attack):
         target_token_count = avg_length
         total_tokens = sum(token_counts) + target_token_count
         if total_tokens<=max_length:
-            return prefix
+            self.prefix = prefix
+            return self.prefix
         # Determine the maximum number of shots that can fit within the max_length
         max_shots = 0
         cumulative_tokens = target_token_count
@@ -52,9 +59,9 @@ class ReCaLLAttack(Attack):
                 break
         # Truncate the prefix to include only the maximum number of shots
         truncated_prefix = prefix[-max_shots:]
-        print(f"""Too many shots used. Initial ReCaLL number of shots was {total_shots}.
-                 Maximum number of shots is {max_shots}. Defaulting to maximum number of shots.""")
-        return truncated_prefix
+        print(f"""\nToo many shots used. Initial ReCaLL number of shots was {total_shots}. Maximum number of shots is {max_shots}. Defaulting to maximum number of shots.""")
+        self.prefix = truncated_prefix
+        return self.prefix
     
     def get_conditional_ll(self, nonmember_prefix, text, num_shots, avg_length, tokens=None):
         assert nonmember_prefix, "nonmember_prefix should not be None or empty"
@@ -68,7 +75,7 @@ class ReCaLLAttack(Attack):
             target_encodings = tokens
 
         processed_prefix = self.process_prefix(nonmember_prefix, avg_length, total_shots=num_shots)
-        input_encodings = tokenizer(text=processed_prefix, return_tensors="pt")
+        input_encodings = tokenizer(text="".join(processed_prefix), return_tensors="pt")
 
         prefix_ids = input_encodings.input_ids.to(model.device)
         text_ids = target_encodings.input_ids.to(model.device)
@@ -78,39 +85,30 @@ class ReCaLLAttack(Attack):
 
         if prefix_ids.size(1) >= max_length:
             raise ValueError("Prefix length exceeds or equals the model's maximum context window.")
-
-        log_likelihoods = []
         stride = model.stride
 
         labels = torch.cat((prefix_ids, text_ids), dim=1)
+
+        total_loss = 0
         with torch.no_grad():
             for i in range(0, labels.size(1), stride):
-
                 begin_loc = max(i + stride - max_length, 0)
                 end_loc = min(i + stride, labels.size(1))
-                trg_len = end_loc - i  # This may be different from stride on the last loop
-
-                # Extract the input_ids for the current window
+                trg_len = end_loc - i
                 input_ids = labels[:, begin_loc:end_loc].to(model.device)
-                
-                # Clone input_ids to create target_ids, masking out the prefix and the initial part of the text
                 target_ids = input_ids.clone()
                 
-                # Masking: prefix part + initial part of the text in the sliding window
-                if begin_loc < prefix_ids.size(1):
-                    prefix_mask_length = prefix_ids.size(1) - begin_loc
-                    target_ids[:, :prefix_mask_length] = -100
-                
-                # Mask the initial part of the text according to trg_len
+                target_ids[:, :max(0, prefix_ids.size(1) - begin_loc)] = -100
                 target_ids[:, :-trg_len] = -100
 
+                if torch.all(target_ids == -100):
+                    continue #this prevents the model from outputting nan as loss value
+                
                 outputs = model.model(input_ids, labels=target_ids)
                 loss = outputs.loss
+                total_loss += -loss.item()
 
-                log_likelihoods.append(-loss.item())
-
-        total_log_likelihood = sum(log_likelihoods)
-        return total_log_likelihood
+        return total_loss
 
     
 
