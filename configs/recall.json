@@ -1,5 +1,5 @@
 {
-    "experiment_name": "edited_members_exp",
+    "experiment_name": "recall",
     "base_model": "EleutherAI/pythia-1.4b",
     "dataset_member": "the_pile",
     "dataset_nonmember": "the_pile",
