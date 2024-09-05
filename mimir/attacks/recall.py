@@ -29,6 +29,7 @@ class ReCaLLAttack(Attack):
                                                   tokens = tokens)
         recall = ll_nonmember / lls
 
+
         assert not np.isnan(recall)
         return recall
     
@@ -86,27 +87,41 @@ class ReCaLLAttack(Attack):
             raise ValueError("Prefix length exceeds or equals the model's maximum context window.")
 
         labels = torch.cat((prefix_ids, text_ids), dim=1)
+        total_length = labels.size(1)
 
         total_loss = 0
+        total_tokens = 0
         with torch.no_grad():
-            for i in range(0, labels.size(1), max_length):
-                begin_loc = max(i - max_length, 0)
-                end_loc = min(i, labels.size(1))
-                trg_len = end_loc - i
+            for i in range(0, total_length, max_length):
+                begin_loc = i
+                end_loc = min(i + max_length, total_length)
+                trg_len = end_loc - begin_loc
+                
                 input_ids = labels[:, begin_loc:end_loc].to(model.device)
                 target_ids = input_ids.clone()
                 
-                target_ids[:, :max(0, prefix_ids.size(1) - begin_loc)] = -100
-                target_ids[:, :-trg_len] = -100
-
+                if begin_loc < prefix_ids.size(1):
+                    prefix_overlap = min(prefix_ids.size(1) - begin_loc, max_length)
+                    target_ids[:, :prefix_overlap] = -100
+                
+                if end_loc > total_length - text_ids.size(1):
+                    target_overlap = min(end_loc - (total_length - text_ids.size(1)), max_length)
+                    target_ids[:, -target_overlap:] = input_ids[:, -target_overlap:]
+                
                 if torch.all(target_ids == -100):
-                    continue #this prevents the model from outputting nan as loss value
+                    continue
                 
                 outputs = model.model(input_ids, labels=target_ids)
                 loss = outputs.loss
-                total_loss += -loss.item()
+                if torch.isnan(loss):
+                    print(f"NaN detected in loss at iteration {i}. Non masked target_ids size is {(target_ids != -100).sum().item()}")
+                    continue
+                non_masked_tokens = (target_ids != -100).sum().item()
+                total_loss += loss.item() * non_masked_tokens
+                total_tokens += non_masked_tokens
 
-        return total_loss
+        average_loss = total_loss / total_tokens if total_tokens > 0 else 0
+        return -average_loss
 
     
 
