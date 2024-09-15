@@ -19,7 +19,8 @@ from mimir.config import (
     EnvironmentConfig,
     NeighborhoodConfig,
     ReferenceConfig,
-    OpenAIConfig
+    OpenAIConfig, 
+    ReCaLLConfig
 )
 import mimir.data_utils as data_utils
 import mimir.plot_utils as plot_utils
@@ -101,11 +102,10 @@ def get_mia_scores(
         n_perturbation: [] for n_perturbation in n_perturbation_list
     }
 
-    nonmember_prefix = kwargs.get("nonmember_prefix", None)
-    if AllAttacks.RECALL in attackers_dict.keys():
-        if nonmember_prefix is None:
-            raise ValueError("Must include a prefix for ReCaLL attack")
-        num_shots = config.recall_num_shots
+    recall_config = config.recall_config
+    if recall_config:
+        nonmember_prefix = kwargs.get("nonmember_prefix", None)
+        num_shots = recall_config.num_shots
         avg_length = int(np.mean([len(target_model.tokenizer.encode(ex)) for ex in data["records"]]))
         recall_dict = {"prefix":nonmember_prefix, "num_shots":num_shots, "avg_length":avg_length}
 
@@ -158,7 +158,23 @@ def get_mia_scores(
                     if attack.startswith(AllAttacks.REFERENCE_BASED) or attack == AllAttacks.LOSS:
                         continue
 
-                    if attack != AllAttacks.NEIGHBOR:
+                    if attack == AllAttacks.RECALL:
+                        score = attacker.attack(
+                            substr,
+                            probs = s_tk_probs,
+                            detokenized_sample=(
+                                detokenized_sample[i]
+                                if config.pretokenized
+                                else None
+                            ),
+                            loss=loss,
+                            all_probs=s_all_probs,
+                            recall_dict = recall_dict
+                        )
+                        sample_information[attack].append(score)
+
+
+                    elif attack != AllAttacks.NEIGHBOR:
                         score = attacker.attack(
                             substr,
                             probs=s_tk_probs,
@@ -169,7 +185,6 @@ def get_mia_scores(
                             ),
                             loss=loss,
                             all_probs=s_all_probs,
-                            recall_dict = recall_dict
                         )
                         sample_information[attack].append(score)
                         
@@ -427,6 +442,7 @@ def main(config: ExperimentConfig):
     neigh_config: NeighborhoodConfig = config.neighborhood_config
     ref_config: ReferenceConfig = config.ref_config
     openai_config: OpenAIConfig = config.openai_config
+    recall_config: ReCaLLConfig = config.recall_config
 
     if openai_config:
         openAI_model = OpenAI_APIModel(config)
@@ -528,15 +544,9 @@ def main(config: ExperimentConfig):
 
     #* ReCaLL Specific
     if AllAttacks.RECALL in config.blackbox_attacks:
-        num_shots = config.recall_num_shots
+        assert recall_config, "Must provide a recall_config"
+        num_shots = recall_config.num_shots
         nonmember_prefix = data_nonmember[:num_shots]
-        nonmember_data = data_nonmember[num_shots:]
-    
-        member_prefix = data_member[:num_shots]
-        member_data = data_member[num_shots:]
-
-        data_nonmember = nonmember_data
-        data_member = member_data
     else:
         nonmember_prefix = None
 

@@ -9,6 +9,9 @@ from mimir.config import ExperimentConfig
 
 class ReCaLLAttack(Attack):
 
+    #** Note: this is a suboptimal implementation of the ReCaLL attack due to necessary changes made to integrate it alongside the other attacks
+    #** for a better performing version, please refer to: https://github.com/ruoyuxie/recall 
+    
     def __init__(self, config: ExperimentConfig, target_model: Model):
         super().__init__(config, target_model, ref_model = None)
         self.prefix = None
@@ -22,6 +25,8 @@ class ReCaLLAttack(Attack):
         avg_length = recall_dict.get("avg_length")
 
         assert nonmember_prefix, "nonmember_prefix should not be None or empty"
+        assert num_shots, "num_shots should not be None or empty"
+        assert avg_length, "avg_length should not be None or empty"
 
         lls = self.target_model.get_ll(document, probs = probs, tokens = tokens)
         ll_nonmember = self.get_conditional_ll(nonmember_prefix = nonmember_prefix, text = document,

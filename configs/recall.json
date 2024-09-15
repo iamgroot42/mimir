@@ -10,7 +10,6 @@
     "output_name": "unified_mia",
     "specific_source": "Github_ngram_13_<0.8_truncated",
     "n_samples": 1000,
-    "recall_num_shots": 1,
     "blackbox_attacks": ["loss", "ref", "zlib", "min_k", "min_k++", "recall"],
     "env_config": {
         "results": "results_new",
@@ -21,6 +20,9 @@
         "models": [
             "EleutherAI/pythia-160m"
         ]
+    },
+    "recall_config":{
+        "num_shots": 1
     },
     "neighborhood_config": {
         "model": "bert",
