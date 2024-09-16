@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>mimir.attacks.neighborhood API documentation</title>
-<meta name="description" content="Neighborhood-MIA attack https://arxiv.org/pdf/2305.18462.pdf" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Neighborhood-MIA attack https://arxiv.org/pdf/2305.18462.pdf">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
 </head>
 <body>
 <main>
@@ -23,586 +26,6 @@
 </header>
 <section id="section-intro">
 <p>Neighborhood-MIA attack <a href="https://arxiv.org/pdf/2305.18462.pdf">https://arxiv.org/pdf/2305.18462.pdf</a></p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
-    Neighborhood-MIA attack https://arxiv.org/pdf/2305.18462.pdf
-&#34;&#34;&#34;
-
-from heapq import nlargest
-import torch
-import re
-import numpy as np
-from tqdm import tqdm
-import random
-import transformers
-from typing import List
-
-from mimir.config import ExperimentConfig
-from mimir.attacks.attack_utils import count_masks, apply_extracted_fills
-from mimir.models import Model, ReferenceModel
-from mimir.attacks.all_attacks import Attack
-
-
-class NeighborhoodAttack(Attack):
-
-    def __init__(
-        self,
-        config: ExperimentConfig,
-        target_model: Model,
-        ref_model: ReferenceModel = None,
-        **kwargs,
-    ):
-        super().__init__(config, target_model, ref_model=None)
-        self.ref_model = self._pick_neighbor_model()
-        assert issubclass(type(self.ref_model), MaskFillingModel), &#34;ref_model must be MaskFillingModel for neighborhood attack&#34;
-
-    def get_mask_model(self):
-        &#34;&#34;&#34;
-            Return the mask filling model.
-        &#34;&#34;&#34;
-        return self.ref_model
-
-    def create_fill_dictionary(self, data):
-        &#34;&#34;&#34;
-            (Only valid for T5 model) Create fill-fictionary used for random_fills
-        &#34;&#34;&#34;
-        neigh_config = self.config.neighborhood_config
-        if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
-            if not self.config.pretokenized:
-                # TODO: maybe can be done if detokenized, but currently not supported
-                self.ref_model.create_fill_dictionary(data)
-
-    def _pick_neighbor_model(self):
-        &#34;&#34;&#34;
-            Select and load the mask filling model requested in the config.
-        &#34;&#34;&#34;
-        # mask filling t5 model
-        mask_model = None
-        neigh_config = self.config.neighborhood_config
-        env_config = self.config.env_config
-
-        model_kwargs = dict()
-        if not neigh_config.random_fills:
-            if env_config.int8:
-                model_kwargs = dict(
-                    load_in_8bit=True, device_map=&#34;auto&#34;, torch_dtype=torch.bfloat16
-                )
-            elif env_config.half:
-                model_kwargs = dict(torch_dtype=torch.bfloat16)
-            try:
-                n_positions = (
-                    512  # Should fix later, but for T-5 this is 512 indeed
-                )
-                # mask_model.config.n_positions
-            except AttributeError:
-                n_positions = self.config.max_tokens
-        else:
-            n_positions = self.config.max_tokens
-        tokenizer_kwargs = {
-            &#34;model_max_length&#34;: n_positions,
-        }
-
-        print(f&#34;Loading mask filling model {neigh_config.model}...&#34;)
-        if &#34;t5&#34; in neigh_config.model:
-            mask_model = T5Model(
-                self.config,
-                model_kwargs=model_kwargs,
-                tokenizer_kwargs=tokenizer_kwargs,
-            )
-        elif &#34;bert&#34; in neigh_config.model:
-            mask_model = BertModel(self.config)
-        else:
-            raise ValueError(f&#34;Unknown model {neigh_config.model}&#34;)
-        # if config.dataset_member in [&#39;english&#39;, &#39;german&#39;]:
-        #     preproc_tokenizer = mask_tokenizer
-        return mask_model
-
-    def load(self):
-        &#34;&#34;&#34;
-        Any attack-specific steps (one-time) preparation
-        &#34;&#34;&#34;
-        print(&#34;MOVING MASK MODEL TO GPU...&#34;, end=&#34;&#34;, flush=True)
-        self.ref_model.load()
-
-    def get_neighbors(self, documents, **kwargs):
-        &#34;&#34;&#34;
-            Generate neighbors for given documents.
-        &#34;&#34;&#34;
-        n_perturbations = kwargs.get(&#34;n_perturbations&#34;, 1)
-        span_length = kwargs.get(&#34;span_length&#34;, 10)
-        neigh_config = self.config.neighborhood_config
-        ceil_pct = neigh_config.ceil_pct
-        kwargs = {}
-        if type(self.ref_model) == T5Model:
-            kwargs = {
-                &#34;span_length&#34;: span_length,
-                &#34;pct&#34;: neigh_config.pct_words_masked,
-                &#34;chunk_size&#34;: self.config.chunk_size,
-                &#34;ceil_pct&#34;: ceil_pct,
-            }
-        kwargs[&#34;n_perturbations&#34;] = n_perturbations
-
-        # Generate neighbors
-        neighbors = self.ref_model.generate_neighbors(documents, **kwargs)
-        return neighbors
-
-    def _attack(self, document, probs, tokens=None, **kwargs):
-        &#34;&#34;&#34;
-        Neighborhood attack score. Looks at difference in likelihood for given document and average likelihood of its neighbors
-        &#34;&#34;&#34;
-        # documents here are actually neighbors
-        batch_size = kwargs.get(&#34;batch_size&#34;, 4)
-        substr_neighbors = kwargs.get(&#34;substr_neighbors&#34;, None)
-        loss = kwargs.get(&#34;loss&#34;, None)
-        if loss is None:
-            loss = self.target_model.get_ll(document, probs=probs, tokens=tokens)
-
-        # Only evaluate neighborhood attack when not caching neighbors
-        mean_substr_score = self.target_model.get_lls(
-            substr_neighbors, batch_size=batch_size
-        )
-        d_based_score = loss - mean_substr_score
-        return d_based_score
-
-
-class MaskFillingModel(Model):
-    def __init__(self, config: ExperimentConfig, **kwargs):
-        super(MaskFillingModel, self).__init__(config, **kwargs)
-        self.device = self.config.env_config.device_aux
-        self.name = self.config.neighborhood_config.model
-
-    def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-        raise NotImplementedError(&#34;generate_neighbors not implemented&#34;)
-
-
-class T5Model(MaskFillingModel):
-    def __init__(self, config: ExperimentConfig, **kwargs):
-        super().__init__(config, **kwargs)
-        model_kwargs = self.kwargs.get(&#34;model_kwargs&#34;, {})
-        tokenizer_kwargs = self.kwargs.get(&#34;tokenizer_kwargs&#34;, {})
-
-        self.model = transformers.AutoModelForSeq2SeqLM.from_pretrained(
-            self.name, **model_kwargs, cache_dir=self.cache_dir
-        )
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(
-            self.name, **tokenizer_kwargs, cache_dir=self.cache_dir
-        )
-
-        # define regex to match all &lt;extra_id_*&gt; tokens, where * is an integer
-        self.pattern = re.compile(r&#34;&lt;extra_id_\d+&gt;&#34;)
-
-    def create_fill_dictionary(self, data):
-        self.FILL_DICTIONARY = set()
-        for texts in data.values():
-            for text in texts:
-                self.FILL_DICTIONARY.update(text.split())
-        self.FILL_DICTIONARY = sorted(list(self.FILL_DICTIONARY))
-
-    def tokenize_and_mask(
-        self, text: str, span_length: int, pct: float, ceil_pct: bool = False
-    ):
-        buffer_size = self.config.neighborhood_config.buffer_size
-
-        tokens = text.split(&#34; &#34;)
-        mask_string = &#34;&lt;&lt;&lt;mask&gt;&gt;&gt;&#34;
-
-        span_length = min(int(pct * len(tokens)), span_length)
-        # avoid div zero:
-
-        span_length = max(1, span_length)
-
-        n_spans = pct * len(tokens) / (span_length + buffer_size * 2)
-        if ceil_pct:
-            n_spans = np.ceil(n_spans)
-        n_spans = int(n_spans)
-
-        n_masks = 0
-        while n_masks &lt; n_spans:
-            start = np.random.randint(0, max(1, len(tokens) - span_length))
-            end = start + span_length
-            search_start = max(0, start - buffer_size)
-            search_end = min(len(tokens), end + buffer_size)
-            if mask_string not in tokens[search_start:search_end]:
-                tokens[start:end] = [mask_string]
-                n_masks += 1
-
-        # replace each occurrence of mask_string with &lt;extra_id_NUM&gt;, where NUM increments
-        num_filled = 0
-        for idx, token in enumerate(tokens):
-            if token == mask_string:
-                tokens[idx] = f&#34;&lt;extra_id_{num_filled}&gt;&#34;
-                num_filled += 1
-        assert num_filled == n_masks, f&#34;num_filled {num_filled} != n_masks {n_masks}&#34;
-        text = &#34; &#34;.join(tokens)
-        return text
-
-    def extract_fills(self, texts):
-        # remove &lt;pad&gt; from beginning of each text
-        texts = [x.replace(&#34;&lt;pad&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/s&gt;&#34;, &#34;&#34;).strip() for x in texts]
-
-        # return the text in between each matched mask token
-        extracted_fills = [self.pattern.split(x)[1:-1] for x in texts]
-
-        # remove whitespace around each fill
-        extracted_fills = [[y.strip() for y in x] for x in extracted_fills]
-
-        return extracted_fills
-
-    def replace_masks(self, texts: List[str]):
-        &#34;&#34;&#34;
-        Replace each masked span with a sample from T5 mask_model
-        &#34;&#34;&#34;
-        mask_top_p = self.config.neighborhood_config.top_p
-        n_expected = count_masks(texts)
-        stop_id = self.tokenizer.encode(f&#34;&lt;extra_id_{max(n_expected)}&gt;&#34;)[0]
-        tokens = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(
-            self.device
-        )
-        outputs = self.model.generate(
-            **tokens,
-            max_length=150,
-            do_sample=True,
-            top_p=mask_top_p,
-            num_return_sequences=1,
-            eos_token_id=stop_id,
-        )
-        return self.tokenizer.batch_decode(outputs, skip_special_tokens=False)
-
-    def generate_neighbors_(self, texts: List[str], **kwargs):
-        span_length: int = kwargs.get(&#34;span_length&#34;)
-        pct: float = kwargs.get(&#34;pct&#34;)
-        ceil_pct: bool = kwargs.get(&#34;ceil_pct&#34;, False)
-        base_tokenizer = kwargs.get(&#34;base_tokenizer&#34;, None)
-        neigh_config = self.config.neighborhood_config
-
-        if not neigh_config.random_fills:
-            masked_texts = [
-                self.tokenize_and_mask(x, span_length, pct, ceil_pct) for x in texts
-            ]
-            raw_fills = self.replace_masks(masked_texts)
-            extracted_fills = self.extract_fills(raw_fills)
-            perturbed_texts = apply_extracted_fills(masked_texts, extracted_fills)
-            idxs = [idx for idx, x in enumerate(perturbed_texts) if x == &#34;&#34;]
-
-            # Handle the fact that sometimes the model doesn&#39;t generate the right number of fills and we have to try again
-            attempts = 1
-            break_out_of_loop: bool = False
-            while &#34;&#34; in perturbed_texts:
-                if attempts &gt; neigh_config.max_tries:
-                    for idx in idxs:
-                        perturbed_texts[idx] = texts[idx]
-                    break_out_of_loop = True
-                    break
-                if break_out_of_loop:
-                    break
-                idxs = [idx for idx, x in enumerate(perturbed_texts) if x == &#34;&#34;]
-                print(
-                    f&#34;WARNING: {len(idxs)} texts have no fills. Trying again [attempt {attempts}].&#34;
-                )
-                masked_texts = [
-                    self.tokenize_and_mask(x, span_length, pct, ceil_pct)
-                    for idx, x in enumerate(texts)
-                    if idx in idxs
-                ]
-                raw_fills = self.replace_masks(masked_texts)
-                extracted_fills = self.extract_fills(raw_fills)
-                new_perturbed_texts = apply_extracted_fills(
-                    masked_texts, extracted_fills
-                )
-                for idx, x in zip(idxs, new_perturbed_texts):
-                    perturbed_texts[idx] = x
-                attempts += 1
-        else:
-            if neigh_config.random_fills_tokens:
-                if base_tokenizer is None:
-                    raise ValueError(
-                        &#34;base_tokenizer must be provided if random_fills and random_fills_tokens are True&#34;
-                    )
-
-                # tokenize base_tokenizer
-                tokens = base_tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(
-                    self.device
-                )
-                valid_tokens = tokens.input_ids != base_tokenizer.pad_token_id
-                replace_pct = neigh_config.pct_words_masked * (
-                    neigh_config.span_length
-                    / (neigh_config.span_length + 2 * neigh_config.buffer_size)
-                )
-
-                # replace replace_pct of input_ids with random tokens
-                random_mask = (
-                    torch.rand(tokens.input_ids.shape, device=self.device) &lt; replace_pct
-                )
-                random_mask &amp;= valid_tokens
-                random_tokens = torch.randint(
-                    0,
-                    base_tokenizer.vocab_size,
-                    (random_mask.sum(),),
-                    device=self.device,
-                )
-                # while any of the random tokens are special tokens, replace them with random non-special tokens
-                while any(
-                    base_tokenizer.decode(x) in base_tokenizer.all_special_tokens
-                    for x in random_tokens
-                ):
-                    random_tokens = torch.randint(
-                        0,
-                        base_tokenizer.vocab_size,
-                        (random_mask.sum(),),
-                        device=self.device,
-                    )
-                tokens.input_ids[random_mask] = random_tokens
-                perturbed_texts = base_tokenizer.batch_decode(
-                    tokens.input_ids, skip_special_tokens=True
-                )
-            else:
-                masked_texts = [
-                    self.tokenize_and_mask(x, span_length, pct, ceil_pct) for x in texts
-                ]
-                perturbed_texts = masked_texts
-                # replace each &lt;extra_id_*&gt; with neigh_config.span_length random words from FILL_DICTIONARY
-                for idx, text in enumerate(perturbed_texts):
-                    filled_text = text
-                    for fill_idx in range(count_masks([text])[0]):
-                        fill = random.sample(self.FILL_DICTIONARY, span_length)
-                        filled_text = filled_text.replace(
-                            f&#34;&lt;extra_id_{fill_idx}&gt;&#34;, &#34; &#34;.join(fill)
-                        )
-                    assert (
-                        count_masks([filled_text])[0] == 0
-                    ), &#34;Failed to replace all masks&#34;
-                    perturbed_texts[idx] = filled_text
-
-        return perturbed_texts
-
-    def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-        n_neighbors = kwargs.get(&#34;n_perturbations&#34;, 25)
-        # Repeat text if T-5 model
-        texts_use = [x for x in texts for _ in range(n_neighbors)]
-
-        chunk_size = self.config.chunk_size
-        if &#34;11b&#34; in self.config.neighborhood_config.model:
-            chunk_size //= 2
-
-        outputs = []
-        for i in tqdm(
-            range(0, len(texts_use), chunk_size), desc=&#34;Applying perturbations&#34;
-        ):
-            outputs.extend(
-                self.generate_neighbors_(texts_use[i : i + chunk_size], **kwargs)
-            )
-        return outputs
-
-
-class BertModel(MaskFillingModel):
-    def __init__(self, config: ExperimentConfig, **kwargs):
-        super().__init__(config, **kwargs)
-        self.token_dropout = torch.nn.Dropout(p=0.7)
-        if self.name == &#34;bert&#34;:
-            self.tokenizer = transformers.BertTokenizerFast.from_pretrained(
-                &#34;bert-base-uncased&#34;, cache_dir=self.cache_dir
-            )
-            self.model = transformers.BertForMaskedLM.from_pretrained(
-                &#34;bert-base-uncased&#34;, cache_dir=self.cache_dir
-            )
-        elif self.name == &#34;distilbert&#34;:
-            self.tokenizer = transformers.DistilBertTokenizer.from_pretrained(
-                &#34;distilbert-base-uncased&#34;, cache_dir=self.cache_dir
-            )
-            self.model = transformers.DistilBertForMaskedLM.from_pretrained(
-                &#34;distilbert-base-uncased&#34;, cache_dir=self.cache_dir
-            )
-        elif self.name == &#34;roberta&#34;:
-            self.tokenizer = transformers.RobertaTokenizer.from_pretrained(
-                &#34;roberta-base&#34;, cache_dir=self.cache_dir
-            )
-            self.model = transformers.RobertaForMaskedLM.from_pretrained(
-                &#34;roberta-base&#34;, cache_dir=self.cache_dir
-            )
-        else:
-            raise ValueError(f&#34;Invalid model name {self.name}&#34;)
-
-    def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-        neighbors = []
-        for text in tqdm(texts, desc=&#34;Generating neighbors&#34;):
-            neighbors.extend(self.generate_neighbors_(text, **kwargs))
-        return neighbors
-
-    def generate_neighbors_(self, text: str, **kwargs):
-        in_place_swap = self.config.neighborhood_config.original_tokenization_swap
-
-        tokenizer_output = self.tokenizer(
-            text,
-            padding=True,
-            truncation=True,
-            return_offsets_mapping=in_place_swap,
-            max_length=self.config.max_tokens,
-            return_tensors=&#34;pt&#34;,
-        )
-        text_tokenized = tokenizer_output.input_ids.to(self.device)
-        n_neighbors = kwargs.get(&#34;n_perturbations&#34;, 25)
-        num_tokens = len(text_tokenized[0, :])
-        n_swap = int(num_tokens * self.config.neighborhood_config.pct_swap_bert)
-
-        if in_place_swap:
-            token_positions = tokenizer_output.offset_mapping[0]
-
-        replacements = dict()
-
-        target_token_indices = range(1, num_tokens)
-        for target_token_index in target_token_indices:
-            target_token = text_tokenized[0, target_token_index]
-            if self.name == &#34;bert&#34;:
-                embeds = self.model.bert.embeddings(text_tokenized)
-            elif self.name == &#34;distilbert&#34;:
-                embeds = self.model.distilbert.embeddings(text_tokenized)
-            elif self.name == &#34;roberta&#34;:
-                embeds = self.model.roberta.embeddings(text_tokenized)
-
-            embeds = torch.cat(
-                (
-                    embeds[:, :target_token_index, :],
-                    self.token_dropout(embeds[:, target_token_index, :]).unsqueeze(
-                        dim=0
-                    ),
-                    embeds[:, target_token_index + 1 :, :],
-                ),
-                dim=1,
-            )
-
-            token_probs = torch.softmax(self.model(inputs_embeds=embeds).logits, dim=2)
-
-            original_prob = token_probs[0, target_token_index, target_token]
-
-            top_probabilities, top_candidates = torch.topk(
-                token_probs[:, target_token_index, :], 6, dim=1
-            )
-
-            for cand, prob in zip(top_candidates[0], top_probabilities[0]):
-                if not cand == target_token:
-                    # alt = torch.cat((text_tokenized[:,:target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(device), text_tokenized[:,target_token_index+1:]), dim=1)
-                    # alt_text = search_tokenizer.batch_decode(alt)[0]
-                    if original_prob.item() == 1:
-                        replacements[(target_token_index, cand)] = prob.item() / (
-                            1 - 0.9
-                        )
-                    else:
-                        replacements[(target_token_index, cand)] = prob.item() / (
-                            1 - original_prob.item()
-                        )
-
-        if self.config.neighborhood_config.neighbor_strategy == &#34;deterministic&#34;:
-            replacement_keys = nlargest(n_neighbors, replacements, key=replacements.get)
-            replacements_new = dict()
-            for rk in replacement_keys:
-                replacements_new[rk] = replacements[rk]
-
-            replacements = replacements_new
-
-            # TODO: Not sure if this is needed (perhaps making sure we never take &gt;= 100)? Consider removing later
-            highest_scored = nlargest(100, replacements, key=replacements.get)
-
-            neighbors = []
-            for single in highest_scored:
-                target_token_index, cand = single
-
-                if in_place_swap:
-                    # Get indices of original text that we want to swap out
-                    start, end = token_positions[target_token_index]
-                    # Get text corresponding to cand token
-                    fill_in_text = self.tokenizer.decode(cand)
-                    # Remove any &#39;##&#39; from prefix (since we&#39;re doing a plug back into text)
-                    fill_in_text = fill_in_text.replace(&#34;##&#34;, &#34;&#34;)
-                    alt_text = text[:start] + fill_in_text + text[end:]
-                else:
-                    alt = text_tokenized
-                    alt = torch.cat(
-                        (
-                            alt[:, :target_token_index],
-                            torch.LongTensor([cand]).unsqueeze(0).to(self.device),
-                            alt[:, target_token_index + 1 :],
-                        ),
-                        dim=1,
-                    )
-                    alt_text = self.tokenizer.batch_decode(alt)[0]
-                    # Remove [CLS] and [SEP] tokens
-                    alt_text = alt_text.replace(&#34;[CLS]&#34;, &#34;&#34;).replace(&#34;[SEP]&#34;, &#34;&#34;)
-                    # texts.append((alt_text, replacements[single]))
-                neighbors.append(alt_text)
-
-        elif self.config.neighborhood_config.neighbor_strategy == &#34;random&#34;:
-            if not in_place_swap:
-                raise ValueError(
-                    &#34;Random neighbor strategy only works with in_place_swap=True right now&#34;
-                )
-
-            # Make new dict replacements_new with structure [key[0]]: (key[1], value) for all keys in replacements
-            replacements_new = dict()
-            for k, v in replacements.items():
-                if k[0] not in replacements_new:
-                    replacements_new[k[0]] = []
-                replacements_new[k[0]].append((k[1].item(), v))
-            # Sort each entry by score
-            for k, v in replacements_new.items():
-                replacements_new[k] = sorted(v, key=lambda x: x[1], reverse=True)
-
-            num_trials = int(1e3)
-            replacements, scores = [], []
-            for _ in range(num_trials):
-                # Pick n_swap random positions
-                swap_positions = np.random.choice(
-                    list(replacements_new.keys()), n_swap, replace=False
-                )
-                # Out of all replacements, pick keys where target_token_index is in swap_positions
-                picked = [replacements_new[x][0] for x in swap_positions]
-                # Compute score (sum)
-                score = sum([x[1] for x in picked])
-                scores.append(score)
-                # Also keep track of replacements (position, candidate)
-                replacements.append(
-                    [(i, replacements_new[i][0][0]) for i in swap_positions]
-                )
-
-            # Out of all trials, pick n_neighbors combinations (highest scores)
-            highest_scored = nlargest(
-                n_neighbors, zip(scores, replacements), key=lambda x: x[0]
-            )
-
-            neighbors = []
-            for _, single in highest_scored:
-                # Sort according to target_token_index
-                single = sorted(single, key=lambda x: x[0])
-                # Get corresponding positions in text
-                single = [
-                    (token_positions[target_token_index], cand)
-                    for target_token_index, cand in single
-                ]
-                # Add start of text (before first swap)
-                end_prev = 0
-                alt_text = &#34;&#34;
-                for (start, end), cand in single:
-                    # Get text corresponding to cand token
-                    fill_in_text = self.tokenizer.decode(cand)
-                    # Remove any &#39;##&#39; from prefix (since we&#39;re doing a plug back into text)
-                    fill_in_text = fill_in_text.replace(&#34;##&#34;, &#34;&#34;)
-                    alt_text += text[end_prev:start] + fill_in_text
-                    end_prev = end
-                # Add remainder text (after last swap)
-                start, end = single[-1][0]
-                alt_text += text[end:]
-                neighbors.append(alt_text)
-
-        else:
-            raise NotImplementedError(
-                f&#34;Invalid neighbor strategy {self.config.neighborhood_config.neighbor_strategy}&#34;
-            )
-
-        # return texts
-        return neighbors</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -836,21 +259,6 @@ class BertModel(MaskFillingModel):
 <li><a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a></li>
 <li>torch.nn.modules.module.Module</li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="mimir.attacks.neighborhood.BertModel.call_super_init"><code class="name">var <span class="ident">call_super_init</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.BertModel.dump_patches"><code class="name">var <span class="ident">dump_patches</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.BertModel.training"><code class="name">var <span class="ident">training</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="mimir.attacks.neighborhood.BertModel.generate_neighbors"><code class="name flex">
@@ -858,205 +266,18 @@ class BertModel(MaskFillingModel):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-    neighbors = []
-    for text in tqdm(texts, desc=&#34;Generating neighbors&#34;):
-        neighbors.extend(self.generate_neighbors_(text, **kwargs))
-    return neighbors</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.BertModel.generate_neighbors_"><code class="name flex">
 <span>def <span class="ident">generate_neighbors_</span></span>(<span>self, text: str, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def generate_neighbors_(self, text: str, **kwargs):
-    in_place_swap = self.config.neighborhood_config.original_tokenization_swap
-
-    tokenizer_output = self.tokenizer(
-        text,
-        padding=True,
-        truncation=True,
-        return_offsets_mapping=in_place_swap,
-        max_length=self.config.max_tokens,
-        return_tensors=&#34;pt&#34;,
-    )
-    text_tokenized = tokenizer_output.input_ids.to(self.device)
-    n_neighbors = kwargs.get(&#34;n_perturbations&#34;, 25)
-    num_tokens = len(text_tokenized[0, :])
-    n_swap = int(num_tokens * self.config.neighborhood_config.pct_swap_bert)
-
-    if in_place_swap:
-        token_positions = tokenizer_output.offset_mapping[0]
-
-    replacements = dict()
-
-    target_token_indices = range(1, num_tokens)
-    for target_token_index in target_token_indices:
-        target_token = text_tokenized[0, target_token_index]
-        if self.name == &#34;bert&#34;:
-            embeds = self.model.bert.embeddings(text_tokenized)
-        elif self.name == &#34;distilbert&#34;:
-            embeds = self.model.distilbert.embeddings(text_tokenized)
-        elif self.name == &#34;roberta&#34;:
-            embeds = self.model.roberta.embeddings(text_tokenized)
-
-        embeds = torch.cat(
-            (
-                embeds[:, :target_token_index, :],
-                self.token_dropout(embeds[:, target_token_index, :]).unsqueeze(
-                    dim=0
-                ),
-                embeds[:, target_token_index + 1 :, :],
-            ),
-            dim=1,
-        )
-
-        token_probs = torch.softmax(self.model(inputs_embeds=embeds).logits, dim=2)
-
-        original_prob = token_probs[0, target_token_index, target_token]
-
-        top_probabilities, top_candidates = torch.topk(
-            token_probs[:, target_token_index, :], 6, dim=1
-        )
-
-        for cand, prob in zip(top_candidates[0], top_probabilities[0]):
-            if not cand == target_token:
-                # alt = torch.cat((text_tokenized[:,:target_token_index], torch.LongTensor([cand]).unsqueeze(0).to(device), text_tokenized[:,target_token_index+1:]), dim=1)
-                # alt_text = search_tokenizer.batch_decode(alt)[0]
-                if original_prob.item() == 1:
-                    replacements[(target_token_index, cand)] = prob.item() / (
-                        1 - 0.9
-                    )
-                else:
-                    replacements[(target_token_index, cand)] = prob.item() / (
-                        1 - original_prob.item()
-                    )
-
-    if self.config.neighborhood_config.neighbor_strategy == &#34;deterministic&#34;:
-        replacement_keys = nlargest(n_neighbors, replacements, key=replacements.get)
-        replacements_new = dict()
-        for rk in replacement_keys:
-            replacements_new[rk] = replacements[rk]
-
-        replacements = replacements_new
-
-        # TODO: Not sure if this is needed (perhaps making sure we never take &gt;= 100)? Consider removing later
-        highest_scored = nlargest(100, replacements, key=replacements.get)
-
-        neighbors = []
-        for single in highest_scored:
-            target_token_index, cand = single
-
-            if in_place_swap:
-                # Get indices of original text that we want to swap out
-                start, end = token_positions[target_token_index]
-                # Get text corresponding to cand token
-                fill_in_text = self.tokenizer.decode(cand)
-                # Remove any &#39;##&#39; from prefix (since we&#39;re doing a plug back into text)
-                fill_in_text = fill_in_text.replace(&#34;##&#34;, &#34;&#34;)
-                alt_text = text[:start] + fill_in_text + text[end:]
-            else:
-                alt = text_tokenized
-                alt = torch.cat(
-                    (
-                        alt[:, :target_token_index],
-                        torch.LongTensor([cand]).unsqueeze(0).to(self.device),
-                        alt[:, target_token_index + 1 :],
-                    ),
-                    dim=1,
-                )
-                alt_text = self.tokenizer.batch_decode(alt)[0]
-                # Remove [CLS] and [SEP] tokens
-                alt_text = alt_text.replace(&#34;[CLS]&#34;, &#34;&#34;).replace(&#34;[SEP]&#34;, &#34;&#34;)
-                # texts.append((alt_text, replacements[single]))
-            neighbors.append(alt_text)
-
-    elif self.config.neighborhood_config.neighbor_strategy == &#34;random&#34;:
-        if not in_place_swap:
-            raise ValueError(
-                &#34;Random neighbor strategy only works with in_place_swap=True right now&#34;
-            )
-
-        # Make new dict replacements_new with structure [key[0]]: (key[1], value) for all keys in replacements
-        replacements_new = dict()
-        for k, v in replacements.items():
-            if k[0] not in replacements_new:
-                replacements_new[k[0]] = []
-            replacements_new[k[0]].append((k[1].item(), v))
-        # Sort each entry by score
-        for k, v in replacements_new.items():
-            replacements_new[k] = sorted(v, key=lambda x: x[1], reverse=True)
-
-        num_trials = int(1e3)
-        replacements, scores = [], []
-        for _ in range(num_trials):
-            # Pick n_swap random positions
-            swap_positions = np.random.choice(
-                list(replacements_new.keys()), n_swap, replace=False
-            )
-            # Out of all replacements, pick keys where target_token_index is in swap_positions
-            picked = [replacements_new[x][0] for x in swap_positions]
-            # Compute score (sum)
-            score = sum([x[1] for x in picked])
-            scores.append(score)
-            # Also keep track of replacements (position, candidate)
-            replacements.append(
-                [(i, replacements_new[i][0][0]) for i in swap_positions]
-            )
-
-        # Out of all trials, pick n_neighbors combinations (highest scores)
-        highest_scored = nlargest(
-            n_neighbors, zip(scores, replacements), key=lambda x: x[0]
-        )
-
-        neighbors = []
-        for _, single in highest_scored:
-            # Sort according to target_token_index
-            single = sorted(single, key=lambda x: x[0])
-            # Get corresponding positions in text
-            single = [
-                (token_positions[target_token_index], cand)
-                for target_token_index, cand in single
-            ]
-            # Add start of text (before first swap)
-            end_prev = 0
-            alt_text = &#34;&#34;
-            for (start, end), cand in single:
-                # Get text corresponding to cand token
-                fill_in_text = self.tokenizer.decode(cand)
-                # Remove any &#39;##&#39; from prefix (since we&#39;re doing a plug back into text)
-                fill_in_text = fill_in_text.replace(&#34;##&#34;, &#34;&#34;)
-                alt_text += text[end_prev:start] + fill_in_text
-                end_prev = end
-            # Add remainder text (after last swap)
-            start, end = single[-1][0]
-            alt_text += text[end:]
-            neighbors.append(alt_text)
-
-    else:
-        raise NotImplementedError(
-            f&#34;Invalid neighbor strategy {self.config.neighborhood_config.neighbor_strategy}&#34;
-        )
-
-    # return texts
-    return neighbors</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="mimir.attacks.neighborhood.MaskFillingModel" href="#mimir.attacks.neighborhood.MaskFillingModel">MaskFillingModel</a></b></code>:
 <ul class="hlist">
-<li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.forward" href="../models.html#mimir.models.Model.forward">forward</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.get_ll" href="../models.html#mimir.models.Model.get_ll">get_ll</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.get_probabilities" href="../models.html#mimir.models.Model.get_probabilities">get_probabilities</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.load" href="../models.html#mimir.models.Model.load">load</a></code></li>
@@ -1098,21 +319,6 @@ class BertModel(MaskFillingModel):
 <li><a title="mimir.attacks.neighborhood.BertModel" href="#mimir.attacks.neighborhood.BertModel">BertModel</a></li>
 <li><a title="mimir.attacks.neighborhood.T5Model" href="#mimir.attacks.neighborhood.T5Model">T5Model</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="mimir.attacks.neighborhood.MaskFillingModel.call_super_init"><code class="name">var <span class="ident">call_super_init</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.MaskFillingModel.dump_patches"><code class="name">var <span class="ident">dump_patches</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.MaskFillingModel.training"><code class="name">var <span class="ident">training</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="mimir.attacks.neighborhood.MaskFillingModel.generate_neighbors"><code class="name flex">
@@ -1120,20 +326,12 @@ class BertModel(MaskFillingModel):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-    raise NotImplementedError(&#34;generate_neighbors not implemented&#34;)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a></b></code>:
 <ul class="hlist">
-<li><code><a title="mimir.models.Model.forward" href="../models.html#mimir.models.Model.forward">forward</a></code></li>
 <li><code><a title="mimir.models.Model.get_ll" href="../models.html#mimir.models.Model.get_ll">get_ll</a></code></li>
 <li><code><a title="mimir.models.Model.get_probabilities" href="../models.html#mimir.models.Model.get_probabilities">get_probabilities</a></code></li>
 <li><code><a title="mimir.models.Model.load" href="../models.html#mimir.models.Model.load">load</a></code></li>
@@ -1287,68 +485,18 @@ class BertModel(MaskFillingModel):
 </code></dt>
 <dd>
 <div class="desc"><p>(Only valid for T5 model) Create fill-fictionary used for random_fills</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_fill_dictionary(self, data):
-    &#34;&#34;&#34;
-        (Only valid for T5 model) Create fill-fictionary used for random_fills
-    &#34;&#34;&#34;
-    neigh_config = self.config.neighborhood_config
-    if &#34;t5&#34; in neigh_config.model and neigh_config.random_fills:
-        if not self.config.pretokenized:
-            # TODO: maybe can be done if detokenized, but currently not supported
-            self.ref_model.create_fill_dictionary(data)</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.NeighborhoodAttack.get_mask_model"><code class="name flex">
 <span>def <span class="ident">get_mask_model</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the mask filling model.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_mask_model(self):
-    &#34;&#34;&#34;
-        Return the mask filling model.
-    &#34;&#34;&#34;
-    return self.ref_model</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.NeighborhoodAttack.get_neighbors"><code class="name flex">
 <span>def <span class="ident">get_neighbors</span></span>(<span>self, documents, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate neighbors for given documents.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_neighbors(self, documents, **kwargs):
-    &#34;&#34;&#34;
-        Generate neighbors for given documents.
-    &#34;&#34;&#34;
-    n_perturbations = kwargs.get(&#34;n_perturbations&#34;, 1)
-    span_length = kwargs.get(&#34;span_length&#34;, 10)
-    neigh_config = self.config.neighborhood_config
-    ceil_pct = neigh_config.ceil_pct
-    kwargs = {}
-    if type(self.ref_model) == T5Model:
-        kwargs = {
-            &#34;span_length&#34;: span_length,
-            &#34;pct&#34;: neigh_config.pct_words_masked,
-            &#34;chunk_size&#34;: self.config.chunk_size,
-            &#34;ceil_pct&#34;: ceil_pct,
-        }
-    kwargs[&#34;n_perturbations&#34;] = n_perturbations
-
-    # Generate neighbors
-    neighbors = self.ref_model.generate_neighbors(documents, **kwargs)
-    return neighbors</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1596,21 +744,6 @@ class BertModel(MaskFillingModel):
 <li><a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a></li>
 <li>torch.nn.modules.module.Module</li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="mimir.attacks.neighborhood.T5Model.call_super_init"><code class="name">var <span class="ident">call_super_init</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.T5Model.dump_patches"><code class="name">var <span class="ident">dump_patches</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.attacks.neighborhood.T5Model.training"><code class="name">var <span class="ident">training</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="mimir.attacks.neighborhood.T5Model.create_fill_dictionary"><code class="name flex">
@@ -1618,269 +751,42 @@ class BertModel(MaskFillingModel):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def create_fill_dictionary(self, data):
-    self.FILL_DICTIONARY = set()
-    for texts in data.values():
-        for text in texts:
-            self.FILL_DICTIONARY.update(text.split())
-    self.FILL_DICTIONARY = sorted(list(self.FILL_DICTIONARY))</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.T5Model.extract_fills"><code class="name flex">
 <span>def <span class="ident">extract_fills</span></span>(<span>self, texts)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def extract_fills(self, texts):
-    # remove &lt;pad&gt; from beginning of each text
-    texts = [x.replace(&#34;&lt;pad&gt;&#34;, &#34;&#34;).replace(&#34;&lt;/s&gt;&#34;, &#34;&#34;).strip() for x in texts]
-
-    # return the text in between each matched mask token
-    extracted_fills = [self.pattern.split(x)[1:-1] for x in texts]
-
-    # remove whitespace around each fill
-    extracted_fills = [[y.strip() for y in x] for x in extracted_fills]
-
-    return extracted_fills</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.T5Model.generate_neighbors"><code class="name flex">
 <span>def <span class="ident">generate_neighbors</span></span>(<span>self, texts, **kwargs) ‑> List[str]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def generate_neighbors(self, texts, **kwargs) -&gt; List[str]:
-    n_neighbors = kwargs.get(&#34;n_perturbations&#34;, 25)
-    # Repeat text if T-5 model
-    texts_use = [x for x in texts for _ in range(n_neighbors)]
-
-    chunk_size = self.config.chunk_size
-    if &#34;11b&#34; in self.config.neighborhood_config.model:
-        chunk_size //= 2
-
-    outputs = []
-    for i in tqdm(
-        range(0, len(texts_use), chunk_size), desc=&#34;Applying perturbations&#34;
-    ):
-        outputs.extend(
-            self.generate_neighbors_(texts_use[i : i + chunk_size], **kwargs)
-        )
-    return outputs</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.T5Model.generate_neighbors_"><code class="name flex">
 <span>def <span class="ident">generate_neighbors_</span></span>(<span>self, texts: List[str], **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def generate_neighbors_(self, texts: List[str], **kwargs):
-    span_length: int = kwargs.get(&#34;span_length&#34;)
-    pct: float = kwargs.get(&#34;pct&#34;)
-    ceil_pct: bool = kwargs.get(&#34;ceil_pct&#34;, False)
-    base_tokenizer = kwargs.get(&#34;base_tokenizer&#34;, None)
-    neigh_config = self.config.neighborhood_config
-
-    if not neigh_config.random_fills:
-        masked_texts = [
-            self.tokenize_and_mask(x, span_length, pct, ceil_pct) for x in texts
-        ]
-        raw_fills = self.replace_masks(masked_texts)
-        extracted_fills = self.extract_fills(raw_fills)
-        perturbed_texts = apply_extracted_fills(masked_texts, extracted_fills)
-        idxs = [idx for idx, x in enumerate(perturbed_texts) if x == &#34;&#34;]
-
-        # Handle the fact that sometimes the model doesn&#39;t generate the right number of fills and we have to try again
-        attempts = 1
-        break_out_of_loop: bool = False
-        while &#34;&#34; in perturbed_texts:
-            if attempts &gt; neigh_config.max_tries:
-                for idx in idxs:
-                    perturbed_texts[idx] = texts[idx]
-                break_out_of_loop = True
-                break
-            if break_out_of_loop:
-                break
-            idxs = [idx for idx, x in enumerate(perturbed_texts) if x == &#34;&#34;]
-            print(
-                f&#34;WARNING: {len(idxs)} texts have no fills. Trying again [attempt {attempts}].&#34;
-            )
-            masked_texts = [
-                self.tokenize_and_mask(x, span_length, pct, ceil_pct)
-                for idx, x in enumerate(texts)
-                if idx in idxs
-            ]
-            raw_fills = self.replace_masks(masked_texts)
-            extracted_fills = self.extract_fills(raw_fills)
-            new_perturbed_texts = apply_extracted_fills(
-                masked_texts, extracted_fills
-            )
-            for idx, x in zip(idxs, new_perturbed_texts):
-                perturbed_texts[idx] = x
-            attempts += 1
-    else:
-        if neigh_config.random_fills_tokens:
-            if base_tokenizer is None:
-                raise ValueError(
-                    &#34;base_tokenizer must be provided if random_fills and random_fills_tokens are True&#34;
-                )
-
-            # tokenize base_tokenizer
-            tokens = base_tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(
-                self.device
-            )
-            valid_tokens = tokens.input_ids != base_tokenizer.pad_token_id
-            replace_pct = neigh_config.pct_words_masked * (
-                neigh_config.span_length
-                / (neigh_config.span_length + 2 * neigh_config.buffer_size)
-            )
-
-            # replace replace_pct of input_ids with random tokens
-            random_mask = (
-                torch.rand(tokens.input_ids.shape, device=self.device) &lt; replace_pct
-            )
-            random_mask &amp;= valid_tokens
-            random_tokens = torch.randint(
-                0,
-                base_tokenizer.vocab_size,
-                (random_mask.sum(),),
-                device=self.device,
-            )
-            # while any of the random tokens are special tokens, replace them with random non-special tokens
-            while any(
-                base_tokenizer.decode(x) in base_tokenizer.all_special_tokens
-                for x in random_tokens
-            ):
-                random_tokens = torch.randint(
-                    0,
-                    base_tokenizer.vocab_size,
-                    (random_mask.sum(),),
-                    device=self.device,
-                )
-            tokens.input_ids[random_mask] = random_tokens
-            perturbed_texts = base_tokenizer.batch_decode(
-                tokens.input_ids, skip_special_tokens=True
-            )
-        else:
-            masked_texts = [
-                self.tokenize_and_mask(x, span_length, pct, ceil_pct) for x in texts
-            ]
-            perturbed_texts = masked_texts
-            # replace each &lt;extra_id_*&gt; with neigh_config.span_length random words from FILL_DICTIONARY
-            for idx, text in enumerate(perturbed_texts):
-                filled_text = text
-                for fill_idx in range(count_masks([text])[0]):
-                    fill = random.sample(self.FILL_DICTIONARY, span_length)
-                    filled_text = filled_text.replace(
-                        f&#34;&lt;extra_id_{fill_idx}&gt;&#34;, &#34; &#34;.join(fill)
-                    )
-                assert (
-                    count_masks([filled_text])[0] == 0
-                ), &#34;Failed to replace all masks&#34;
-                perturbed_texts[idx] = filled_text
-
-    return perturbed_texts</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.T5Model.replace_masks"><code class="name flex">
 <span>def <span class="ident">replace_masks</span></span>(<span>self, texts: List[str])</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Replace each masked span with a sample from T5 mask_model</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def replace_masks(self, texts: List[str]):
-    &#34;&#34;&#34;
-    Replace each masked span with a sample from T5 mask_model
-    &#34;&#34;&#34;
-    mask_top_p = self.config.neighborhood_config.top_p
-    n_expected = count_masks(texts)
-    stop_id = self.tokenizer.encode(f&#34;&lt;extra_id_{max(n_expected)}&gt;&#34;)[0]
-    tokens = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(
-        self.device
-    )
-    outputs = self.model.generate(
-        **tokens,
-        max_length=150,
-        do_sample=True,
-        top_p=mask_top_p,
-        num_return_sequences=1,
-        eos_token_id=stop_id,
-    )
-    return self.tokenizer.batch_decode(outputs, skip_special_tokens=False)</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.neighborhood.T5Model.tokenize_and_mask"><code class="name flex">
 <span>def <span class="ident">tokenize_and_mask</span></span>(<span>self, text: str, span_length: int, pct: float, ceil_pct: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def tokenize_and_mask(
-    self, text: str, span_length: int, pct: float, ceil_pct: bool = False
-):
-    buffer_size = self.config.neighborhood_config.buffer_size
-
-    tokens = text.split(&#34; &#34;)
-    mask_string = &#34;&lt;&lt;&lt;mask&gt;&gt;&gt;&#34;
-
-    span_length = min(int(pct * len(tokens)), span_length)
-    # avoid div zero:
-
-    span_length = max(1, span_length)
-
-    n_spans = pct * len(tokens) / (span_length + buffer_size * 2)
-    if ceil_pct:
-        n_spans = np.ceil(n_spans)
-    n_spans = int(n_spans)
-
-    n_masks = 0
-    while n_masks &lt; n_spans:
-        start = np.random.randint(0, max(1, len(tokens) - span_length))
-        end = start + span_length
-        search_start = max(0, start - buffer_size)
-        search_end = min(len(tokens), end + buffer_size)
-        if mask_string not in tokens[search_start:search_end]:
-            tokens[start:end] = [mask_string]
-            n_masks += 1
-
-    # replace each occurrence of mask_string with &lt;extra_id_NUM&gt;, where NUM increments
-    num_filled = 0
-    for idx, token in enumerate(tokens):
-        if token == mask_string:
-            tokens[idx] = f&#34;&lt;extra_id_{num_filled}&gt;&#34;
-            num_filled += 1
-    assert num_filled == n_masks, f&#34;num_filled {num_filled} != n_masks {n_masks}&#34;
-    text = &#34; &#34;.join(tokens)
-    return text</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="mimir.attacks.neighborhood.MaskFillingModel" href="#mimir.attacks.neighborhood.MaskFillingModel">MaskFillingModel</a></b></code>:
 <ul class="hlist">
-<li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.forward" href="../models.html#mimir.models.Model.forward">forward</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.get_ll" href="../models.html#mimir.models.Model.get_ll">get_ll</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.get_probabilities" href="../models.html#mimir.models.Model.get_probabilities">get_probabilities</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.load" href="../models.html#mimir.models.Model.load">load</a></code></li>
@@ -1901,7 +807,6 @@ class BertModel(MaskFillingModel):
 <img src="https://raw.githubusercontent.com/iamgroot42/mimir/8ed6886fb6df7a72f2f0f398688f48b68c5f48b0/assets/logo.png" alt="MIMIR">
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1916,20 +821,14 @@ class BertModel(MaskFillingModel):
 <li>
 <h4><code><a title="mimir.attacks.neighborhood.BertModel" href="#mimir.attacks.neighborhood.BertModel">BertModel</a></code></h4>
 <ul class="">
-<li><code><a title="mimir.attacks.neighborhood.BertModel.call_super_init" href="#mimir.attacks.neighborhood.BertModel.call_super_init">call_super_init</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.BertModel.dump_patches" href="#mimir.attacks.neighborhood.BertModel.dump_patches">dump_patches</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.BertModel.generate_neighbors" href="#mimir.attacks.neighborhood.BertModel.generate_neighbors">generate_neighbors</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.BertModel.generate_neighbors_" href="#mimir.attacks.neighborhood.BertModel.generate_neighbors_">generate_neighbors_</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.BertModel.training" href="#mimir.attacks.neighborhood.BertModel.training">training</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="mimir.attacks.neighborhood.MaskFillingModel" href="#mimir.attacks.neighborhood.MaskFillingModel">MaskFillingModel</a></code></h4>
 <ul class="">
-<li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.call_super_init" href="#mimir.attacks.neighborhood.MaskFillingModel.call_super_init">call_super_init</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.dump_patches" href="#mimir.attacks.neighborhood.MaskFillingModel.dump_patches">dump_patches</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.generate_neighbors" href="#mimir.attacks.neighborhood.MaskFillingModel.generate_neighbors">generate_neighbors</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.MaskFillingModel.training" href="#mimir.attacks.neighborhood.MaskFillingModel.training">training</a></code></li>
 </ul>
 </li>
 <li>
@@ -1943,15 +842,12 @@ class BertModel(MaskFillingModel):
 <li>
 <h4><code><a title="mimir.attacks.neighborhood.T5Model" href="#mimir.attacks.neighborhood.T5Model">T5Model</a></code></h4>
 <ul class="">
-<li><code><a title="mimir.attacks.neighborhood.T5Model.call_super_init" href="#mimir.attacks.neighborhood.T5Model.call_super_init">call_super_init</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.create_fill_dictionary" href="#mimir.attacks.neighborhood.T5Model.create_fill_dictionary">create_fill_dictionary</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.T5Model.dump_patches" href="#mimir.attacks.neighborhood.T5Model.dump_patches">dump_patches</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.extract_fills" href="#mimir.attacks.neighborhood.T5Model.extract_fills">extract_fills</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.generate_neighbors" href="#mimir.attacks.neighborhood.T5Model.generate_neighbors">generate_neighbors</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.generate_neighbors_" href="#mimir.attacks.neighborhood.T5Model.generate_neighbors_">generate_neighbors_</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.replace_masks" href="#mimir.attacks.neighborhood.T5Model.replace_masks">replace_masks</a></code></li>
 <li><code><a title="mimir.attacks.neighborhood.T5Model.tokenize_and_mask" href="#mimir.attacks.neighborhood.T5Model.tokenize_and_mask">tokenize_and_mask</a></code></li>
-<li><code><a title="mimir.attacks.neighborhood.T5Model.training" href="#mimir.attacks.neighborhood.T5Model.training">training</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1960,7 +856,7 @@ class BertModel(MaskFillingModel):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

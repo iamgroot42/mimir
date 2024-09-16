@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>mimir.data_utils API documentation</title>
-<meta name="description" content="Datasets and data-processing utilities" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Datasets and data-processing utilities">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
 </head>
 <body>
 <main>
@@ -23,342 +26,6 @@
 </header>
 <section id="section-intro">
 <p>Datasets and data-processing utilities</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
-    Datasets and data-processing utilities
-&#34;&#34;&#34;
-import datasets
-import numpy as np
-import os
-import mimir.custom_datasets as custom_datasets
-from mimir.config import ExperimentConfig
-from nltk.tokenize import WhitespaceTokenizer
-
-
-class Data:
-    &#34;&#34;&#34;
-    Data class to load and cache datasets.
-    &#34;&#34;&#34;
-    def __init__(self, name,
-                 config: ExperimentConfig,
-                 presampled: str = None,
-                 name_key_mapping: dict = {&#34;the_pile&#34;: &#34;text&#34;, &#34;xsum&#34;: &#34;document&#34;}):
-        self.name_key_mapping = name_key_mapping
-        self.config = config
-        self.name = name
-        self.presampled = presampled
-        self.key = (
-            config.dataset_key
-            if config.dataset_key
-            else self.name_key_mapping.get(name, None)
-        )
-        if self.key is None:
-            raise ValueError(
-                f&#34;Key for dataset {name} not provided or found inname_key_mapping&#34;
-            )
-        self.cache_dir = self.config.env_config.cache_dir
-
-    def load_neighbors(
-        self,
-        train: bool,
-        num_neighbors: int,
-        model: str = &#34;bert&#34;,
-        in_place_swap: bool = False,
-    ):
-        &#34;&#34;&#34;
-        Load neighbors from cache (local or from HF)
-        &#34;&#34;&#34;
-        data_split = &#34;train&#34; if train else &#34;test&#34;
-        data_split += &#34;_neighbors&#34;
-        filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
-            num_neighbors, model
-        )
-        if in_place_swap:
-            filename += &#34;_in_place_swap&#34;
-        data = custom_datasets.load_cached(
-            self.cache_dir,
-            data_split,
-            filename,
-            min_length=self.config.min_words,
-            max_length=self.config.max_words,
-            n_samples=self.config.n_samples,
-            max_tokens=self.config.max_tokens,
-            load_from_hf=self.config.load_from_hf
-        )
-        return data
-
-    def dump_neighbors(
-        self,
-        data,
-        train: bool,
-        num_neighbors: int,
-        model: str = &#34;bert&#34;,
-        in_place_swap: bool = False,
-    ):
-        &#34;&#34;&#34;
-        Dump neighbors to cache local cache.
-        &#34;&#34;&#34;
-        data_split = &#34;train&#34; if train else &#34;test&#34;
-        data_split += &#34;_neighbors&#34;
-        filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
-            num_neighbors, model
-        )
-        if in_place_swap:
-            filename += &#34;_in_place_swap&#34;
-        custom_datasets.dump_to_cache(
-            data,
-            self.cache_dir,
-            data_split,
-            filename,
-            min_length=self.config.min_words,
-            max_length=self.config.max_words,
-            n_samples=self.config.n_samples,
-            max_tokens=self.config.max_tokens,
-        )
-
-    def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
-        data_split = &#34;train&#34; if train else &#34;test&#34;
-        n_samples = self.config.n_samples
-
-        # Load from numpy file storing pretokenized sample in a 2d array of shape (num_samples, num_tokens_per_sample)
-        if self.config.pretokenized:
-            assert self.presampled
-            # TODO: Pretokenized full documents (split into substrs) is not currently supported
-            assert not self.config.full_doc
-            data = np.load(self.presampled)
-            return data
-        elif (self.config.load_from_cache or self.config.load_from_hf):
-            # Load from cache, if requested
-            filename = self._get_name_to_save()
-            data = custom_datasets.load_cached(
-                self.cache_dir,
-                data_split,
-                filename,
-                min_length=self.config.min_words,
-                max_length=self.config.max_words,
-                n_samples=self.config.n_samples,
-                max_tokens=self.config.max_tokens,
-                load_from_hf=self.config.load_from_hf
-            )
-            return data
-        else:
-            if self.presampled or self.config.full_doc:
-                print(&#34;using presampled data&#34;)
-                data = datasets.load_dataset(
-                    &#34;json&#34;,
-                    data_files=self.presampled,
-                    split=f&#34;train&#34;,
-                    cache_dir=self.cache_dir,
-                )[self.key]
-            elif self.name in custom_datasets.DATASETS:
-                data = custom_datasets.load(self.name)
-            elif self.name == &#34;the_pile&#34;:
-                min_load = max(10000, self.config.max_data)
-                data = datasets.load_dataset(
-                    &#34;json&#34;,
-                    data_files=os.path.join(
-                        self.config.env_config.data_source,
-                        &#34;pile/00.jsonl.zst&#34; if train else &#34;pile/test.jsonl.zst&#34;,
-                    ),
-                    cache_dir=self.cache_dir,
-                    split=f&#34;train[:{min_load}]&#34;,
-                )
-                specific_source_use = (
-                    self.config.specific_source
-                    if specific_source is None
-                    else specific_source
-                )
-                data = pile_selection_utility(
-                    data, self.key, wanted_source=specific_source_use
-                )
-            elif &#34;human&#34; in self.name:
-                data = datasets.load_dataset(
-                    self.name, split=f&#34;train[:100]&#34;, cache_dir=self.cache_dir
-                )[self.key]
-            elif &#34;nthngdy&#34; in self.name:
-                data = datasets.load_dataset(
-                    self.name, split=&#34;test&#34;, cache_dir=self.cache_dir
-                )[self.key]
-            else:
-                data = datasets.load_dataset(
-                    self.name, split=f&#34;train&#34;, cache_dir=self.cache_dir
-                )[self.key]
-
-        if not self.config.full_doc:
-            # get unique examples
-            # then take just the long examples, shuffle, take the first 5,000 to tokenize to save time
-            # then take just the examples that are &lt;= 512 tokens (for the mask model)
-            # then generate n_samples samples
-            wsp_tokenizer = WhitespaceTokenizer()
-
-            # remove duplicates from the data
-            data = list(dict.fromkeys(data))  # deterministic, as opposed to set()
-
-            whitespace_tokenized_spans = [
-                (x, list(wsp_tokenizer.span_tokenize(x))) for x in data
-            ]
-
-            # Pick samples with at least self.config.min_words words
-            whitespace_tokenized_spans = [
-                x
-                for x in whitespace_tokenized_spans
-                if len(x[1]) &gt;= self.config.min_words
-            ]
-            if len(whitespace_tokenized_spans) == 0:
-                raise ValueError(&#34;No examples with length &gt;= min_words&#34;)
-
-            if self.config.max_words_cutoff:
-                last_spans = [
-                    x[1][min(self.config.max_words, len(x[1])) - 1][1]
-                    for x in whitespace_tokenized_spans
-                ]
-                data = [
-                    x[0][:y] for x, y in zip(whitespace_tokenized_spans, last_spans)
-                ]
-            else:
-                data = [
-                    x[0]
-                    for x in whitespace_tokenized_spans
-                    if len(x[1]) &lt; self.config.max_words
-                ]
-                if len(data) == 0:
-                    raise ValueError(&#34;No examples with length &lt; max_words&#34;)
-
-            # TODO: why shuffle
-            # random.seed(0)
-            # random.shuffle(data)
-
-            data = data[: self.config.max_data]
-
-            # If there is mask tokenizer, keep only examples with &lt;= 512 tokens according to mask_tokenizer
-            # this step has the extra effect of removing examples with low-quality/garbage content
-            if mask_tokenizer:
-                tokenized_data = mask_tokenizer(data)
-                new_data = []
-                for i, (x, y) in enumerate(zip(data, tokenized_data[&#34;input_ids&#34;])):
-                    if len(y) &lt;= self.config.max_tokens:
-                        new_data.append(x)
-                    else:
-                        print(
-                            &#34;Trimming text to nearest word that fits within mask tokenizer window&#34;
-                        )
-                        max_token_char_span = tokenized_data.token_to_chars(
-                            i, self.config.max_tokens - 1
-                        )
-                        x = x[: max_token_char_span.end]
-                        token_truncated_word_spans = list(
-                            wsp_tokenizer.span_tokenize(x)
-                        )
-
-                        # Pop off the last &#34;word&#34; since it may be a word piece
-                        second_last_span = token_truncated_word_spans[-2]
-                        x = x[: second_last_span[1]]
-
-                        new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
-                        assert new_len &lt;= self.config.max_tokens
-                        new_data.append(x)
-                data = new_data
-
-            # print stats about remainining data
-            print(f&#34;Total number of samples: {len(data)}&#34;)
-            print(f&#34;Average number of words: {np.mean([len(x.split()) for x in data])}&#34;)
-
-            if n_samples &gt; len(data):
-                print(f&#34;WARNING: n_samples ({n_samples}) &gt; len(data) ({len(data)})&#34;)
-
-        # Sample &#39;n_samples&#39; examples
-        data = data[:n_samples]
-
-        # Save to cache (if requested)
-        if self.config.dump_cache:
-            self.dump_to_cache(data, data_split)
-
-        return data
-
-    def dump_to_cache(self, data, data_split):
-        filename = self._get_name_to_save()
-        custom_datasets.dump_to_cache(
-            data,
-            self.cache_dir,
-            data_split,
-            filename,
-            min_length=self.config.min_words,
-            max_length=self.config.max_words,
-            n_samples=self.config.n_samples,
-            max_tokens=self.config.max_tokens,
-        )
-
-    def _get_name_to_save(self):
-        if self.config.specific_source and self.name == &#34;the_pile&#34;:
-            processed_source = sourcename_process(self.config.specific_source)
-            filename = f&#34;{self.name}_{processed_source}&#34;
-        else:
-            filename = self.name
-        return filename
-
-
-def strip_newlines(text):
-    &#34;&#34;&#34;
-    Strip newlines from each example; replace one or more newlines with a single space
-    &#34;&#34;&#34;
-    return &#34; &#34;.join(text.split())
-
-
-def trim_to_shorter_length(text_a: str, text_b: str, max_length: int = None):
-    &#34;&#34;&#34;
-    Truncate to shorter of o and s
-    &#34;&#34;&#34;
-    shorter_length = min(len(text_a.split(&#34; &#34;)), len(text_b.split(&#34; &#34;)))
-    if max_length is not None:
-        shorter_length = min(shorter_length, max_length)
-    text_a = &#34; &#34;.join(text_a.split(&#34; &#34;)[:shorter_length])
-    text_b = &#34; &#34;.join(text_b.split(&#34; &#34;)[:shorter_length])
-    return text_a, text_b
-
-
-def truncate_to_substring(text: str, substring: str, idx_occurrence: int):
-    &#34;&#34;&#34;
-    Truncate everything after the idx_occurrence occurrence of substring
-    &#34;&#34;&#34;
-    assert idx_occurrence &gt; 0, &#34;idx_occurrence must be &gt; 0&#34;
-    idx = -1
-    for _ in range(idx_occurrence):
-        idx = text.find(substring, idx + 1)
-        if idx == -1:
-            return text
-    return text[:idx]
-
-
-def pile_selection_utility(data, key: str, wanted_source: str = None):
-    &#34;&#34;&#34;
-    Filter and select data corresponding to source, if requested.
-    &#34;&#34;&#34;
-    if wanted_source is None:
-        return data[key]
-    wanted_data = []
-    # Pick sources that match requested source
-    for datum in data:
-        if datum[&#34;meta&#34;][&#34;pile_set_name&#34;] == wanted_source:
-            wanted_data.append(datum[key])
-    return wanted_data
-
-
-def sourcename_process(x: str):
-    &#34;&#34;&#34;
-        Helper function to process source name.
-    &#34;&#34;&#34;
-    return x.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;-&#34;, &#34;_&#34;).lower()
-
-
-def drop_last_word(text):
-    &#34;&#34;&#34;
-        Drop the last word from a given text.
-    &#34;&#34;&#34;
-    return &#34; &#34;.join(text.split(&#34; &#34;)[:-1])</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -372,114 +39,36 @@ def drop_last_word(text):
 </code></dt>
 <dd>
 <div class="desc"><p>Drop the last word from a given text.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def drop_last_word(text):
-    &#34;&#34;&#34;
-        Drop the last word from a given text.
-    &#34;&#34;&#34;
-    return &#34; &#34;.join(text.split(&#34; &#34;)[:-1])</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.pile_selection_utility"><code class="name flex">
 <span>def <span class="ident">pile_selection_utility</span></span>(<span>data, key: str, wanted_source: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Filter and select data corresponding to source, if requested.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def pile_selection_utility(data, key: str, wanted_source: str = None):
-    &#34;&#34;&#34;
-    Filter and select data corresponding to source, if requested.
-    &#34;&#34;&#34;
-    if wanted_source is None:
-        return data[key]
-    wanted_data = []
-    # Pick sources that match requested source
-    for datum in data:
-        if datum[&#34;meta&#34;][&#34;pile_set_name&#34;] == wanted_source:
-            wanted_data.append(datum[key])
-    return wanted_data</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.sourcename_process"><code class="name flex">
 <span>def <span class="ident">sourcename_process</span></span>(<span>x: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Helper function to process source name.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sourcename_process(x: str):
-    &#34;&#34;&#34;
-        Helper function to process source name.
-    &#34;&#34;&#34;
-    return x.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;-&#34;, &#34;_&#34;).lower()</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.strip_newlines"><code class="name flex">
 <span>def <span class="ident">strip_newlines</span></span>(<span>text)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Strip newlines from each example; replace one or more newlines with a single space</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def strip_newlines(text):
-    &#34;&#34;&#34;
-    Strip newlines from each example; replace one or more newlines with a single space
-    &#34;&#34;&#34;
-    return &#34; &#34;.join(text.split())</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.trim_to_shorter_length"><code class="name flex">
 <span>def <span class="ident">trim_to_shorter_length</span></span>(<span>text_a: str, text_b: str, max_length: int = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Truncate to shorter of o and s</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def trim_to_shorter_length(text_a: str, text_b: str, max_length: int = None):
-    &#34;&#34;&#34;
-    Truncate to shorter of o and s
-    &#34;&#34;&#34;
-    shorter_length = min(len(text_a.split(&#34; &#34;)), len(text_b.split(&#34; &#34;)))
-    if max_length is not None:
-        shorter_length = min(shorter_length, max_length)
-    text_a = &#34; &#34;.join(text_a.split(&#34; &#34;)[:shorter_length])
-    text_b = &#34; &#34;.join(text_b.split(&#34; &#34;)[:shorter_length])
-    return text_a, text_b</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.truncate_to_substring"><code class="name flex">
 <span>def <span class="ident">truncate_to_substring</span></span>(<span>text: str, substring: str, idx_occurrence: int)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Truncate everything after the idx_occurrence occurrence of substring</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def truncate_to_substring(text: str, substring: str, idx_occurrence: int):
-    &#34;&#34;&#34;
-    Truncate everything after the idx_occurrence occurrence of substring
-    &#34;&#34;&#34;
-    assert idx_occurrence &gt; 0, &#34;idx_occurrence must be &gt; 0&#34;
-    idx = -1
-    for _ in range(idx_occurrence):
-        idx = text.find(substring, idx + 1)
-        if idx == -1:
-            return text
-    return text[:idx]</code></pre>
-</details>
 </dd>
 </dl>
 </section>
@@ -764,270 +353,24 @@ def drop_last_word(text):
 </code></dt>
 <dd>
 <div class="desc"><p>Dump neighbors to cache local cache.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dump_neighbors(
-    self,
-    data,
-    train: bool,
-    num_neighbors: int,
-    model: str = &#34;bert&#34;,
-    in_place_swap: bool = False,
-):
-    &#34;&#34;&#34;
-    Dump neighbors to cache local cache.
-    &#34;&#34;&#34;
-    data_split = &#34;train&#34; if train else &#34;test&#34;
-    data_split += &#34;_neighbors&#34;
-    filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
-        num_neighbors, model
-    )
-    if in_place_swap:
-        filename += &#34;_in_place_swap&#34;
-    custom_datasets.dump_to_cache(
-        data,
-        self.cache_dir,
-        data_split,
-        filename,
-        min_length=self.config.min_words,
-        max_length=self.config.max_words,
-        n_samples=self.config.n_samples,
-        max_tokens=self.config.max_tokens,
-    )</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.Data.dump_to_cache"><code class="name flex">
 <span>def <span class="ident">dump_to_cache</span></span>(<span>self, data, data_split)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dump_to_cache(self, data, data_split):
-    filename = self._get_name_to_save()
-    custom_datasets.dump_to_cache(
-        data,
-        self.cache_dir,
-        data_split,
-        filename,
-        min_length=self.config.min_words,
-        max_length=self.config.max_words,
-        n_samples=self.config.n_samples,
-        max_tokens=self.config.max_tokens,
-    )</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.Data.load"><code class="name flex">
 <span>def <span class="ident">load</span></span>(<span>self, train: bool, mask_tokenizer=None, specific_source: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def load(self, train: bool, mask_tokenizer=None, specific_source: str = None):
-    data_split = &#34;train&#34; if train else &#34;test&#34;
-    n_samples = self.config.n_samples
-
-    # Load from numpy file storing pretokenized sample in a 2d array of shape (num_samples, num_tokens_per_sample)
-    if self.config.pretokenized:
-        assert self.presampled
-        # TODO: Pretokenized full documents (split into substrs) is not currently supported
-        assert not self.config.full_doc
-        data = np.load(self.presampled)
-        return data
-    elif (self.config.load_from_cache or self.config.load_from_hf):
-        # Load from cache, if requested
-        filename = self._get_name_to_save()
-        data = custom_datasets.load_cached(
-            self.cache_dir,
-            data_split,
-            filename,
-            min_length=self.config.min_words,
-            max_length=self.config.max_words,
-            n_samples=self.config.n_samples,
-            max_tokens=self.config.max_tokens,
-            load_from_hf=self.config.load_from_hf
-        )
-        return data
-    else:
-        if self.presampled or self.config.full_doc:
-            print(&#34;using presampled data&#34;)
-            data = datasets.load_dataset(
-                &#34;json&#34;,
-                data_files=self.presampled,
-                split=f&#34;train&#34;,
-                cache_dir=self.cache_dir,
-            )[self.key]
-        elif self.name in custom_datasets.DATASETS:
-            data = custom_datasets.load(self.name)
-        elif self.name == &#34;the_pile&#34;:
-            min_load = max(10000, self.config.max_data)
-            data = datasets.load_dataset(
-                &#34;json&#34;,
-                data_files=os.path.join(
-                    self.config.env_config.data_source,
-                    &#34;pile/00.jsonl.zst&#34; if train else &#34;pile/test.jsonl.zst&#34;,
-                ),
-                cache_dir=self.cache_dir,
-                split=f&#34;train[:{min_load}]&#34;,
-            )
-            specific_source_use = (
-                self.config.specific_source
-                if specific_source is None
-                else specific_source
-            )
-            data = pile_selection_utility(
-                data, self.key, wanted_source=specific_source_use
-            )
-        elif &#34;human&#34; in self.name:
-            data = datasets.load_dataset(
-                self.name, split=f&#34;train[:100]&#34;, cache_dir=self.cache_dir
-            )[self.key]
-        elif &#34;nthngdy&#34; in self.name:
-            data = datasets.load_dataset(
-                self.name, split=&#34;test&#34;, cache_dir=self.cache_dir
-            )[self.key]
-        else:
-            data = datasets.load_dataset(
-                self.name, split=f&#34;train&#34;, cache_dir=self.cache_dir
-            )[self.key]
-
-    if not self.config.full_doc:
-        # get unique examples
-        # then take just the long examples, shuffle, take the first 5,000 to tokenize to save time
-        # then take just the examples that are &lt;= 512 tokens (for the mask model)
-        # then generate n_samples samples
-        wsp_tokenizer = WhitespaceTokenizer()
-
-        # remove duplicates from the data
-        data = list(dict.fromkeys(data))  # deterministic, as opposed to set()
-
-        whitespace_tokenized_spans = [
-            (x, list(wsp_tokenizer.span_tokenize(x))) for x in data
-        ]
-
-        # Pick samples with at least self.config.min_words words
-        whitespace_tokenized_spans = [
-            x
-            for x in whitespace_tokenized_spans
-            if len(x[1]) &gt;= self.config.min_words
-        ]
-        if len(whitespace_tokenized_spans) == 0:
-            raise ValueError(&#34;No examples with length &gt;= min_words&#34;)
-
-        if self.config.max_words_cutoff:
-            last_spans = [
-                x[1][min(self.config.max_words, len(x[1])) - 1][1]
-                for x in whitespace_tokenized_spans
-            ]
-            data = [
-                x[0][:y] for x, y in zip(whitespace_tokenized_spans, last_spans)
-            ]
-        else:
-            data = [
-                x[0]
-                for x in whitespace_tokenized_spans
-                if len(x[1]) &lt; self.config.max_words
-            ]
-            if len(data) == 0:
-                raise ValueError(&#34;No examples with length &lt; max_words&#34;)
-
-        # TODO: why shuffle
-        # random.seed(0)
-        # random.shuffle(data)
-
-        data = data[: self.config.max_data]
-
-        # If there is mask tokenizer, keep only examples with &lt;= 512 tokens according to mask_tokenizer
-        # this step has the extra effect of removing examples with low-quality/garbage content
-        if mask_tokenizer:
-            tokenized_data = mask_tokenizer(data)
-            new_data = []
-            for i, (x, y) in enumerate(zip(data, tokenized_data[&#34;input_ids&#34;])):
-                if len(y) &lt;= self.config.max_tokens:
-                    new_data.append(x)
-                else:
-                    print(
-                        &#34;Trimming text to nearest word that fits within mask tokenizer window&#34;
-                    )
-                    max_token_char_span = tokenized_data.token_to_chars(
-                        i, self.config.max_tokens - 1
-                    )
-                    x = x[: max_token_char_span.end]
-                    token_truncated_word_spans = list(
-                        wsp_tokenizer.span_tokenize(x)
-                    )
-
-                    # Pop off the last &#34;word&#34; since it may be a word piece
-                    second_last_span = token_truncated_word_spans[-2]
-                    x = x[: second_last_span[1]]
-
-                    new_len = len(mask_tokenizer(x)[&#34;input_ids&#34;])
-                    assert new_len &lt;= self.config.max_tokens
-                    new_data.append(x)
-            data = new_data
-
-        # print stats about remainining data
-        print(f&#34;Total number of samples: {len(data)}&#34;)
-        print(f&#34;Average number of words: {np.mean([len(x.split()) for x in data])}&#34;)
-
-        if n_samples &gt; len(data):
-            print(f&#34;WARNING: n_samples ({n_samples}) &gt; len(data) ({len(data)})&#34;)
-
-    # Sample &#39;n_samples&#39; examples
-    data = data[:n_samples]
-
-    # Save to cache (if requested)
-    if self.config.dump_cache:
-        self.dump_to_cache(data, data_split)
-
-    return data</code></pre>
-</details>
 </dd>
 <dt id="mimir.data_utils.Data.load_neighbors"><code class="name flex">
 <span>def <span class="ident">load_neighbors</span></span>(<span>self, train: bool, num_neighbors: int, model: str = 'bert', in_place_swap: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Load neighbors from cache (local or from HF)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def load_neighbors(
-    self,
-    train: bool,
-    num_neighbors: int,
-    model: str = &#34;bert&#34;,
-    in_place_swap: bool = False,
-):
-    &#34;&#34;&#34;
-    Load neighbors from cache (local or from HF)
-    &#34;&#34;&#34;
-    data_split = &#34;train&#34; if train else &#34;test&#34;
-    data_split += &#34;_neighbors&#34;
-    filename = self._get_name_to_save() + &#34;_neighbors_{}_{}&#34;.format(
-        num_neighbors, model
-    )
-    if in_place_swap:
-        filename += &#34;_in_place_swap&#34;
-    data = custom_datasets.load_cached(
-        self.cache_dir,
-        data_split,
-        filename,
-        min_length=self.config.min_words,
-        max_length=self.config.max_words,
-        n_samples=self.config.n_samples,
-        max_tokens=self.config.max_tokens,
-        load_from_hf=self.config.load_from_hf
-    )
-    return data</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1040,7 +383,6 @@ def drop_last_word(text):
 <img src="https://raw.githubusercontent.com/iamgroot42/mimir/8ed6886fb6df7a72f2f0f398688f48b68c5f48b0/assets/logo.png" alt="MIMIR">
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1077,7 +419,7 @@ def drop_last_word(text):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

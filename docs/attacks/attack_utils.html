@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>mimir.attacks.attack_utils API documentation</title>
-<meta name="description" content="Utility functions for attacks" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Utility functions for attacks">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
 </head>
 <body>
 <main>
@@ -23,164 +26,6 @@
 </header>
 <section id="section-intro">
 <p>Utility functions for attacks</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
-    Utility functions for attacks
-&#34;&#34;&#34;
-from typing import List
-import torch
-from collections import Counter
-import math
-import numpy as np
-from sklearn.metrics import roc_curve, auc, precision_recall_curve
-from scipy.stats import bootstrap
-
-
-def count_masks(texts):
-    return [
-        len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts
-    ]
-
-
-def apply_extracted_fills(masked_texts: List[str], extracted_fills):
-    # split masked text into tokens, only splitting on spaces (not newlines)
-    tokens = [x.split(&#34; &#34;) for x in masked_texts]
-
-    n_expected = count_masks(masked_texts)
-
-    # replace each mask token with the corresponding fill
-    for idx, (text, fills, n) in enumerate(zip(tokens, extracted_fills, n_expected)):
-        if len(fills) &lt; n:
-            tokens[idx] = []
-        else:
-            for fill_idx in range(n):
-                text[text.index(f&#34;&lt;extra_id_{fill_idx}&gt;&#34;)] = fills[fill_idx]
-
-    # join tokens back into text
-    texts = [&#34; &#34;.join(x) for x in tokens]
-    return texts
-
-
-def f1_score(prediction, ground_truth):
-    &#34;&#34;&#34;
-        Compute F1 score for given prediction and ground truth.
-    &#34;&#34;&#34;
-    common = Counter(prediction) &amp; Counter(ground_truth)
-    num_same = sum(common.values())
-    if num_same == 0:
-        return 0, 0, 0
-    precision = 1.0 * num_same / len(prediction)
-    recall = 1.0 * num_same / len(ground_truth)
-    f1 = (2 * precision * recall) / (precision + recall)
-    print(num_same, f1, precision, recall)
-    return f1, precision, recall
-
-
-def get_auc_from_thresholds(preds_member, preds_nonmember, thresholds):
-    &#34;&#34;&#34;
-    Compute FPRs and TPRs corresponding to given thresholds
-    &#34;&#34;&#34;
-    tpr, fpr = [], []
-    for threshold in thresholds:
-        tp = np.sum(preds_nonmember &gt;= threshold)
-        fn = np.sum(preds_nonmember &lt; threshold)
-        fp = np.sum(preds_member &gt;= threshold)
-        tn = np.sum(preds_member &lt; threshold)
-
-        tpr.append(tp / (tp + fn))
-        fpr.append(fp / (fp + tn))
-    
-    tpr = np.array(tpr)
-    fpr = np.array(fpr)
-    roc_auc = auc(fpr, tpr)
-    return roc_auc
-
-
-def get_roc_metrics(
-    preds_member,
-    preds_nonmember,
-    perform_bootstrap: bool = False,
-    return_thresholds: bool = False,
-):  # fpr_list,
-    preds_member_ = filter_out_nan(preds_member)
-    preds_nonmember_ = filter_out_nan(preds_nonmember)
-    total_preds = preds_member_ + preds_nonmember_
-    # While roc_auc is unaffected by which class we consider
-    # positive/negative, the TPR@lowFPR calculation is.
-    # Make sure the members are positive class (larger values, so negate the raw MIA scores)
-    total_preds = np.array(total_preds) * -1
-    # Assign label &#39;0&#39; to members for computation, since sklearn
-    # expectes label &#39;0&#39; data to have lower values to get assigned that label
-    # which is true for our attacks (lower loss for members, e.g.)
-    total_labels = [1] * len(preds_member_) + [0] * len(preds_nonmember_)
-    fpr, tpr, thresholds = roc_curve(total_labels, total_preds)
-
-    roc_auc = auc(fpr, tpr)
-    # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) &lt; upper_bound)[0][-1]] for upper_bound in fpr_list}
-
-    if perform_bootstrap:
-
-        def roc_auc_statistic(preds, labels):
-            in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
-            out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
-            _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
-            return roc_auc
-
-        auc_roc_res = bootstrap(
-            (total_preds, total_labels),
-            roc_auc_statistic,
-            n_resamples=1000,
-            paired=True,
-        )
-
-        # tpr_at_low_fpr_res = {}
-        # for ub in fpr_list:
-        #     def tpr_at_fpr_statistic(preds, labels):
-        #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
-        #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
-        #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
-        #         return tpr_at_low_fpr[ub]
-
-        #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
-
-        if return_thresholds:
-            return (
-                fpr.tolist(),
-                tpr.tolist(),
-                float(roc_auc),
-                auc_roc_res,
-                thresholds.tolist(),
-            )
-        return (
-            fpr.tolist(),
-            tpr.tolist(),
-            float(roc_auc),
-            auc_roc_res,
-        )  # tpr_at_low_fpr, tpr_at_low_fpr_res
-
-    if return_thresholds:
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), thresholds.tolist()
-    return fpr.tolist(), tpr.tolist(), float(roc_auc)  # , tpr_at_low_fpr
-
-
-def get_precision_recall_metrics(preds_member, preds_nonmember):
-    preds_member_ = filter_out_nan(preds_member)
-    preds_nonmember_ = filter_out_nan(preds_nonmember)
-    total_preds = preds_member_ + preds_nonmember_
-
-    total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
-
-    precision, recall, _ = precision_recall_curve(total_labels, total_preds)
-    pr_auc = auc(recall, precision)
-    return precision.tolist(), recall.tolist(), float(pr_auc)
-
-
-def filter_out_nan(x):
-    return [element for element in x if not math.isnan(element)]</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -194,206 +39,42 @@ def filter_out_nan(x):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def apply_extracted_fills(masked_texts: List[str], extracted_fills):
-    # split masked text into tokens, only splitting on spaces (not newlines)
-    tokens = [x.split(&#34; &#34;) for x in masked_texts]
-
-    n_expected = count_masks(masked_texts)
-
-    # replace each mask token with the corresponding fill
-    for idx, (text, fills, n) in enumerate(zip(tokens, extracted_fills, n_expected)):
-        if len(fills) &lt; n:
-            tokens[idx] = []
-        else:
-            for fill_idx in range(n):
-                text[text.index(f&#34;&lt;extra_id_{fill_idx}&gt;&#34;)] = fills[fill_idx]
-
-    # join tokens back into text
-    texts = [&#34; &#34;.join(x) for x in tokens]
-    return texts</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.count_masks"><code class="name flex">
 <span>def <span class="ident">count_masks</span></span>(<span>texts)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def count_masks(texts):
-    return [
-        len([x for x in text.split() if x.startswith(&#34;&lt;extra_id_&#34;)]) for text in texts
-    ]</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.f1_score"><code class="name flex">
 <span>def <span class="ident">f1_score</span></span>(<span>prediction, ground_truth)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute F1 score for given prediction and ground truth.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def f1_score(prediction, ground_truth):
-    &#34;&#34;&#34;
-        Compute F1 score for given prediction and ground truth.
-    &#34;&#34;&#34;
-    common = Counter(prediction) &amp; Counter(ground_truth)
-    num_same = sum(common.values())
-    if num_same == 0:
-        return 0, 0, 0
-    precision = 1.0 * num_same / len(prediction)
-    recall = 1.0 * num_same / len(ground_truth)
-    f1 = (2 * precision * recall) / (precision + recall)
-    print(num_same, f1, precision, recall)
-    return f1, precision, recall</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.filter_out_nan"><code class="name flex">
 <span>def <span class="ident">filter_out_nan</span></span>(<span>x)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def filter_out_nan(x):
-    return [element for element in x if not math.isnan(element)]</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.get_auc_from_thresholds"><code class="name flex">
 <span>def <span class="ident">get_auc_from_thresholds</span></span>(<span>preds_member, preds_nonmember, thresholds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Compute FPRs and TPRs corresponding to given thresholds</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_auc_from_thresholds(preds_member, preds_nonmember, thresholds):
-    &#34;&#34;&#34;
-    Compute FPRs and TPRs corresponding to given thresholds
-    &#34;&#34;&#34;
-    tpr, fpr = [], []
-    for threshold in thresholds:
-        tp = np.sum(preds_nonmember &gt;= threshold)
-        fn = np.sum(preds_nonmember &lt; threshold)
-        fp = np.sum(preds_member &gt;= threshold)
-        tn = np.sum(preds_member &lt; threshold)
-
-        tpr.append(tp / (tp + fn))
-        fpr.append(fp / (fp + tn))
-    
-    tpr = np.array(tpr)
-    fpr = np.array(fpr)
-    roc_auc = auc(fpr, tpr)
-    return roc_auc</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.get_precision_recall_metrics"><code class="name flex">
 <span>def <span class="ident">get_precision_recall_metrics</span></span>(<span>preds_member, preds_nonmember)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_precision_recall_metrics(preds_member, preds_nonmember):
-    preds_member_ = filter_out_nan(preds_member)
-    preds_nonmember_ = filter_out_nan(preds_nonmember)
-    total_preds = preds_member_ + preds_nonmember_
-
-    total_labels = [0] * len(preds_member_) + [1] * len(preds_nonmember_)
-
-    precision, recall, _ = precision_recall_curve(total_labels, total_preds)
-    pr_auc = auc(recall, precision)
-    return precision.tolist(), recall.tolist(), float(pr_auc)</code></pre>
-</details>
 </dd>
 <dt id="mimir.attacks.attack_utils.get_roc_metrics"><code class="name flex">
 <span>def <span class="ident">get_roc_metrics</span></span>(<span>preds_member, preds_nonmember, perform_bootstrap: bool = False, return_thresholds: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_roc_metrics(
-    preds_member,
-    preds_nonmember,
-    perform_bootstrap: bool = False,
-    return_thresholds: bool = False,
-):  # fpr_list,
-    preds_member_ = filter_out_nan(preds_member)
-    preds_nonmember_ = filter_out_nan(preds_nonmember)
-    total_preds = preds_member_ + preds_nonmember_
-    # While roc_auc is unaffected by which class we consider
-    # positive/negative, the TPR@lowFPR calculation is.
-    # Make sure the members are positive class (larger values, so negate the raw MIA scores)
-    total_preds = np.array(total_preds) * -1
-    # Assign label &#39;0&#39; to members for computation, since sklearn
-    # expectes label &#39;0&#39; data to have lower values to get assigned that label
-    # which is true for our attacks (lower loss for members, e.g.)
-    total_labels = [1] * len(preds_member_) + [0] * len(preds_nonmember_)
-    fpr, tpr, thresholds = roc_curve(total_labels, total_preds)
-
-    roc_auc = auc(fpr, tpr)
-    # tpr_at_low_fpr = {upper_bound: tpr[np.where(np.array(fpr) &lt; upper_bound)[0][-1]] for upper_bound in fpr_list}
-
-    if perform_bootstrap:
-
-        def roc_auc_statistic(preds, labels):
-            in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
-            out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
-            _, _, roc_auc = get_roc_metrics(in_preds, out_preds)
-            return roc_auc
-
-        auc_roc_res = bootstrap(
-            (total_preds, total_labels),
-            roc_auc_statistic,
-            n_resamples=1000,
-            paired=True,
-        )
-
-        # tpr_at_low_fpr_res = {}
-        # for ub in fpr_list:
-        #     def tpr_at_fpr_statistic(preds, labels):
-        #         in_preds = [pred for pred, label in zip(preds, labels) if label == 1]
-        #         out_preds = [pred for pred, label in zip(preds, labels) if label == 0]
-        #         _, _, _, tpr_at_low_fpr = get_roc_metrics(in_preds, out_preds, [ub])
-        #         return tpr_at_low_fpr[ub]
-
-        #     tpr_at_low_fpr_res[ub] = bootstrap((total_preds, total_labels), tpr_at_fpr_statistic, n_resamples=1000, paired=True)
-
-        if return_thresholds:
-            return (
-                fpr.tolist(),
-                tpr.tolist(),
-                float(roc_auc),
-                auc_roc_res,
-                thresholds.tolist(),
-            )
-        return (
-            fpr.tolist(),
-            tpr.tolist(),
-            float(roc_auc),
-            auc_roc_res,
-        )  # tpr_at_low_fpr, tpr_at_low_fpr_res
-
-    if return_thresholds:
-        return fpr.tolist(), tpr.tolist(), float(roc_auc), thresholds.tolist()
-    return fpr.tolist(), tpr.tolist(), float(roc_auc)  # , tpr_at_low_fpr</code></pre>
-</details>
 </dd>
 </dl>
 </section>
@@ -406,7 +87,6 @@ def filter_out_nan(x):
 <img src="https://raw.githubusercontent.com/iamgroot42/mimir/8ed6886fb6df7a72f2f0f398688f48b68c5f48b0/assets/logo.png" alt="MIMIR">
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -431,7 +111,7 @@ def filter_out_nan(x):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>
