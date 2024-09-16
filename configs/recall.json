@@ -1,0 +1,41 @@
+{
+    "experiment_name": "recall",
+    "base_model": "EleutherAI/pythia-1.4b",
+    "dataset_member": "the_pile",
+    "dataset_nonmember": "the_pile",
+    "min_words": 100,
+    "max_words": 200,
+    "max_tokens": 512,
+    "max_data": 100000,
+    "output_name": "unified_mia",
+    "specific_source": "Github_ngram_13_<0.8_truncated",
+    "n_samples": 1000,
+    "blackbox_attacks": ["loss", "ref", "zlib", "min_k", "min_k++", "recall"],
+    "env_config": {
+        "results": "results_new",
+        "device": "cuda:0",
+        "device_aux": "cuda:0"
+    },
+    "ref_config": {
+        "models": [
+            "EleutherAI/pythia-160m"
+        ]
+    },
+    "recall_config":{
+        "num_shots": 1
+    },
+    "neighborhood_config": {
+        "model": "bert",
+        "n_perturbation_list": [
+            25
+        ],
+        "pct_words_masked": 0.3,
+        "span_length": 2,
+        "dump_cache": false,
+        "load_from_cache": true,
+        "neighbor_strategy": "random"
+    },
+    "dump_cache": false,
+    "load_from_cache": false,
+    "load_from_hf": true
+}

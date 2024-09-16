@@ -55,6 +55,7 @@ We include and implement the following attacks, as described in our paper.
 - [Min-K% Prob](https://swj0419.github.io/detect-pretrain.github.io/) (`min_k`). Uses k% of tokens with minimum likelihood for score computation.
 - [Min-K%++](https://zjysteven.github.io/mink-plus-plus/) (`min_k++`). Uses k% of tokens with minimum *normalized* likelihood for score computation.
 - [Gradient Norm](https://arxiv.org/abs/2402.17012) (`gradnorm`). Uses gradient norm of the target datapoint as score.
+- [ReCaLL](https://royxie.com/recall-project-page/)(`recall`). Operates by comparing the unconditional and conditional log-likelihoods. 
 
 ## Adding your own dataset
 

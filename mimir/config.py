@@ -59,6 +59,13 @@ class NeighborhoodConfig(Serializable):
         if self.dump_cache and self.load_from_cache:
             raise ValueError("Cannot dump and load cache at the same time")
 
+@dataclass
+class ReCaLLConfig(Serializable):
+    """
+    Config for ReCaLL attack
+    """
+    num_shots: Optional[int] = 1
+    """Number of shots for ReCaLL Attacks"""
 
 @dataclass
 class EnvironmentConfig(Serializable):
@@ -194,6 +201,8 @@ class ExperimentConfig(Serializable):
     """Random seed"""
     ref_config: Optional[ReferenceConfig] = None
     """Reference model config"""
+    recall_config: Optional[ReCaLLConfig] = None
+    """ReCaLL attack config"""
     neighborhood_config: Optional[NeighborhoodConfig] = None
     """Neighborhood attack config"""
     env_config: Optional[EnvironmentConfig] = None
