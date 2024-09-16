@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'  # Specify your Python version
+          python-version: '3.10'  # Specify your Python version
 
       - name: Install pdoc
         run: pip install pdoc3  # Install pdoc or pdoc3
