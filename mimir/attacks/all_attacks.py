@@ -8,14 +8,15 @@ from mimir.models import Model
 
 # Attack definitions
 class AllAttacks(str, Enum):
-    LOSS = "loss" # Done
-    REFERENCE_BASED = "ref" # Done
-    ZLIB = "zlib" # Done
-    MIN_K = "min_k" # Done
-    MIN_K_PLUS_PLUS = "min_k++" # Done
-    NEIGHBOR = "ne" # Done
-    GRADNORM = "gradnorm" # Done
+    LOSS = "loss"
+    REFERENCE_BASED = "ref"
+    ZLIB = "zlib"
+    MIN_K = "min_k"
+    MIN_K_PLUS_PLUS = "min_k++"
+    NEIGHBOR = "ne"
+    GRADNORM = "gradnorm"
     RECALL = "recall"
+    DC_PDD = "dc_pdd" 
     # QUANTILE = "quantile" # Uncomment when tested implementation is available
 
 

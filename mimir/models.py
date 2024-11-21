@@ -78,6 +78,7 @@ class Model(nn.Module):
                 text (str): The input text for which to calculate probabilities.
                 tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
                 are used instead of tokenizing the input text. Defaults to None.
+                return_all_probs: bool: If True, return all token probabilities. Defaults to False.
 
             Raises:
                 ValueError: If the device or name attributes of the instance are not set.
@@ -95,8 +96,7 @@ class Model(nn.Module):
                     # expand first dimension
                     labels = labels.unsqueeze(0)
             else:
-                tokenized = self.tokenizer(
-                    text, return_tensors="pt")
+                tokenized = self.tokenizer(text, return_tensors="pt")
                 labels = tokenized.input_ids
 
             target_token_log_prob = []
