@@ -56,6 +56,7 @@ We include and implement the following attacks, as described in our paper.
 - [Min-K%++](https://zjysteven.github.io/mink-plus-plus/) (`min_k++`). Uses k% of tokens with minimum *normalized* likelihood for score computation.
 - [Gradient Norm](https://arxiv.org/abs/2402.17012) (`gradnorm`). Uses gradient norm of the target datapoint as score.
 - [ReCaLL](https://royxie.com/recall-project-page/)(`recall`). Operates by comparing the unconditional and conditional log-likelihoods. 
+- [DC-PDD](https://aclanthology.org/2024.emnlp-main.300/)(`dc_pdd`). Uses frequency distribution of some large corpus to calibrate token probabilities.
 
 ## Adding your own dataset
 
