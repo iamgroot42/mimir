@@ -30,7 +30,7 @@ class DC_PDDAttack(Attack):
     def __init__(self, config: ExperimentConfig, model: Model):
         super().__init__(config, model, ref_model=None)
         # Use subset of C-4
-        self.fre_dis = ch.zeros(model.tokenizer.vocab_size)
+        self.fre_dis = ch.zeros(len(model.tokenizer))
         # Account for model name
         model_name = model.name
 
