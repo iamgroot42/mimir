@@ -3,19 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>mimir.models API documentation</title>
 <meta name="description" content="Model definitions, with basic helper functions. Supports any model as long as it supports the functions specified in Model.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
 })</script>
 </head>
 <body>
@@ -38,11 +49,9 @@ hljs.highlightAll();
 <dl>
 <dt id="mimir.models.LanguageModel"><code class="flex name class">
 <span>class <span class="ident">LanguageModel</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, **kwargs)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generic LM- used most often for target model</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -266,6 +275,8 @@ hljs.highlightAll();
         assert len(all_prob) == labels.size(1) - 1
         return -np.mean(all_prob)</code></pre>
 </details>
+<div class="desc"><p>Generic LM- used most often for target model</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="mimir.models.Model" href="#mimir.models.Model">Model</a></li>
@@ -281,36 +292,255 @@ hljs.highlightAll();
 <span>def <span class="ident">get_entropy</span></span>(<span>self, text: str)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_entropy(self, text: str):
+    &#34;&#34;&#34;
+        Get average entropy of each token in the text
+    &#34;&#34;&#34;
+    # raise NotImplementedError(&#34;get_entropy not implemented for OpenAI models&#34;)
+    
+    tokenized = self.tokenizer(text, return_tensors=&#34;pt&#34;).to(self.device)
+    logits = self.model(**tokenized).logits[:,:-1]
+    neg_entropy = F.softmax(logits, dim=-1) * F.log_softmax(logits, dim=-1)
+    return -neg_entropy.sum(-1).mean().item()</code></pre>
+</details>
 <div class="desc"><p>Get average entropy of each token in the text</p></div>
 </dd>
 <dt id="mimir.models.LanguageModel.get_lls"><code class="name flex">
 <span>def <span class="ident">get_lls</span></span>(<span>self, texts: List[str], batch_size: int = 6)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_lls(self, texts: List[str], batch_size: int = 6):
+    #return [self.get_ll(text) for text in texts] # -np.mean([self.get_ll(text) for text in texts])
+    # tokenized = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True)
+    # labels = tokenized.input_ids
+    total_size = len(texts)
+    losses = []
+    for i in range(0, total_size, batch_size):
+        # Delegate batches and tokenize
+        batch = texts[i:i+batch_size]
+        tokenized = self.tokenizer(batch, return_tensors=&#34;pt&#34;, padding=True, return_attention_mask=True)
+        label_batch = tokenized.input_ids
+        
+        # # mask out padding tokens
+        attention_mask = tokenized.attention_mask
+        assert attention_mask.size() == label_batch.size()
+
+        needs_sliding = label_batch.size(1) &gt; self.max_length // 2
+        if not needs_sliding:
+            label_batch = label_batch.to(self.device)
+            attention_mask = attention_mask.to(self.device)
+
+        # Collect token probabilities per sample in batch
+        all_prob = defaultdict(list)
+        for i in range(0, label_batch.size(1), self.stride):
+            begin_loc = max(i + self.stride - self.max_length, 0)
+            end_loc = min(i + self.stride, label_batch.size(1))
+            trg_len = end_loc - i  # may be different from stride on last loop
+            input_ids = label_batch[:, begin_loc:end_loc]
+            mask = attention_mask[:, begin_loc:end_loc]
+            if needs_sliding:
+                input_ids = input_ids.to(self.device)
+                mask = mask.to(self.device)
+                
+            target_ids = input_ids.clone()
+            # Don&#39;t count padded tokens or tokens that already have computed probabilities
+            target_ids[:, :-trg_len] = -100
+            # target_ids[attention_mask == 0] = -100
+            
+            logits = self.model(input_ids, labels=target_ids, attention_mask=mask).logits.cpu()
+            target_ids = target_ids.cpu()
+            shift_logits = logits[..., :-1, :].contiguous()
+            probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+            shift_labels = target_ids[..., 1:].contiguous()
+
+            for i, sample in enumerate(shift_labels):
+                for j, token_id in enumerate(sample):
+                    if token_id != -100 and token_id != self.tokenizer.pad_token_id:
+                        probability = probabilities[i, j, token_id].item()
+                        all_prob[i].append(probability)
+
+            del input_ids
+            del mask
+        
+        # average over each sample to get losses
+        batch_losses = [-np.mean(all_prob[idx]) for idx in range(label_batch.size(0))]
+        # print(batch_losses)
+        losses.extend(batch_losses)
+        del label_batch
+        del attention_mask
+    return losses #np.mean(losses)</code></pre>
+</details>
 <div class="desc"></div>
 </dd>
 <dt id="mimir.models.LanguageModel.get_max_norm"><code class="name flex">
 <span>def <span class="ident">get_max_norm</span></span>(<span>self, text: str, context_len=None, tk_freq_map=None)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_max_norm(self, text: str, context_len=None, tk_freq_map=None):
+    # TODO: update like other attacks
+    tokenized = self.tokenizer(
+        text, return_tensors=&#34;pt&#34;).to(self.device)
+    labels = tokenized.input_ids
+
+    max_length = context_len if context_len is not None else self.max_length
+    stride = max_length // 2 #self.stride
+    all_prob = []
+    for i in range(0, labels.size(1), stride):
+        begin_loc = max(i + stride - max_length, 0)
+        end_loc = min(i + stride, labels.size(1))
+        trg_len = end_loc - i  # may be different from stride on last loop
+        input_ids = labels[:, begin_loc:end_loc]
+        target_ids = input_ids.clone()
+        target_ids[:, :-trg_len] = -100
+
+        outputs = self.model(input_ids, labels=target_ids)
+        logits = outputs.logits
+        # Shift so that tokens &lt; n predict n
+        # print(logits.shape)
+        shift_logits = logits[..., :-1, :].contiguous()
+        # shift_logits = torch.transpose(shift_logits, 1, 2)
+        probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+        shift_labels = target_ids[..., 1:].contiguous()
+        labels_processed = shift_labels[0]
+
+        for i, token_id in enumerate(labels_processed):
+            if token_id != -100:
+                probability = probabilities[0, i, token_id].item()
+                max_tk_prob = torch.max(probabilities[0, i]).item()
+                tk_weight = max(tk_freq_map[token_id.item()], 1) / sum(tk_freq_map.values()) if tk_freq_map is not None else 1
+                if tk_weight == 0:
+                    print(&#34;0 count token&#34;, token_id.item())
+                tk_norm = tk_weight
+                all_prob.append((1 - (max_tk_prob - probability)) / tk_norm)
+
+    # Should be equal to # of tokens - 1 to account for shift
+    assert len(all_prob) == labels.size(1) - 1
+    return -np.mean(all_prob)</code></pre>
+</details>
 <div class="desc"></div>
 </dd>
 <dt id="mimir.models.LanguageModel.get_rank"><code class="name flex">
 <span>def <span class="ident">get_rank</span></span>(<span>self, text: str, log: bool = False)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_rank(self, text: str, log: bool=False):
+    &#34;&#34;&#34;
+        Get the average rank of each observed token sorted by model likelihood
+    &#34;&#34;&#34;
+    openai_config = self.config.openai_config
+    assert openai_config is None, &#34;get_rank not implemented for OpenAI models&#34;
+
+    tokenized = self.tokenizer(text, return_tensors=&#34;pt&#34;).to(self.device)
+    logits = self.model(**tokenized).logits[:,:-1]
+    labels = tokenized.input_ids[:,1:]
+
+    # get rank of each label token in the model&#39;s likelihood ordering
+    matches = (logits.argsort(-1, descending=True) == labels.unsqueeze(-1)).nonzero()
+
+    assert matches.shape[1] == 3, f&#34;Expected 3 dimensions in matches tensor, got {matches.shape}&#34;
+
+    ranks, timesteps = matches[:,-1], matches[:,-2]
+
+    # make sure we got exactly one match for each timestep in the sequence
+    assert (timesteps == torch.arange(len(timesteps)).to(timesteps.device)).all(), &#34;Expected one match per timestep&#34;
+
+    ranks = ranks.float() + 1 # convert to 1-indexed rank
+    if log:
+        ranks = torch.log(ranks)
+
+    return ranks.float().mean().item()</code></pre>
+</details>
 <div class="desc"><p>Get the average rank of each observed token sorted by model likelihood</p></div>
 </dd>
 <dt id="mimir.models.LanguageModel.get_ref"><code class="name flex">
-<span>def <span class="ident">get_ref</span></span>(<span>self, text: str, ref_model: <a title="mimir.models.ReferenceModel" href="#mimir.models.ReferenceModel">ReferenceModel</a>, tokens=None, probs=None)</span>
+<span>def <span class="ident">get_ref</span></span>(<span>self,<br>text: str,<br>ref_model: <a title="mimir.models.ReferenceModel" href="#mimir.models.ReferenceModel">ReferenceModel</a>,<br>tokens=None,<br>probs=None)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_ref(self, text: str, ref_model: ReferenceModel, tokens=None, probs=None):
+    &#34;&#34;&#34;
+        Compute the loss of a given text calibrated against the text&#39;s loss under a reference model -- MIA baseline
+    &#34;&#34;&#34;
+    lls = self.get_ll(text, tokens=tokens, probs=probs)
+    lls_ref = ref_model.get_ll(text)
+
+    return lls - lls_ref</code></pre>
+</details>
 <div class="desc"><p>Compute the loss of a given text calibrated against the text's loss under a reference model &ndash; MIA baseline</p></div>
 </dd>
 <dt id="mimir.models.LanguageModel.sample_from_model"><code class="name flex">
 <span>def <span class="ident">sample_from_model</span></span>(<span>self, texts: List[str], **kwargs)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sample_from_model(self, texts: List[str], **kwargs):
+    &#34;&#34;&#34;
+        Sample from base_model using ****only**** the first 30 tokens in each example as context
+    &#34;&#34;&#34;
+    min_words = kwargs.get(&#39;min_words&#39;, 55)
+    max_words = kwargs.get(&#39;max_words&#39;, 200)
+    prompt_tokens = kwargs.get(&#39;prompt_tokens&#39;, 30)
+
+    # encode each text as a list of token ids
+    if self.config.dataset_member == &#39;pubmed&#39;:
+        texts = [t[:t.index(SEPARATOR)] for t in texts]
+        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
+    else:
+        all_encoded = self.tokenizer(texts, return_tensors=&#34;pt&#34;, padding=True).to(self.device, non_blocking=True)
+        all_encoded = {key: value[:, :prompt_tokens] for key, value in all_encoded.items()}
+
+    decoded = [&#39;&#39; for _ in range(len(texts))]
+
+    # sample from the model until we get a sample with at least min_words words for each example
+    # this is an inefficient way to do this (since we regenerate for all inputs if just one is too short), but it works
+    tries = 0
+    while (m := min(len(x.split()) for x in decoded)) &lt; min_words and tries &lt;  self.config.neighborhood_config.top_p:
+        if tries != 0:
+            print()
+            print(f&#34;min words: {m}, needed {min_words}, regenerating (try {tries})&#34;)
+
+        sampling_kwargs = {}
+        if self.config.do_top_p:
+            sampling_kwargs[&#39;top_p&#39;] = self.config.top_p
+        elif self.config.do_top_k:
+            sampling_kwargs[&#39;top_k&#39;] = self.config.top_k
+        #min_length = 50 if config.dataset_member in [&#39;pubmed&#39;] else 150
+
+        #outputs = base_model.generate(**all_encoded, min_length=min_length, max_length=max_length, do_sample=True, **sampling_kwargs, pad_token_id=base_tokenizer.eos_token_id, eos_token_id=base_tokenizer.eos_token_id)
+        #removed minlen and attention mask min_length=min_length, max_length=200, do_sample=True,pad_token_id=base_tokenizer.eos_token_id,
+        outputs = self.model.generate(**all_encoded, min_length=min_words*2, max_length=max_words*3,  **sampling_kwargs,  eos_token_id=self.tokenizer.eos_token_id)
+        decoded = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        tries += 1
+
+    return decoded</code></pre>
+</details>
 <div class="desc"><p>Sample from base_model using <strong><em>*only</em></strong>* the first 30 tokens in each example as context</p></div>
 </dd>
 </dl>
@@ -331,11 +561,9 @@ hljs.highlightAll();
 </dd>
 <dt id="mimir.models.Model"><code class="flex name class">
 <span>class <span class="ident">Model</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, **kwargs)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class (for LLMs).</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -399,6 +627,7 @@ hljs.highlightAll();
                 text (str): The input text for which to calculate probabilities.
                 tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
                 are used instead of tokenizing the input text. Defaults to None.
+                return_all_probs: bool: If True, return all token probabilities. Defaults to False.
 
             Raises:
                 ValueError: If the device or name attributes of the instance are not set.
@@ -416,8 +645,7 @@ hljs.highlightAll();
                     # expand first dimension
                     labels = labels.unsqueeze(0)
             else:
-                tokenized = self.tokenizer(
-                    text, return_tensors=&#34;pt&#34;)
+                tokenized = self.tokenizer(text, return_tensors=&#34;pt&#34;)
                 labels = tokenized.input_ids
 
             target_token_log_prob = []
@@ -557,6 +785,8 @@ hljs.highlightAll();
             self.max_length = 1024
         self.stride = self.max_length // 2</code></pre>
 </details>
+<div class="desc"><p>Base class (for LLMs).</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>torch.nn.modules.module.Module</li>
@@ -574,6 +804,28 @@ hljs.highlightAll();
 <span>def <span class="ident">get_ll</span></span>(<span>self, text: str, tokens: numpy.ndarray = None, probs=None)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_ll(self,
+           text: str,
+           tokens: np.ndarray=None,
+           probs = None):
+    &#34;&#34;&#34;
+        Get the log likelihood of each text under the base_model.
+
+        Args:
+            text (str): The input text for which to calculate the log likelihood.
+            tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+            are used instead of tokenizing the input text. Defaults to None.
+            probs (list, optional): An optional list of probabilities. If provided, these probabilities
+            are used instead of calling the `get_probabilities` method. Defaults to None.
+    &#34;&#34;&#34;
+    all_prob = probs if probs is not None else self.get_probabilities(text, tokens=tokens)
+    return -np.mean(all_prob)</code></pre>
+</details>
 <div class="desc"><p>Get the log likelihood of each text under the base_model.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -588,9 +840,89 @@ hljs.highlightAll();
 <p>are used instead of calling the <code>get_probabilities</code> method. Defaults to None.</p></div>
 </dd>
 <dt id="mimir.models.Model.get_probabilities"><code class="name flex">
-<span>def <span class="ident">get_probabilities</span></span>(<span>self, text: str, tokens: numpy.ndarray = None, no_grads: bool = True, return_all_probs: bool = False)</span>
+<span>def <span class="ident">get_probabilities</span></span>(<span>self,<br>text: str,<br>tokens: numpy.ndarray = None,<br>no_grads: bool = True,<br>return_all_probs: bool = False)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_probabilities(self,
+                      text: str,
+                      tokens: np.ndarray = None,
+                      no_grads: bool = True,
+                      return_all_probs: bool = False):
+    &#34;&#34;&#34;
+        Get the probabilities or log-softmaxed logits for a text under the current model.
+        Args:
+            text (str): The input text for which to calculate probabilities.
+            tokens (numpy.ndarray, optional): An optional array of token ids. If provided, these tokens
+            are used instead of tokenizing the input text. Defaults to None.
+            return_all_probs: bool: If True, return all token probabilities. Defaults to False.
+
+        Raises:
+            ValueError: If the device or name attributes of the instance are not set.
+
+        Returns:
+            list: A list of probabilities.
+    &#34;&#34;&#34;
+    with torch.set_grad_enabled(not no_grads):
+        if self.device is None or self.name is None:
+            raise ValueError(&#34;Please set self.device and self.name in child class&#34;)
+
+        if tokens is not None:
+            labels = torch.from_numpy(tokens.astype(np.int64)).type(torch.LongTensor)
+            if labels.shape[0] != 1:
+                # expand first dimension
+                labels = labels.unsqueeze(0)
+        else:
+            tokenized = self.tokenizer(text, return_tensors=&#34;pt&#34;)
+            labels = tokenized.input_ids
+
+        target_token_log_prob = []
+        all_token_log_prob = []
+        for i in range(0, labels.size(1), self.stride):
+            begin_loc = max(i + self.stride - self.max_length, 0)
+            end_loc = min(i + self.stride, labels.size(1))
+            trg_len = end_loc - i  # may be different from stride on last loop
+            input_ids = labels[:, begin_loc:end_loc].to(self.device)
+            target_ids = input_ids.clone()
+            target_ids[:, :-trg_len] = -100
+
+            logits = self.model(input_ids, labels=target_ids).logits
+            if no_grads:
+                logits = logits.cpu()
+            shift_logits = logits[..., :-1, :].contiguous()
+            log_probabilities = torch.nn.functional.log_softmax(shift_logits, dim=-1)
+            shift_labels = target_ids[..., 1:]
+            if no_grads:
+                shift_labels = shift_labels.cpu()
+            shift_labels = shift_labels.contiguous()
+            labels_processed = shift_labels[0]
+
+            del input_ids
+            del target_ids
+
+            for i, token_id in enumerate(labels_processed):
+                if token_id != -100:
+                    log_probability = log_probabilities[0, i, token_id]
+                    if no_grads:
+                        log_probability = log_probability.item()
+                    target_token_log_prob.append(log_probability)
+                    all_token_log_prob.append(log_probabilities[0, i])
+        
+        # Should be equal to # of tokens - 1 to account for shift
+        assert len(target_token_log_prob) == labels.size(1) - 1
+        all_token_log_prob = torch.stack(all_token_log_prob, dim=0)
+        assert len(target_token_log_prob) == len(all_token_log_prob)
+
+    if not no_grads:
+        target_token_log_prob = torch.stack(target_token_log_prob)
+
+    if not return_all_probs:
+        return target_token_log_prob
+    return target_token_log_prob, all_token_log_prob</code></pre>
+</details>
 <div class="desc"><p>Get the probabilities or log-softmaxed logits for a text under the current model.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -598,8 +930,10 @@ hljs.highlightAll();
 <dd>The input text for which to calculate probabilities.</dd>
 <dt><strong><code>tokens</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
 <dd>An optional array of token ids. If provided, these tokens</dd>
+<dt>are used instead of tokenizing the input text. Defaults to None.</dt>
+<dt><strong><code>return_all_probs</code></strong></dt>
+<dd>bool: If True, return all token probabilities. Defaults to False.</dd>
 </dl>
-<p>are used instead of tokenizing the input text. Defaults to None.</p>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>ValueError</code></dt>
@@ -615,41 +949,167 @@ hljs.highlightAll();
 <span>def <span class="ident">load</span></span>(<span>self)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self):
+    &#34;&#34;&#34;
+        Load model onto GPU (and compile, if requested) if not already loaded with device map.
+    &#34;&#34;&#34;
+    if not self.device_map:
+        start = time.time()
+        try:
+            self.model.cpu()
+        except NameError:
+            pass
+        if self.config.openai_config is None:
+            self.model.to(self.device, non_blocking=True)
+        if self.config.env_config.compile:
+            torch.compile(self.model)
+        print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)</code></pre>
+</details>
 <div class="desc"><p>Load model onto GPU (and compile, if requested) if not already loaded with device map.</p></div>
 </dd>
 <dt id="mimir.models.Model.load_base_model_and_tokenizer"><code class="name flex">
 <span>def <span class="ident">load_base_model_and_tokenizer</span></span>(<span>self, model_kwargs)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_base_model_and_tokenizer(self, model_kwargs):
+    &#34;&#34;&#34;
+        Load the base model and tokenizer for a given model name.
+    &#34;&#34;&#34;
+    if self.device is None or self.name is None:
+        raise ValueError(&#34;Please set self.device and self.name in child class&#34;)
+
+    if self.config.openai_config is None:
+        print(f&#39;Loading BASE model {self.name}...&#39;)
+        device_map = self.device_map # if self.device_map else &#39;cpu&#39;
+        if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
+            from utils.transformers.model import OpenLMforCausalLM
+            model = OpenLMforCausalLM.from_pretrained(
+                self.name, **model_kwargs, device_map=self.device, cache_dir=self.cache_dir)
+            # Extract the model from the model wrapper so we dont need to call model.model
+        elif &#34;llama&#34; in self.name or &#34;alpaca&#34; in self.name:
+            # TODO: This should be smth specified in config in case user has
+            # llama is too big, gotta use device map
+            model = transformers.AutoModelForCausalLM.from_pretrained(self.name, **model_kwargs, device_map=&#34;balanced_low_0&#34;, cache_dir=self.cache_dir)
+            self.device = &#39;cuda:1&#39;
+        elif &#34;stablelm&#34; in self.name.lower():  # models requiring custom code
+            model = transformers.AutoModelForCausalLM.from_pretrained(
+                self.name, **model_kwargs, trust_remote_code=True, device_map=device_map, cache_dir=self.cache_dir)
+        elif &#34;olmo&#34; in self.name.lower():
+            model = transformers.AutoModelForCausalLM.from_pretrained(
+                self.name, **model_kwargs, trust_remote_code=True, cache_dir=self.cache_dir)
+        else:
+            model = transformers.AutoModelForCausalLM.from_pretrained(
+                self.name, **model_kwargs, device_map=device_map, cache_dir=self.cache_dir)
+    else:
+        model = None
+
+    optional_tok_kwargs = {}
+    if &#34;facebook/opt-&#34; in self.name:
+        print(&#34;Using non-fast tokenizer for OPT&#34;)
+        optional_tok_kwargs[&#39;fast&#39;] = False
+    if self.config.dataset_member in [&#39;pubmed&#39;] or self.config.dataset_nonmember in [&#39;pubmed&#39;]:
+        optional_tok_kwargs[&#39;padding_side&#39;] = &#39;left&#39;
+        self.pad_token = self.tokenizer.eos_token_id
+    if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
+        tokenizer = transformers.GPTNeoXTokenizerFast.from_pretrained(
+            &#34;EleutherAI/gpt-neox-20b&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
+    elif &#34;datablations&#34; in self.name:
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            &#34;gpt2&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
+    elif &#34;llama&#34; in self.name or &#34;alpaca&#34; in self.name:
+        tokenizer = transformers.LlamaTokenizer.from_pretrained(
+            self.name, **optional_tok_kwargs, cache_dir=self.cache_dir)
+    elif &#34;pubmedgpt&#34; in self.name:
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            &#34;stanford-crfm/BioMedLM&#34;, **optional_tok_kwargs, cache_dir=self.cache_dir)
+    else:
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            self.name, **optional_tok_kwargs, cache_dir=self.cache_dir,
+            trust_remote_code=True if &#34;olmo&#34; in self.name.lower() else False)
+    tokenizer.add_special_tokens({&#39;pad_token&#39;: &#39;[PAD]&#39;})
+
+    return model, tokenizer</code></pre>
+</details>
 <div class="desc"><p>Load the base model and tokenizer for a given model name.</p></div>
 </dd>
 <dt id="mimir.models.Model.load_model_properties"><code class="name flex">
 <span>def <span class="ident">load_model_properties</span></span>(<span>self)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_model_properties(self):
+    &#34;&#34;&#34;
+        Load model properties, such as max length and stride.
+    &#34;&#34;&#34;
+    # TODO: getting max_length of input could be more generic
+    if &#34;silo&#34; in self.name or &#34;balanced&#34; in self.name:
+        self.max_length = self.model.model.seq_len
+    elif hasattr(self.model.config, &#39;max_position_embeddings&#39;):
+        self.max_length = self.model.config.max_position_embeddings
+    elif hasattr(self.model.config, &#39;n_positions&#39;):
+        self.max_length = self.model.config.n_positions
+    else:
+        # Default window size
+        self.max_length = 1024
+    self.stride = self.max_length // 2</code></pre>
+</details>
 <div class="desc"><p>Load model properties, such as max length and stride.</p></div>
 </dd>
 <dt id="mimir.models.Model.to"><code class="name flex">
 <span>def <span class="ident">to</span></span>(<span>self, device)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to(self, device):
+    &#34;&#34;&#34;
+        Shift model to a particular device.
+    &#34;&#34;&#34;
+    self.model.to(device, non_blocking=True)</code></pre>
+</details>
 <div class="desc"><p>Shift model to a particular device.</p></div>
 </dd>
 <dt id="mimir.models.Model.unload"><code class="name flex">
 <span>def <span class="ident">unload</span></span>(<span>self)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unload(self):
+    &#34;&#34;&#34;
+        Unload model from GPU
+    &#34;&#34;&#34;
+    start = time.time()
+    try:
+        self.model.cpu()
+    except NameError:
+        pass
+    print(f&#39;DONE ({time.time() - start:.2f}s)&#39;)</code></pre>
+</details>
 <div class="desc"><p>Unload model from GPU</p></div>
 </dd>
 </dl>
 </dd>
 <dt id="mimir.models.OpenAI_APIModel"><code class="flex name class">
 <span>class <span class="ident">OpenAI_APIModel</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, **kwargs)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Wrapper for OpenAI API calls</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -763,6 +1223,8 @@ hljs.highlightAll();
         &#34;&#34;&#34;
         raise NotImplementedError(&#34;get_entropy not implemented for OpenAI models&#34;)</code></pre>
 </details>
+<div class="desc"><p>Wrapper for OpenAI API calls</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="mimir.models.LanguageModel" href="#mimir.models.LanguageModel">LanguageModel</a></li>
@@ -773,7 +1235,6 @@ hljs.highlightAll();
 <dl>
 <dt id="mimir.models.OpenAI_APIModel.api_calls"><code class="name">prop <span class="ident">api_calls</span></code></dt>
 <dd>
-<div class="desc"><p>Get the number of tokens used in API calls</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -785,6 +1246,7 @@ def api_calls(self):
     &#34;&#34;&#34;
     return self.API_TOKEN_COUNTER</code></pre>
 </details>
+<div class="desc"><p>Get the number of tokens used in API calls</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -793,18 +1255,72 @@ def api_calls(self):
 <span>def <span class="ident">get_ll</span></span>(<span>self, text: str)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_ll(self, text: str):
+    &#34;&#34;&#34;
+        Get the log likelihood of each text under the base_model
+    &#34;&#34;&#34;
+    openai_config = self.config.openai_config
+
+    kwargs = {&#34;engine&#34;: openai_config.model, &#34;temperature&#34;: 0, &#34;max_tokens&#34;: 0, &#34;echo&#34;: True, &#34;logprobs&#34;: 0}
+    r = openai.Completion.create(prompt=f&#34;&lt;|endoftext|&gt;{text}&#34;, **kwargs)
+    result = r[&#39;choices&#39;][0]
+    tokens, logprobs = result[&#34;logprobs&#34;][&#34;tokens&#34;][1:], result[&#34;logprobs&#34;][&#34;token_logprobs&#34;][1:]
+
+    assert len(tokens) == len(logprobs), f&#34;Expected {len(tokens)} logprobs, got {len(logprobs)}&#34;
+
+    return np.mean(logprobs)</code></pre>
+</details>
 <div class="desc"><p>Get the log likelihood of each text under the base_model</p></div>
 </dd>
 <dt id="mimir.models.OpenAI_APIModel.get_lls"><code class="name flex">
 <span>def <span class="ident">get_lls</span></span>(<span>self, texts: str)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_lls(self, texts: str):
+
+    # use GPT2_TOKENIZER to get total number of tokens
+    total_tokens = sum(len(self.tokenizer.encode(text)) for text in texts)
+    self.API_TOKEN_COUNTER += total_tokens * 2  # multiply by two because OpenAI double-counts echo_prompt tokens
+
+    pool = ThreadPool(self.config.batch_size)
+    return pool.map(self.get_ll, texts)</code></pre>
+</details>
 <div class="desc"></div>
 </dd>
 <dt id="mimir.models.OpenAI_APIModel.get_ref"><code class="name flex">
-<span>def <span class="ident">get_ref</span></span>(<span>self, text: str, ref_model: <a title="mimir.models.ReferenceModel" href="#mimir.models.ReferenceModel">ReferenceModel</a>)</span>
+<span>def <span class="ident">get_ref</span></span>(<span>self,<br>text: str,<br>ref_model: <a title="mimir.models.ReferenceModel" href="#mimir.models.ReferenceModel">ReferenceModel</a>)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@torch.no_grad()
+def get_ref(self, text: str, ref_model: ReferenceModel):
+    &#34;&#34;&#34;
+        Get the  likelihood ratio of each text under the base_model -- MIA baseline
+    &#34;&#34;&#34;
+    raise NotImplementedError(&#34;OpenAI model not implemented for LIRA&#34;)
+    openai_config = self.config.openai_config
+    kwargs = {&#34;engine&#34;: openai_config.model, &#34;temperature&#34;: 0,
+                &#34;max_tokens&#34;: 0, &#34;echo&#34;: True, &#34;logprobs&#34;: 0}
+    r = openai.Completion.create(prompt=f&#34;&lt;|endoftext|&gt;{text}&#34;, **kwargs)
+    result = r[&#39;choices&#39;][0]
+    tokens, logprobs = result[&#34;logprobs&#34;][&#34;tokens&#34;][1:], result[&#34;logprobs&#34;][&#34;token_logprobs&#34;][1:]
+
+    assert len(tokens) == len(logprobs), f&#34;Expected {len(tokens)} logprobs, got {len(logprobs)}&#34;
+
+    return np.mean(logprobs)</code></pre>
+</details>
 <div class="desc"><p>Get the
 likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div>
 </dd>
@@ -828,11 +1344,9 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
 </dd>
 <dt id="mimir.models.QuantileReferenceModel"><code class="flex name class">
 <span>class <span class="ident">QuantileReferenceModel</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, name: str)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Wrapper for referenc model, specifically used for quantile regression</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -855,6 +1369,8 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
         self.model.classifier.linear_out = nn.Linear(self.model.classifier.linear_out.in_features, 1)
         self.load_model_properties()</code></pre>
 </details>
+<div class="desc"><p>Wrapper for referenc model, specifically used for quantile regression</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="mimir.models.Model" href="#mimir.models.Model">Model</a></li>
@@ -877,11 +1393,9 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
 </dd>
 <dt id="mimir.models.ReferenceModel"><code class="flex name class">
 <span>class <span class="ident">ReferenceModel</span></span>
-<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>, name: str)</span>
+<span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Wrapper for reference model</p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -923,6 +1437,8 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
         if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
             super().unload()</code></pre>
 </details>
+<div class="desc"><p>Wrapper for reference model</p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="mimir.models.Model" href="#mimir.models.Model">Model</a></li>
@@ -934,12 +1450,34 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
 <span>def <span class="ident">load</span></span>(<span>self)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self):
+    &#34;&#34;&#34;
+    Load reference model noto GPU(s)
+    &#34;&#34;&#34;
+    if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+        super().load()</code></pre>
+</details>
 <div class="desc"><p>Load reference model noto GPU(s)</p></div>
 </dd>
 <dt id="mimir.models.ReferenceModel.unload"><code class="name flex">
 <span>def <span class="ident">unload</span></span>(<span>self)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unload(self):
+    &#34;&#34;&#34;
+    Unload reference model from GPU(s)
+    &#34;&#34;&#34;
+    if &#34;llama&#34; not in self.name and &#34;alpaca&#34; not in self.name:
+        super().unload()</code></pre>
+</details>
 <div class="desc"><p>Unload reference model from GPU(s)</p></div>
 </dd>
 </dl>
@@ -1024,7 +1562,7 @@ likelihood ratio of each text under the base_model &ndash; MIA baseline</p></div
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

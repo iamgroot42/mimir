@@ -3,19 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>mimir.config API documentation</title>
 <meta name="description" content="Definitions for configurations.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
 })</script>
 </head>
 <body>
@@ -38,10 +49,9 @@ hljs.highlightAll();
 <dl>
 <dt id="mimir.config.EnvironmentConfig"><code class="flex name class">
 <span>class <span class="ident">EnvironmentConfig</span></span>
-<span>(</span><span>cache_dir: Optional[str] = None, data_source: Optional[str] = None, device: Optional[str] = 'cuda:0', device_map: Optional[str] = None, device_aux: Optional[str] = 'cuda:1', compile: Optional[bool] = True, int8: Optional[bool] = False, half: Optional[bool] = False, results: Optional[str] = 'results', tmp_results: Optional[str] = 'tmp_results')</span>
+<span>(</span><span>cache_dir: str | None = None,<br>data_source: str | None = None,<br>device: str | None = 'cuda:0',<br>device_map: str | None = None,<br>device_aux: str | None = 'cuda:1',<br>compile: bool | None = True,<br>int8: bool | None = False,<br>half: bool | None = False,<br>results: str | None = 'results',<br>tmp_results: str | None = 'tmp_results')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for environment-specific parameters</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -77,6 +87,7 @@ class EnvironmentConfig(Serializable):
         if self.data_source is None:
             self.data_source = get_data_source()</code></pre>
 </details>
+<div class="desc"><p>Config for environment-specific parameters</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -84,47 +95,50 @@ class EnvironmentConfig(Serializable):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="mimir.config.EnvironmentConfig.cache_dir"><code class="name">var <span class="ident">cache_dir</span> : Optional[str]</code></dt>
-<dd>
-<div class="desc"><p>Path to cache directory</p></div>
-</dd>
-<dt id="mimir.config.EnvironmentConfig.compile"><code class="name">var <span class="ident">compile</span> : Optional[bool]</code></dt>
-<dd>
-<div class="desc"><p>Compile models?</p></div>
-</dd>
-<dt id="mimir.config.EnvironmentConfig.data_source"><code class="name">var <span class="ident">data_source</span> : Optional[str]</code></dt>
-<dd>
-<div class="desc"><p>Path where data is stored</p></div>
-</dd>
 <dt id="mimir.config.EnvironmentConfig.decode_into_subclasses"><code class="name">var <span class="ident">decode_into_subclasses</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.device"><code class="name">var <span class="ident">device</span> : Optional[str]</code></dt>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mimir.config.EnvironmentConfig.cache_dir"><code class="name">var <span class="ident">cache_dir</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>Path to cache directory</p></div>
+</dd>
+<dt id="mimir.config.EnvironmentConfig.compile"><code class="name">var <span class="ident">compile</span> : bool | None</code></dt>
+<dd>
+<div class="desc"><p>Compile models?</p></div>
+</dd>
+<dt id="mimir.config.EnvironmentConfig.data_source"><code class="name">var <span class="ident">data_source</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>Path where data is stored</p></div>
+</dd>
+<dt id="mimir.config.EnvironmentConfig.device"><code class="name">var <span class="ident">device</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Device (GPU) to load main model on</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.device_aux"><code class="name">var <span class="ident">device_aux</span> : Optional[str]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.device_aux"><code class="name">var <span class="ident">device_aux</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Device (GPU) to load any auxiliary model(s) on</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.device_map"><code class="name">var <span class="ident">device_map</span> : Optional[str]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.device_map"><code class="name">var <span class="ident">device_map</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Configuration for device map if needing to split model across gpus</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.half"><code class="name">var <span class="ident">half</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.half"><code class="name">var <span class="ident">half</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Use half precision?</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.int8"><code class="name">var <span class="ident">int8</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.int8"><code class="name">var <span class="ident">int8</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Use int8 quantization?</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.results"><code class="name">var <span class="ident">results</span> : Optional[str]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.results"><code class="name">var <span class="ident">results</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Path for saving final results</p></div>
 </dd>
-<dt id="mimir.config.EnvironmentConfig.tmp_results"><code class="name">var <span class="ident">tmp_results</span> : Optional[str]</code></dt>
+<dt id="mimir.config.EnvironmentConfig.tmp_results"><code class="name">var <span class="ident">tmp_results</span> : str | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -132,10 +146,9 @@ class EnvironmentConfig(Serializable):
 </dd>
 <dt id="mimir.config.ExperimentConfig"><code class="flex name class">
 <span>class <span class="ident">ExperimentConfig</span></span>
-<span>(</span><span>experiment_name: str, base_model: str, dataset_member: str, dataset_nonmember: str, output_name: str = None, dataset_nonmember_other_sources: Optional[List[str]] = &lt;factory&gt;, pretokenized: Optional[bool] = False, revision: Optional[str] = None, presampled_dataset_member: Optional[str] = None, presampled_dataset_nonmember: Optional[str] = None, token_frequency_map: Optional[str] = None, dataset_key: Optional[str] = None, specific_source: Optional[str] = None, full_doc: Optional[bool] = False, max_substrs: Optional[int] = 20, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, load_from_hf: Optional[bool] = True, blackbox_attacks: Optional[List[str]] = &lt;factory&gt;, tokenization_attack: Optional[bool] = False, quantile_attack: Optional[bool] = False, n_samples: Optional[int] = 200, max_tokens: Optional[int] = 512, max_data: Optional[int] = 5000, min_words: Optional[int] = 100, max_words: Optional[int] = 200, max_words_cutoff: Optional[bool] = True, batch_size: Optional[int] = 50, chunk_size: Optional[int] = 20, scoring_model_name: Optional[str] = None, top_k: Optional[int] = 40, do_top_k: Optional[bool] = False, top_p: Optional[float] = 0.96, do_top_p: Optional[bool] = False, pre_perturb_pct: Optional[float] = 0.0, pre_perturb_span_length: Optional[int] = 5, tok_by_tok: Optional[bool] = False, fpr_list: Optional[List[float]] = &lt;factory&gt;, random_seed: Optional[int] = 0, ref_config: Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>] = None, recall_config: Optional[<a title="mimir.config.ReCaLLConfig" href="#mimir.config.ReCaLLConfig">ReCaLLConfig</a>] = None, neighborhood_config: Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>] = None, env_config: Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>] = None, openai_config: Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>] = None)</span>
+<span>(</span><span>experiment_name: str,<br>base_model: str,<br>dataset_member: str,<br>dataset_nonmember: str,<br>output_name: str = None,<br>dataset_nonmember_other_sources: List[str] | None = &lt;factory&gt;,<br>pretokenized: bool | None = False,<br>revision: str | None = None,<br>presampled_dataset_member: str | None = None,<br>presampled_dataset_nonmember: str | None = None,<br>token_frequency_map: str | None = None,<br>dataset_key: str | None = None,<br>specific_source: str | None = None,<br>full_doc: bool | None = False,<br>max_substrs: int | None = 20,<br>dump_cache: bool | None = False,<br>load_from_cache: bool | None = False,<br>load_from_hf: bool | None = True,<br>blackbox_attacks: List[str] | None = &lt;factory&gt;,<br>tokenization_attack: bool | None = False,<br>quantile_attack: bool | None = False,<br>n_samples: int | None = 200,<br>max_tokens: int | None = 512,<br>max_data: int | None = 5000,<br>min_words: int | None = 100,<br>max_words: int | None = 200,<br>max_words_cutoff: bool | None = True,<br>batch_size: int | None = 50,<br>chunk_size: int | None = 20,<br>scoring_model_name: str | None = None,<br>top_k: int | None = 40,<br>do_top_k: bool | None = False,<br>top_p: float | None = 0.96,<br>do_top_p: bool | None = False,<br>pre_perturb_pct: float | None = 0.0,<br>pre_perturb_span_length: int | None = 5,<br>tok_by_tok: bool | None = False,<br>fpr_list: List[float] | None = &lt;factory&gt;,<br>random_seed: int | None = 0,<br>ref_config: <a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a> | None = None,<br>recall_config: <a title="mimir.config.ReCaLLConfig" href="#mimir.config.ReCaLLConfig">ReCaLLConfig</a> | None = None,<br>neighborhood_config: <a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a> | None = None,<br>env_config: <a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a> | None = None,<br>openai_config: <a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a> | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for attacks</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -256,6 +269,7 @@ class ExperimentConfig(Serializable):
             if self.neighborhood_config.dump_cache and (self.neighborhood_config.load_from_cache or self.load_from_hf):
                 raise ValueError(&#34;Cannot dump and load neighborhood cache at the same time&#34;)    </code></pre>
 </details>
+<div class="desc"><p>Config for attacks</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -263,23 +277,30 @@ class ExperimentConfig(Serializable):
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="mimir.config.ExperimentConfig.decode_into_subclasses"><code class="name">var <span class="ident">decode_into_subclasses</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
 <dt id="mimir.config.ExperimentConfig.base_model"><code class="name">var <span class="ident">base_model</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Base model name</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.batch_size"><code class="name">var <span class="ident">batch_size</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.batch_size"><code class="name">var <span class="ident">batch_size</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Batch size</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.blackbox_attacks"><code class="name">var <span class="ident">blackbox_attacks</span> : Optional[List[str]]</code></dt>
+<dt id="mimir.config.ExperimentConfig.blackbox_attacks"><code class="name">var <span class="ident">blackbox_attacks</span> : List[str] | None</code></dt>
 <dd>
 <div class="desc"><p>List of attacks to evaluate</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.chunk_size"><code class="name">var <span class="ident">chunk_size</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.chunk_size"><code class="name">var <span class="ident">chunk_size</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Chunk size</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.dataset_key"><code class="name">var <span class="ident">dataset_key</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.dataset_key"><code class="name">var <span class="ident">dataset_key</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Dataset key</p></div>
 </dd>
@@ -291,27 +312,23 @@ class ExperimentConfig(Serializable):
 <dd>
 <div class="desc"><p>Dataset source for nonmembers</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.dataset_nonmember_other_sources"><code class="name">var <span class="ident">dataset_nonmember_other_sources</span> : Optional[List[str]]</code></dt>
+<dt id="mimir.config.ExperimentConfig.dataset_nonmember_other_sources"><code class="name">var <span class="ident">dataset_nonmember_other_sources</span> : List[str] | None</code></dt>
 <dd>
 <div class="desc"><p>Dataset sources for nonmembers for which metrics will be computed, using the thresholds derived from the main member/nonmember datasets</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.decode_into_subclasses"><code class="name">var <span class="ident">decode_into_subclasses</span> : ClassVar[bool]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="mimir.config.ExperimentConfig.do_top_k"><code class="name">var <span class="ident">do_top_k</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.do_top_k"><code class="name">var <span class="ident">do_top_k</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Use top-k sampling?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.do_top_p"><code class="name">var <span class="ident">do_top_p</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.do_top_p"><code class="name">var <span class="ident">do_top_p</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Use top-p sampling?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.dump_cache"><code class="name">var <span class="ident">dump_cache</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.dump_cache"><code class="name">var <span class="ident">dump_cache</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Dump data to cache? Exits program after dumping</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.env_config"><code class="name">var <span class="ident">env_config</span> : Optional[<a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a>]</code></dt>
+<dt id="mimir.config.ExperimentConfig.env_config"><code class="name">var <span class="ident">env_config</span> : <a title="mimir.config.EnvironmentConfig" href="#mimir.config.EnvironmentConfig">EnvironmentConfig</a> | None</code></dt>
 <dd>
 <div class="desc"><p>Environment config</p></div>
 </dd>
@@ -319,55 +336,55 @@ class ExperimentConfig(Serializable):
 <dd>
 <div class="desc"><p>Name for the experiment</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.fpr_list"><code class="name">var <span class="ident">fpr_list</span> : Optional[List[float]]</code></dt>
+<dt id="mimir.config.ExperimentConfig.fpr_list"><code class="name">var <span class="ident">fpr_list</span> : List[float] | None</code></dt>
 <dd>
 <div class="desc"><p>FPRs at which to compute TPR</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.full_doc"><code class="name">var <span class="ident">full_doc</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.full_doc"><code class="name">var <span class="ident">full_doc</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Determines whether MIA will be performed over entire doc or not</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.load_from_cache"><code class="name">var <span class="ident">load_from_cache</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.load_from_cache"><code class="name">var <span class="ident">load_from_cache</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Load data from cache?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.load_from_hf"><code class="name">var <span class="ident">load_from_hf</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.load_from_hf"><code class="name">var <span class="ident">load_from_hf</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Load data from HuggingFace?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.max_data"><code class="name">var <span class="ident">max_data</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.max_data"><code class="name">var <span class="ident">max_data</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Maximum samples to load from data before processing. Helps with efficiency</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.max_substrs"><code class="name">var <span class="ident">max_substrs</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.max_substrs"><code class="name">var <span class="ident">max_substrs</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>If full_doc, determines the maximum number of sample substrs to evaluate on</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.max_tokens"><code class="name">var <span class="ident">max_tokens</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.max_tokens"><code class="name">var <span class="ident">max_tokens</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Consider samples with at most these many tokens</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.max_words"><code class="name">var <span class="ident">max_words</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.max_words"><code class="name">var <span class="ident">max_words</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Consider documents with at most these many words</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.max_words_cutoff"><code class="name">var <span class="ident">max_words_cutoff</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.max_words_cutoff"><code class="name">var <span class="ident">max_words_cutoff</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Is max_words a selection criteria (False), or a cutoff added on text (True)?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.min_words"><code class="name">var <span class="ident">min_words</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.min_words"><code class="name">var <span class="ident">min_words</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Consider documents with at least these many words</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.n_samples"><code class="name">var <span class="ident">n_samples</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.n_samples"><code class="name">var <span class="ident">n_samples</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Number of records (member and non-member each) to run the attack(s) for</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.neighborhood_config"><code class="name">var <span class="ident">neighborhood_config</span> : Optional[<a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a>]</code></dt>
+<dt id="mimir.config.ExperimentConfig.neighborhood_config"><code class="name">var <span class="ident">neighborhood_config</span> : <a title="mimir.config.NeighborhoodConfig" href="#mimir.config.NeighborhoodConfig">NeighborhoodConfig</a> | None</code></dt>
 <dd>
 <div class="desc"><p>Neighborhood attack config</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.openai_config"><code class="name">var <span class="ident">openai_config</span> : Optional[<a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a>]</code></dt>
+<dt id="mimir.config.ExperimentConfig.openai_config"><code class="name">var <span class="ident">openai_config</span> : <a title="mimir.config.OpenAIConfig" href="#mimir.config.OpenAIConfig">OpenAIConfig</a> | None</code></dt>
 <dd>
 <div class="desc"><p>OpenAI config</p></div>
 </dd>
@@ -375,71 +392,71 @@ class ExperimentConfig(Serializable):
 <dd>
 <div class="desc"><p>Output name for sub-directory.</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.pre_perturb_pct"><code class="name">var <span class="ident">pre_perturb_pct</span> : Optional[float]</code></dt>
+<dt id="mimir.config.ExperimentConfig.pre_perturb_pct"><code class="name">var <span class="ident">pre_perturb_pct</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Percentage of tokens to perturb before attack</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.pre_perturb_span_length"><code class="name">var <span class="ident">pre_perturb_span_length</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.pre_perturb_span_length"><code class="name">var <span class="ident">pre_perturb_span_length</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Span length for pre-perturbation</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.presampled_dataset_member"><code class="name">var <span class="ident">presampled_dataset_member</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.presampled_dataset_member"><code class="name">var <span class="ident">presampled_dataset_member</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Path to presampled dataset source for members</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.presampled_dataset_nonmember"><code class="name">var <span class="ident">presampled_dataset_nonmember</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.presampled_dataset_nonmember"><code class="name">var <span class="ident">presampled_dataset_nonmember</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Path to presampled dataset source for non-members</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.pretokenized"><code class="name">var <span class="ident">pretokenized</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.pretokenized"><code class="name">var <span class="ident">pretokenized</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Is the data already pretokenized</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.quantile_attack"><code class="name">var <span class="ident">quantile_attack</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.quantile_attack"><code class="name">var <span class="ident">quantile_attack</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Run quantile attack?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.random_seed"><code class="name">var <span class="ident">random_seed</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.random_seed"><code class="name">var <span class="ident">random_seed</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Random seed</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.recall_config"><code class="name">var <span class="ident">recall_config</span> : Optional[<a title="mimir.config.ReCaLLConfig" href="#mimir.config.ReCaLLConfig">ReCaLLConfig</a>]</code></dt>
+<dt id="mimir.config.ExperimentConfig.recall_config"><code class="name">var <span class="ident">recall_config</span> : <a title="mimir.config.ReCaLLConfig" href="#mimir.config.ReCaLLConfig">ReCaLLConfig</a> | None</code></dt>
 <dd>
 <div class="desc"><p>ReCaLL attack config</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.ref_config"><code class="name">var <span class="ident">ref_config</span> : Optional[<a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a>]</code></dt>
+<dt id="mimir.config.ExperimentConfig.ref_config"><code class="name">var <span class="ident">ref_config</span> : <a title="mimir.config.ReferenceConfig" href="#mimir.config.ReferenceConfig">ReferenceConfig</a> | None</code></dt>
 <dd>
 <div class="desc"><p>Reference model config</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.revision"><code class="name">var <span class="ident">revision</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.revision"><code class="name">var <span class="ident">revision</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Model revision to use</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.scoring_model_name"><code class="name">var <span class="ident">scoring_model_name</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.scoring_model_name"><code class="name">var <span class="ident">scoring_model_name</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Scoring model (if different from base model)</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.specific_source"><code class="name">var <span class="ident">specific_source</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.specific_source"><code class="name">var <span class="ident">specific_source</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Specific sub-source to focus on. Only valid for the_pile</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.tok_by_tok"><code class="name">var <span class="ident">tok_by_tok</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.tok_by_tok"><code class="name">var <span class="ident">tok_by_tok</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Process data token-wise?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.token_frequency_map"><code class="name">var <span class="ident">token_frequency_map</span> : Optional[str]</code></dt>
+<dt id="mimir.config.ExperimentConfig.token_frequency_map"><code class="name">var <span class="ident">token_frequency_map</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Path to a pre-computed token frequency map</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.tokenization_attack"><code class="name">var <span class="ident">tokenization_attack</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.ExperimentConfig.tokenization_attack"><code class="name">var <span class="ident">tokenization_attack</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Run tokenization attack?</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.top_k"><code class="name">var <span class="ident">top_k</span> : Optional[int]</code></dt>
+<dt id="mimir.config.ExperimentConfig.top_k"><code class="name">var <span class="ident">top_k</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Consider only top-k tokens</p></div>
 </dd>
-<dt id="mimir.config.ExperimentConfig.top_p"><code class="name">var <span class="ident">top_p</span> : Optional[float]</code></dt>
+<dt id="mimir.config.ExperimentConfig.top_p"><code class="name">var <span class="ident">top_p</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Use tokens (minimal set) with cumulative probability of &lt;=top_p</p></div>
 </dd>
@@ -447,10 +464,9 @@ class ExperimentConfig(Serializable):
 </dd>
 <dt id="mimir.config.NeighborhoodConfig"><code class="flex name class">
 <span>class <span class="ident">NeighborhoodConfig</span></span>
-<span>(</span><span>model: str, n_perturbation_list: List[int] = &lt;factory&gt;, dump_cache: Optional[bool] = False, load_from_cache: Optional[bool] = False, original_tokenization_swap: Optional[bool] = True, pct_swap_bert: Optional[float] = 0.05, neighbor_strategy: Optional[str] = 'deterministic', span_length: Optional[int] = 2, random_fills_tokens: Optional[bool] = False, random_fills: Optional[bool] = False, pct_words_masked: Optional[float] = 0.3, buffer_size: Optional[int] = 1, top_p: Optional[float] = 1.0, max_tries: Optional[int] = 100, ceil_pct: Optional[bool] = False)</span>
+<span>(</span><span>model: str,<br>n_perturbation_list: List[int] = &lt;factory&gt;,<br>dump_cache: bool | None = False,<br>load_from_cache: bool | None = False,<br>original_tokenization_swap: bool | None = True,<br>pct_swap_bert: float | None = 0.05,<br>neighbor_strategy: str | None = 'deterministic',<br>span_length: int | None = 2,<br>random_fills_tokens: bool | None = False,<br>random_fills: bool | None = False,<br>pct_words_masked: float | None = 0.3,<br>buffer_size: int | None = 1,<br>top_p: float | None = 1.0,<br>max_tries: int | None = 100,<br>ceil_pct: bool | None = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for neighborhood attack</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -497,6 +513,7 @@ class NeighborhoodConfig(Serializable):
         if self.dump_cache and self.load_from_cache:
             raise ValueError(&#34;Cannot dump and load cache at the same time&#34;)</code></pre>
 </details>
+<div class="desc"><p>Config for neighborhood attack</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -504,27 +521,30 @@ class NeighborhoodConfig(Serializable):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="mimir.config.NeighborhoodConfig.buffer_size"><code class="name">var <span class="ident">buffer_size</span> : Optional[int]</code></dt>
-<dd>
-<div class="desc"><p>Buffer size</p></div>
-</dd>
-<dt id="mimir.config.NeighborhoodConfig.ceil_pct"><code class="name">var <span class="ident">ceil_pct</span> : Optional[bool]</code></dt>
-<dd>
-<div class="desc"><p>Apply ceil operation on span length calculation?</p></div>
-</dd>
 <dt id="mimir.config.NeighborhoodConfig.decode_into_subclasses"><code class="name">var <span class="ident">decode_into_subclasses</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.dump_cache"><code class="name">var <span class="ident">dump_cache</span> : Optional[bool]</code></dt>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mimir.config.NeighborhoodConfig.buffer_size"><code class="name">var <span class="ident">buffer_size</span> : int | None</code></dt>
+<dd>
+<div class="desc"><p>Buffer size</p></div>
+</dd>
+<dt id="mimir.config.NeighborhoodConfig.ceil_pct"><code class="name">var <span class="ident">ceil_pct</span> : bool | None</code></dt>
+<dd>
+<div class="desc"><p>Apply ceil operation on span length calculation?</p></div>
+</dd>
+<dt id="mimir.config.NeighborhoodConfig.dump_cache"><code class="name">var <span class="ident">dump_cache</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Dump neighbors data to cache? Exits program after dumping</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.load_from_cache"><code class="name">var <span class="ident">load_from_cache</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.load_from_cache"><code class="name">var <span class="ident">load_from_cache</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Load neighbors data from cache?</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.max_tries"><code class="name">var <span class="ident">max_tries</span> : Optional[int]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.max_tries"><code class="name">var <span class="ident">max_tries</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Maximum number of trials in finding replacements for masked tokens</p></div>
 </dd>
@@ -536,35 +556,35 @@ class NeighborhoodConfig(Serializable):
 <dd>
 <div class="desc"><p>List of n_neighbors to try.</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.neighbor_strategy"><code class="name">var <span class="ident">neighbor_strategy</span> : Optional[str]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.neighbor_strategy"><code class="name">var <span class="ident">neighbor_strategy</span> : str | None</code></dt>
 <dd>
 <div class="desc"><p>Strategy for generating neighbors. One of ['deterministic', 'random']. Deterministic uses only one-word neighbors</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.original_tokenization_swap"><code class="name">var <span class="ident">original_tokenization_swap</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.original_tokenization_swap"><code class="name">var <span class="ident">original_tokenization_swap</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Swap out token in original text with neighbor token, instead of re-generating text</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.pct_swap_bert"><code class="name">var <span class="ident">pct_swap_bert</span> : Optional[float]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.pct_swap_bert"><code class="name">var <span class="ident">pct_swap_bert</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Percentage of tokens per neighbor that are different from the original text</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.pct_words_masked"><code class="name">var <span class="ident">pct_words_masked</span> : Optional[float]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.pct_words_masked"><code class="name">var <span class="ident">pct_words_masked</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Percentage masked is actually pct_words_masked * (span_length / (span_length + 2 * buffer_size))</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.random_fills"><code class="name">var <span class="ident">random_fills</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.random_fills"><code class="name">var <span class="ident">random_fills</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Randomly fill?</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.random_fills_tokens"><code class="name">var <span class="ident">random_fills_tokens</span> : Optional[bool]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.random_fills_tokens"><code class="name">var <span class="ident">random_fills_tokens</span> : bool | None</code></dt>
 <dd>
 <div class="desc"><p>Randomly fill tokens?</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.span_length"><code class="name">var <span class="ident">span_length</span> : Optional[int]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.span_length"><code class="name">var <span class="ident">span_length</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Span length for neighborhood attack</p></div>
 </dd>
-<dt id="mimir.config.NeighborhoodConfig.top_p"><code class="name">var <span class="ident">top_p</span> : Optional[float]</code></dt>
+<dt id="mimir.config.NeighborhoodConfig.top_p"><code class="name">var <span class="ident">top_p</span> : float | None</code></dt>
 <dd>
 <div class="desc"><p>Use tokens (minimal set) with cumulative probability of &lt;=top_p</p></div>
 </dd>
@@ -575,7 +595,6 @@ class NeighborhoodConfig(Serializable):
 <span>(</span><span>key: str, model: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for OpenAI calls</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -590,6 +609,7 @@ class OpenAIConfig(Serializable):
     model: str
     &#34;&#34;&#34;Model name&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Config for OpenAI calls</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -601,6 +621,9 @@ class OpenAIConfig(Serializable):
 <dd>
 <div class="desc"></div>
 </dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
 <dt id="mimir.config.OpenAIConfig.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
 <dd>
 <div class="desc"><p>OpenAI API key</p></div>
@@ -613,10 +636,9 @@ class OpenAIConfig(Serializable):
 </dd>
 <dt id="mimir.config.ReCaLLConfig"><code class="flex name class">
 <span>class <span class="ident">ReCaLLConfig</span></span>
-<span>(</span><span>num_shots: Optional[int] = 1)</span>
+<span>(</span><span>num_shots: int | None = 1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for ReCaLL attack</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -629,6 +651,7 @@ class ReCaLLConfig(Serializable):
     num_shots: Optional[int] = 1
     &#34;&#34;&#34;Number of shots for ReCaLL Attacks&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Config for ReCaLL attack</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -640,7 +663,10 @@ class ReCaLLConfig(Serializable):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="mimir.config.ReCaLLConfig.num_shots"><code class="name">var <span class="ident">num_shots</span> : Optional[int]</code></dt>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="mimir.config.ReCaLLConfig.num_shots"><code class="name">var <span class="ident">num_shots</span> : int | None</code></dt>
 <dd>
 <div class="desc"><p>Number of shots for ReCaLL Attacks</p></div>
 </dd>
@@ -651,7 +677,6 @@ class ReCaLLConfig(Serializable):
 <span>(</span><span>models: List[str])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Config for attacks that use reference models.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -664,6 +689,7 @@ class ReferenceConfig(Serializable):
     models: List[str]
     &#34;&#34;&#34;Reference model names&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Config for attacks that use reference models.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>simple_parsing.helpers.serialization.serializable.Serializable</li>
@@ -675,6 +701,9 @@ class ReferenceConfig(Serializable):
 <dd>
 <div class="desc"></div>
 </dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
 <dt id="mimir.config.ReferenceConfig.models"><code class="name">var <span class="ident">models</span> : List[str]</code></dt>
 <dd>
 <div class="desc"><p>Reference model names</p></div>
@@ -816,7 +845,7 @@ class ReferenceConfig(Serializable):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

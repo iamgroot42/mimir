@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>mimir.attacks.min_k API documentation</title>
-<meta name="description" content="Min-k % Prob Attack: https://arxiv.org/pdf/2310.16789.pdf">
+<title>mimir.attacks.dc_pdd API documentation</title>
+<meta name="description" content="DC-PDD Attack: https://aclanthology.org/2024.emnlp-main.300/
+Based on the official implementation: https://github.com/zhang-wei-chao/DC-PDD">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,22 +34,44 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>mimir.attacks.min_k</code></h1>
+<h1 class="title">Module <code>mimir.attacks.dc_pdd</code></h1>
 </header>
 <section id="section-intro">
-<p>Min-k % Prob Attack: <a href="https://arxiv.org/pdf/2310.16789.pdf">https://arxiv.org/pdf/2310.16789.pdf</a></p>
+<p>DC-PDD Attack: <a href="https://aclanthology.org/2024.emnlp-main.300/">https://aclanthology.org/2024.emnlp-main.300/</a>
+Based on the official implementation: <a href="https://github.com/zhang-wei-chao/DC-PDD">https://github.com/zhang-wei-chao/DC-PDD</a></p>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="mimir.attacks.dc_pdd.ensure_parent_directory_exists"><code class="name flex">
+<span>def <span class="ident">ensure_parent_directory_exists</span></span>(<span>filename)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ensure_parent_directory_exists(filename):
+    # Get the parent directory from the given filename
+    parent_dir = os.path.dirname(filename)
+    
+    # Create the parent directory if it does not exist
+    if parent_dir and not os.path.exists(parent_dir):
+        os.makedirs(parent_dir, exist_ok=True)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="mimir.attacks.min_k.MinKProbAttack"><code class="flex name class">
-<span>class <span class="ident">MinKProbAttack</span></span>
+<dt id="mimir.attacks.dc_pdd.DC_PDDAttack"><code class="flex name class">
+<span>class <span class="ident">DC_PDDAttack</span></span>
 <span>(</span><span>config: <a title="mimir.config.ExperimentConfig" href="../config.html#mimir.config.ExperimentConfig">ExperimentConfig</a>,<br>model: <a title="mimir.models.Model" href="../models.html#mimir.models.Model">Model</a>)</span>
 </code></dt>
 <dd>
@@ -56,34 +79,102 @@ el.replaceWith(d);
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MinKProbAttack(Attack):
+<pre><code class="python">class DC_PDDAttack(Attack):
 
     def __init__(self, config: ExperimentConfig, model: Model):
         super().__init__(config, model, ref_model=None)
+        # Use subset of C-4
+        self.fre_dis = ch.zeros(len(model.tokenizer))
+        # Account for model name
+        model_name = model.name
+
+        # Load from cache if available, save otherwise
+        cached_file_path = os.path.join(get_cache_path(), &#34;DC_PDD_freq_dis&#34;, &#34;C4&#34;, f&#34;{model_name}.pt&#34;)
+
+        if os.path.exists(cached_file_path):
+            self.fre_dis = ch.load(cached_file_path)
+            print(f&#34;Loaded frequency distribution from cache for {model_name}&#34;)
+        else:
+            # Make sure the directory exists
+            ensure_parent_directory_exists(cached_file_path)
+            # Collect frequency data
+            self._collect_frequency_data()
+            ch.save(self.fre_dis, cached_file_path)
+            print(f&#34;Saved frequency distribution to cache for {model_name}&#34;)
+
+        # Laplace smoothing
+        self.fre_dis = (1 + self.fre_dis) / (ch.sum(self.fre_dis) + len(self.fre_dis))
+
+    def _fre_dis(self, ref_data, max_tok: int = 1024):
+        &#34;&#34;&#34;
+        token frequency distribution
+        ref_data: reference dataset
+        tok: tokenizer
+        &#34;&#34;&#34;
+        # Tokenize all the text in the reference dataset
+        # input_ids = self.target_model.tokenizer(ref_data, truncation=True, max_length=max_tok).input_ids
+        for text in tqdm(ref_data):
+            input_ids = self.target_model.tokenizer(text, truncation=True, max_length=max_tok).input_ids
+            self.fre_dis[input_ids] += 1
+
+    def _collect_frequency_data(self, fil_num: int = 15):
+        for i in tqdm(range(fil_num), desc=&#34;Downloading and processing dataset&#34;):
+            # Download the dataset split
+            url = f&#34;https://huggingface.co/datasets/allenai/c4/resolve/main/en/c4-train.{i:05}-of-01024.json.gz&#34;
+            # Download the file
+            response = requests.get(url)
+            response.raise_for_status()  # Check for download errors
+
+            # Open and parse the .json.gz file - the file is a .json file with one json object per line
+            with gzip.GzipFile(fileobj=io.BytesIO(response.content)) as gz_file:
+                sub_dataset = gz_file.readlines()
+                examples = []
+                # for example in tqdm(sub_dataset):
+                for example in sub_dataset:
+                    example = json.loads(example)
+                    examples.append(example[&#39;text&#39;])
+
+                # Compute the frequency distribution
+                self._fre_dis(examples)
 
     @ch.no_grad()
     def _attack(self, document, probs, tokens=None, **kwargs):
         &#34;&#34;&#34;
-        Min-k % Prob Attack. Gets model probabilities and returns likelihood when computed over top k% of ngrams.
+        DC-PDD Attack: Use frequency distribution of some large corpus to &#34;calibrate&#34; token probabilities
+        and compute a membership score.
         &#34;&#34;&#34;
-        # Hyper-params specific to min-k attack
-        k: float = kwargs.get(&#34;k&#34;, 0.2)
-        window: int = kwargs.get(&#34;window&#34;, 1)
-        stride: int = kwargs.get(&#34;stride&#34;, 1)
+        # Hyper-params specific to DC-PDD
+        a: float = kwargs.get(&#34;a&#34;, 0.01)
 
-        all_prob = (
-            probs
-            if probs is not None
-            else self.target_model.get_probabilities(document, tokens=tokens)
-        )
-        # iterate through probabilities by ngram defined by window size at given stride
-        ngram_probs = []
-        for i in range(0, len(all_prob) - window + 1, stride):
-            ngram_prob = all_prob[i : i + window]
-            ngram_probs.append(np.mean(ngram_prob))
-        min_k_probs = sorted(ngram_probs)[: int(len(ngram_probs) * k)]
+        # Tokenize text (we process things slightly differently)
+        tokens_og = self.target_model.tokenizer(document, return_tensors=&#34;pt&#34;).input_ids
+        # Inject EOS token at beginning
+        tokens = ch.cat([ch.tensor([[self.target_model.tokenizer.eos_token_id]]), tokens_og], dim=1).numpy()
 
-        return -np.mean(min_k_probs)</code></pre>
+        # these are all log probabilites
+        probs_with_start_token = self.target_model.get_probabilities(document, tokens=tokens)
+        x_pro = np.exp(probs_with_start_token)
+
+        indexes = []
+        current_ids = []
+        input_ids = tokens_og[0]
+        for i, input_id in enumerate(input_ids):
+            if input_id not in current_ids:
+                indexes.append(i)
+                current_ids.append(input_id)
+
+        x_pro = x_pro[indexes]
+        x_fre = self.fre_dis[input_ids[indexes]].numpy()
+
+        # Compute alpha values
+        alpha = x_pro * np.log(1 / x_fre)
+
+        # Compute membership score
+        alpha[alpha &gt; a] = a
+
+        beta = - np.mean(alpha)
+
+        return beta</code></pre>
 </details>
 <div class="desc"></div>
 <h3>Ancestors</h3>
@@ -118,10 +209,15 @@ el.replaceWith(d);
 <li><code><a title="mimir.attacks" href="index.html">mimir.attacks</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="mimir.attacks.dc_pdd.ensure_parent_directory_exists" href="#mimir.attacks.dc_pdd.ensure_parent_directory_exists">ensure_parent_directory_exists</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="mimir.attacks.min_k.MinKProbAttack" href="#mimir.attacks.min_k.MinKProbAttack">MinKProbAttack</a></code></h4>
+<h4><code><a title="mimir.attacks.dc_pdd.DC_PDDAttack" href="#mimir.attacks.dc_pdd.DC_PDDAttack">DC_PDDAttack</a></code></h4>
 </li>
 </ul>
 </li>
