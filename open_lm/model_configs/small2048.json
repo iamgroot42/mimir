@@ -1,0 +1,11 @@
+{
+    "hidden_dim": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "seq_len": 2048,
+    "vocab_size": 50304,
+    "pre_ln": false,
+    "pos_embed_type": "rope",
+    "weight_tying": false,
+    "attn_type": "xformers"
+}
