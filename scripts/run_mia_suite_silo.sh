@@ -7,12 +7,11 @@ for model in "ours-v1_1.3B_200B_semibalanced" "ours-v1_1.3B_90B_semibalanced" "o
 do
     for subset in "dm_mathematics_ngram_13_<0.8_truncated" "hackernews_ngram_13_<0.8_truncated" "sw_github"
     do
-         python run.py \
+        python run.py \
+            --experiment_name $version \
             --config configs/mi.json \
             --base_model $ckpt_dir/$model \
-            --specific_source $subset \
-            --output_name $version \
-            --baselines_only true
+            --specific_source $subset
     done
 done
 

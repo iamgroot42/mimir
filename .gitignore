@@ -1,67 +1,67 @@
-# Ignore all caching folders
-*cache/
-*/__pycache__/
-*cache_dir/
+# # Ignore all caching folders
+# *cache/
+# */__pycache__/
+# *cache_dir/
 
-# Ignore analysis results
-analysis/*/
+# # Ignore analysis results
+# analysis/*/
 
-# Ignore results
-tmp_results*/
-results*/
-models/*
-*results*/
-neighbor_gen_new/*
-new_neigh_mia/*
+# # Ignore results
+# tmp_results*/
+# results*/
+# models/*
+# *results*/
+# neighbor_gen_new/*
+# new_neigh_mia/*
 
-# Ignore generated data, except gpt paraphrasing scripts
-data/*/
-!data/gpt_generated_paraphrases/
-data/*/out/*
+# # Ignore generated data, except gpt paraphrasing scripts
+# data/*/
+# !data/gpt_generated_paraphrases/
+# data/*/out/*
 
-# Ignore local results files
-local/*results.json
+# # Ignore local results files
+# local/*results.json
 
-# Logs (from cluster runs)
-logs/*
-logs_cluster/*
+# # Logs (from cluster runs)
+# logs/*
+# logs_cluster/*
 
-# Vscode
-.vscode/*
+# # Vscode
+# .vscode/*
 
-# SLURM files
-*.slurm
+# # SLURM files
+# *.slurm
 
-# Package files
-*.egg-info/
+# # Package files
+# *.egg-info/
 
-# Images
-*.png
-*.pdf
+# # Images
+# *.png
+# *.pdf
 
-# Font files
-*.ttf
+# # Font files
+# *.ttf
 
-# Notebook checkpoints
-.ipynb_checkpoints/
+# # Notebook checkpoints
+# .ipynb_checkpoints/
 
-# WanDB
-wandb/*
+# # WanDB
+# wandb/*
 
-# Quantile model (trained)
-quantile_ref_model/*
+# # Quantile model (trained)
+# quantile_ref_model/*
 
-# Do not ignore assets/
-!assets/*.png
+# # Do not ignore assets/
+# !assets/*.png
 
-# Temp
-table*/*
-fig7/*
-new_mi/*
-DEBUG/*
+# # Temp
+# table*/*
+# fig7/*
+# new_mi/*
+# DEBUG/*
 
-# Ignore all tar.gz files
-*.tar.gz
+# # Ignore all tar.gz files
+# *.tar.gz
 
-# Ignore resources for edited members
-edit_distance_members
+# # Ignore resources for edited members
+# edit_distance_members

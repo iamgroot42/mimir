@@ -1,10 +1,10 @@
 #!/bin/bash
 version=unified_mia_v5_olmo_test_only
 
-for model in "OLMo-1B"
+for model in "OLMo-7B" # "OLMo-1B"
 do
 
-    for subset in "dolma_wikipedia" "dolma_s2" # "c4"
+    for subset in "dolma_s2ag" "dolma_s2orc" "dolma_common_crawl" "dolma_reddit" # "dolma_wikipedia" "dolma_s2" # "c4"
     do
         python3.9 run.py \
             --experiment_name $version \

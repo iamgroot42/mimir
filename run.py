@@ -597,14 +597,6 @@ def main(config: ExperimentConfig):
             )
             json.dump(seq_lens, f)
 
-    # TODO: Remove below if not needed/used
-    """
-    tk_freq_map = None
-    if config.token_frequency_map is not None:
-        print("loading tk freq map")
-        tk_freq_map = pickle.load(open(config.token_frequency_map, "rb"))
-    """
-
     # TODO: Instead of extracting from 'data', construct directly somewhere above
     data_members = {
         "records": data["member"],
@@ -619,17 +611,6 @@ def main(config: ExperimentConfig):
     if config.blackbox_attacks is None:
         raise ValueError("No blackbox attacks specified in config!")
 
-    # Collect scores for members
-    member_preds, member_samples = get_mia_scores(
-        data_members,
-        attackers_dict,
-        data_obj_mem,
-        target_model=base_model,
-        ref_models=ref_models,
-        config=config,
-        is_train=True,
-        n_samples=n_samples
-    )
     # Collect scores for non-members
     nonmember_preds, nonmember_samples = get_mia_scores(
         data_nonmembers,
@@ -641,6 +622,18 @@ def main(config: ExperimentConfig):
         is_train=False,
         n_samples=n_samples,
     )
+    # Collect scores for members
+    member_preds, member_samples = get_mia_scores(
+        data_members,
+        attackers_dict,
+        data_obj_mem,
+        target_model=base_model,
+        ref_models=ref_models,
+        config=config,
+        is_train=True,
+        n_samples=n_samples
+    )
+
     blackbox_outputs = compute_metrics_from_scores(
         member_preds,
         nonmember_preds,

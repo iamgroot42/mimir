@@ -29,7 +29,7 @@
     },
     "env_config": {
         "results": "results_new",
-        "device": "cuda:0",
+        "device_map": "balanced_low_0",
         "device_aux": "cuda:0"
     },
     "dump_cache": false,

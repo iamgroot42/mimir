@@ -1,7 +1,7 @@
 #!/bin/bash
-n=50
+n=100
 trials=5
-for subset in "arxiv" "hackernews" # "wikipedia_(en)"
+for subset in "wikipedia_(en)" #"arxiv" "hackernews" # "wikipedia_(en)"
 do
     echo generating paraphrases for $subset
     python gen.py \

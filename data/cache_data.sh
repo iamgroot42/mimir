@@ -1,6 +1,6 @@
 #!/bin/bash
 ngram=7
-for subset in "wikipedia" "s2" #date in "arxiv_2020-08"
+for subset in "s2orc" "s2ag" #"common_crawl" "reddit" #"wikipedia" "s2" #date in "arxiv_2020-08"
 do
     echo caching data for $subset
     # python run.py \

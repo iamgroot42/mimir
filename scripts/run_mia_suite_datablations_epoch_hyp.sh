@@ -5,12 +5,11 @@ for model in "2b855b55bc4" "2b855b28bc4" "2b855b14bc4" "2b855b9bc4" "2b855b4bc4"
 do
     for subset in "c4"
     do
-         python run.py \
+        python run.py \
+            --experiment_name $version \
             --config configs/mi.json \
             --base_model "/gscratch/h2lab/micdun/datablations/lm1-2b8-55b-c4-repetitions/$model/transformers" \
-            --specific_source $subset \
-            --output_name $version \
-            --baselines_only true
+            --specific_source $subset
     done
 done
 

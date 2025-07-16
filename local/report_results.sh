@@ -1,4 +1,4 @@
 #!/bin/bash
 python parse_results.py \
-    /gscratch/h2lab/micdun/mimir/results_new/mia_unified_mia_v5_linear_tds_recency_hyp_ref/*/* \
-    --output mia_unified_mia_v5_linear_tds_recency_hyp_ref_results.json
+    /gscratch/xlab/micdun/mimir/results_new/unified_mia_v5_full_pile_ne/*/* \
+    --output mia_unified_full_pile_ne_12b.json

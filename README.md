@@ -72,10 +72,10 @@ If you would like to submit your attack to the repository, please open a pull re
 If you use MIMIR in your research, please cite our paper:
 
 ```bibtex
-@article{duan2024membership,
+@inproceedings{duan2024membership,
       title={Do Membership Inference Attacks Work on Large Language Models?}, 
       author={Michael Duan and Anshuman Suri and Niloofar Mireshghallah and Sewon Min and Weijia Shi and Luke Zettlemoyer and Yulia Tsvetkov and Yejin Choi and David Evans and Hannaneh Hajishirzi},
       year={2024},
-      journal={arXiv:2402.07841},
+      booktitle={Conference on Language Modeling (COLM)},
 }
 ```

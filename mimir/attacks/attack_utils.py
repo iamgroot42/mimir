@@ -101,7 +101,7 @@ def get_roc_metrics(
             return roc_auc
 
         auc_roc_res = bootstrap(
-            (total_preds, total_labels),
+            (preds_member_ + preds_nonmember_, total_labels),
             roc_auc_statistic,
             n_resamples=1000,
             paired=True,
